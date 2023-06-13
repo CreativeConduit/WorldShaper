@@ -1,6 +1,6 @@
-name: WorldShaper # the plugins name as it should appear in the plugin list /pl
-version: 0.1 # the plugin's version
+name: WorldShaper
+version: 0.1_SNAPSHOT
 author: CodedStingray
 main: net.codedstingray.worldshaper.WorldShaper
-api-version: 1.19 # the version of the API you want to use, required starting with 1.13
+api-version: 1.19
 description: WorldShaper is an in-game map editor.
