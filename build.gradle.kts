@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "net.codedstingray"
-version = "0.1_SNAPSHOT"
+version = "0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
