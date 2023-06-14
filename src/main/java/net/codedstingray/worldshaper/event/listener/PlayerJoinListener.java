@@ -6,6 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+/**
+ * A {@link Listener Bukkit event listener} handling behavior on player join.
+ */
 public class PlayerJoinListener implements Listener {
 
     @EventHandler
