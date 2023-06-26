@@ -31,8 +31,17 @@ public class CommandRemovePos implements CommandExecutor {
             }
         }
 
-        selection.removeControlPosition(index);
-        player.sendMessage("Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " removed.");
-        return true;
+        if (index >= 0) {
+            boolean madeChange = selection.removeControlPosition(index);
+            if (madeChange) {
+                player.sendMessage("Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " removed.");
+            } else {
+                player.sendMessage("Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " was already not set.");
+            }
+            return true;
+        } else {
+            player.sendMessage(TextColor.RED + "Index for /removepos must be 1 or higher.");
+            return false;
+        }
     }
 }

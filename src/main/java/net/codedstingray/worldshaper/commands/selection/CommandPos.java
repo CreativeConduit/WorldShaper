@@ -2,6 +2,7 @@ package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -34,8 +35,15 @@ public class CommandPos implements CommandExecutor {
                         playerLocation.getBlockY(),
                         playerLocation.getBlockZ()
                 );
-                selection.setControlPosition(index, playerPosition, Objects.requireNonNull(playerLocation.getWorld()).getUID());
-                player.sendMessage("Position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " set to current position.");
+
+                if (index >= 0) {
+                    selection.setControlPosition(index, playerPosition, Objects.requireNonNull(playerLocation.getWorld()).getUID());
+                    player.sendMessage("Position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " set to " +
+                            ChatFormattingUtils.toString(playerPosition) + ".");
+                } else {
+                    player.sendMessage(TextColor.RED + "Index for /pos must be 1 or higher.");
+                    return false;
+                }
             } catch (NumberFormatException e) {
                 player.sendMessage(TextColor.RED + "Index for /pos must be an integer.");
                 return false;
@@ -48,7 +56,8 @@ public class CommandPos implements CommandExecutor {
                     playerLocation.getBlockZ()
             );
             int index = selection.addControlPosition(playerPosition, Objects.requireNonNull(playerLocation.getWorld()).getUID());
-            player.sendMessage("Position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " set to current position.");
+            player.sendMessage("Position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " set to " +
+                    ChatFormattingUtils.toString(playerPosition) + ".");
         }
 
         return true;

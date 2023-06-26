@@ -35,7 +35,6 @@ public class Selection implements Iterable<Vector3i> {
      * @param world The UUID of the world the position has been set in
      * @return The index of the added position
      */
-    //TODO: addControlPosition should add to the lowest free spot, not to the end of the list
     public int addControlPosition(Vector3i position, UUID world) {
         Objects.requireNonNull(position, "A selection's control position must not be null.");
         Objects.requireNonNull(world, "A selection's world UUID must not be null.");
@@ -45,10 +44,17 @@ public class Selection implements Iterable<Vector3i> {
             this.worldUUID = world;
         }
 
-        controlPositions.add(position);
+        int index = controlPositions.indexOf(null);
+        if (index == -1) {
+            controlPositions.add(position);
+            index = controlPositions.size() - 1;
+        } else {
+            controlPositions.set(index, position);
+        }
+
         unmodifiableControlPositions = null;
 
-        return controlPositions.size() - 1;
+        return index;
     }
 
     /**
@@ -72,12 +78,26 @@ public class Selection implements Iterable<Vector3i> {
             this.worldUUID = world;
         }
 
+        if (index >= controlPositions.size()) {
+            for (int i = controlPositions.size(); i <= index; i++) {
+                controlPositions.add(null);
+            }
+        }
         controlPositions.set(index, position);
         unmodifiableControlPositions = null;
     }
 
-    public void removeControlPosition(int index) {
-        controlPositions.remove(index);
+    public boolean removeControlPosition(int index) {
+        if (index >= controlPositions.size() || controlPositions.get(index) == null) {
+            return false;
+        }
+        controlPositions.set(index, null);
+        while (controlPositions.size() > 0 && controlPositions.get(controlPositions.size() - 1) == null) {
+            controlPositions.remove(controlPositions.size() - 1);
+        }
+
+        unmodifiableControlPositions = null;
+        return true;
     }
 
     /**

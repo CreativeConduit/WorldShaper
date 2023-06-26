@@ -10,13 +10,13 @@ commands:
     usage: /<command>
   pos:
     description: Adds your current position as a control position for your selection.
-    usage: /<command> <index>
+    usage: /<command> [index]
   positions:
     description: Lists all current control positions for your selection.
     usage: /<command>
   removepos:
     description: Removes a control position
-    usage: /<command> <index>
+    usage: /<command> [index]
   clearpositions:
     description: Clears the list of selection control points.
     usage: /<command>
