@@ -13,15 +13,15 @@ import org.joml.Vector3i;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.StringJoiner;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
+
 @ParametersAreNonnullByDefault
 public class CommandPositions implements CommandExecutor {
-
-    private static final String GROUPING_PIPE = TextColor.AQUA + "|" + TextColor.RESET;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
 
@@ -36,7 +36,7 @@ public class CommandPositions implements CommandExecutor {
                 joiner.add(GROUPING_PIPE + " [" + (i + 1) + "] - not set -");
             }
         }
-        player.sendMessage(joiner.add(TextColor.AQUA + "\\" + TextColor.RESET).toString());
+        player.sendMessage(joiner.add(GROUPING_END).toString());
 
         return true;
     }

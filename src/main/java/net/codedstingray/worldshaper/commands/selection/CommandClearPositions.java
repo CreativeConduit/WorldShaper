@@ -9,18 +9,20 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+
 @ParametersAreNonnullByDefault
 public class CommandClearPositions implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
 
         WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId()).clearControlPositions();
-        player.sendMessage("Cleared all selection control positions.");
+        sendWorldShaperMessage(player, "Cleared all selection control positions.");
         return true;
     }
 }

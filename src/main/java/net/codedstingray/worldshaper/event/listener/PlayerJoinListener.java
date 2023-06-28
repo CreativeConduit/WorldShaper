@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+
 /**
  * A {@link Listener Bukkit event listener} handling behavior on player join.
  */
@@ -15,7 +17,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage("Using " +
+        sendWorldShaperMessage(event.getPlayer(),
+                "Using " +
                 TextColor.AQUA + "WorldShaper" +
                 TextColor.RESET + " version " +
                 TextColor.AQUA + WorldShaperManifest.PLUGIN_VERSION +

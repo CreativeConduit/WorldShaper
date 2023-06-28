@@ -10,13 +10,15 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+
 @ParametersAreNonnullByDefault
 public class CommandRemovePos implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
 
@@ -26,7 +28,7 @@ public class CommandRemovePos implements CommandExecutor {
             try {
                 index = Integer.parseInt(args[0]) - 1;
             } catch (NumberFormatException e) {
-                player.sendMessage(TextColor.RED + "Index for /removepos must be an integer.");
+                sendWorldShaperMessage(player, TextColor.RED + "Index for /removepos must be an integer.");
                 return false;
             }
         }
@@ -34,13 +36,13 @@ public class CommandRemovePos implements CommandExecutor {
         if (index >= 0) {
             boolean madeChange = selection.removeControlPosition(index);
             if (madeChange) {
-                player.sendMessage("Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " removed.");
+                sendWorldShaperMessage(player, "Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " removed.");
             } else {
-                player.sendMessage("Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " was already not set.");
+                sendWorldShaperMessage(player, "Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " was already not set.");
             }
             return true;
         } else {
-            player.sendMessage(TextColor.RED + "Index for /removepos must be 1 or higher.");
+            sendWorldShaperMessage(player, TextColor.RED + "Index for /removepos must be 1 or higher.");
             return false;
         }
     }

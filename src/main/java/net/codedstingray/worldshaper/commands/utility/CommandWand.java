@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+
 /**
  * {@link CommandExecutor} for the /wand command.
  */
@@ -18,7 +20,7 @@ public class CommandWand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
 

@@ -11,6 +11,10 @@ import java.util.*;
 @ParametersAreNonnullByDefault
 public class Selection implements Iterable<Vector3i> {
 
+    private static final String MESSAGE_CONTROL_POSITION_MUST_NOT_BE_NULL = "A selection's control position must not be null.";
+    private static final String MESSAGE_WORLD_UUID_MUST_NOT_BE_NULL = "A selection's world UUID must not be null.";
+    private static final String MESSAGE_INDEX_MUST_BE_AT_LEAST_0 = "Selection control position index must be at least 1.";
+
     private UUID worldUUID;
 
     private final List<Vector3i> controlPositions = new ArrayList<>();
@@ -36,13 +40,10 @@ public class Selection implements Iterable<Vector3i> {
      * @return The index of the added position
      */
     public int addControlPosition(Vector3i position, UUID world) {
-        Objects.requireNonNull(position, "A selection's control position must not be null.");
-        Objects.requireNonNull(world, "A selection's world UUID must not be null.");
+        Objects.requireNonNull(position, MESSAGE_CONTROL_POSITION_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(world, MESSAGE_WORLD_UUID_MUST_NOT_BE_NULL);
 
-        if (world != this.worldUUID) {
-            controlPositions.clear();
-            this.worldUUID = world;
-        }
+        clearPositionsIfWorldIsDifferent(world);
 
         int index = controlPositions.indexOf(null);
         if (index == -1) {
@@ -68,15 +69,12 @@ public class Selection implements Iterable<Vector3i> {
      */
     public void setControlPosition(int index, Vector3i position, UUID world) {
         if (index < 0) {
-            throw new IndexOutOfBoundsException("Selection control position index must be at least 0.");
+            throw new IndexOutOfBoundsException(MESSAGE_INDEX_MUST_BE_AT_LEAST_0);
         }
-        Objects.requireNonNull(position, "A selection's control position must not be null.");
-        Objects.requireNonNull(world, "A selection's world UUID must not be null.");
+        Objects.requireNonNull(position, MESSAGE_CONTROL_POSITION_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(world, MESSAGE_WORLD_UUID_MUST_NOT_BE_NULL);
 
-        if (!world.equals(this.worldUUID)) {
-            controlPositions.clear();
-            this.worldUUID = world;
-        }
+        clearPositionsIfWorldIsDifferent(world);
 
         if (index >= controlPositions.size()) {
             for (int i = controlPositions.size(); i <= index; i++) {
@@ -87,8 +85,14 @@ public class Selection implements Iterable<Vector3i> {
         unmodifiableControlPositions = null;
     }
 
+    /**
+     * Removes the control position at the given index if it currently exists.
+     *
+     * @param index The index at which to remove the control position
+     * @return {@code true} if the list has been modified, {@code false} otherwise
+     */
     public boolean removeControlPosition(int index) {
-        if (index >= controlPositions.size() || controlPositions.get(index) == null) {
+        if (index < 0 || index >= controlPositions.size() || controlPositions.get(index) == null) {
             return false;
         }
         controlPositions.set(index, null);
@@ -129,6 +133,13 @@ public class Selection implements Iterable<Vector3i> {
         controlPositions.clear();
         unmodifiableControlPositions = null;
         worldUUID = null;
+    }
+
+    private void clearPositionsIfWorldIsDifferent(UUID world) {
+        if (!world.equals(this.worldUUID)) {
+            controlPositions.clear();
+            this.worldUUID = world;
+        }
     }
 
     @Override
