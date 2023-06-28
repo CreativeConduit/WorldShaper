@@ -133,6 +133,34 @@ public class Selection implements Iterable<Vector3i> {
 
     @Override
     public Iterator<Vector3i> iterator() {
-        return controlPositions.iterator();
+        return new Iterator<>() {
+            private int currentIndex;
+
+            {
+                currentIndex = -1;
+                currentIndex = findNextFilledIndex();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex >= 0;
+            }
+
+            @Override
+            public Vector3i next() {
+                Vector3i nextVector = controlPositions.get(currentIndex);
+                currentIndex = findNextFilledIndex();
+                return nextVector;
+            }
+
+            private int findNextFilledIndex() {
+                for (int i = currentIndex + 1; i < controlPositions.size(); i++) {
+                    if (controlPositions.get(i) != null) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        };
     }
 }
