@@ -52,8 +52,7 @@ public class CommandPos implements CommandExecutor {
         UUID world = Objects.requireNonNull(playerLocation.getWorld()).getUID();
 
         selection.setControlPosition(index, playerPosition, world);
-        sendWorldShaperMessage(player, "Position " + TextColor.AQUA + (index + 1) + TextColor.RESET +
-                " set to " + ChatFormattingUtils.toString(playerPosition) + ".");
+        sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, playerPosition));
 
         return true;
     }

@@ -17,4 +17,9 @@ public class ChatFormattingUtils {
     public static void sendWorldShaperMessage(CommandSender commandSender, String message) {
         commandSender.sendMessage(WORLDSHAPER_MESSAGE_PREFIX + message);
     }
+
+    public static String positionSetMessage(int index, Vector3i position) {
+        return "Position " + TextColor.AQUA + (index + 1) + TextColor.RESET +
+                " set to " + ChatFormattingUtils.toString(position) + ".";
+    }
 }
