@@ -111,7 +111,11 @@ public class Selection implements Iterable<Vector3i> {
      * @return The control position at the given index, or null if no control position is found at this index.
      */
     public Vector3i getControlPosition(int index) {
-        return controlPositions.get(index);
+        try {
+            return controlPositions.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     /**

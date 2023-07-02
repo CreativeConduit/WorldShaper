@@ -30,19 +30,19 @@ public class PlayerJoinListener implements Listener {
                 TextColor.RESET + ".");
 
         PlayerData playerData = WorldShaper.getInstance().getPlayerData();
-        PlayerSelectionMap playerSelectionMap = playerData.getPlayerSelectionMap();
+        UUID playerUUID = event.getPlayer().getUniqueId();
 
-        if (playerSelectionMap.getSelection(event.getPlayer().getUniqueId()) == null) {
-            playerData.getPlayerSelectionMap().addNewPlayerSelection(event.getPlayer().getUniqueId());
+        PlayerSelectionMap playerSelectionMap = playerData.getPlayerSelectionMap();
+        if (playerSelectionMap.getSelection(playerUUID) == null) {
+            playerSelectionMap.addNewPlayerSelection(playerUUID);
         }
 
         Map<UUID, SelectionType> playerSelectionTypeMap = playerData.getPlayerSelectionTypeMap();
+        playerSelectionTypeMap.computeIfAbsent(
+                playerUUID,
+                k -> playerData.DEFAULT_SELECTION_TYPE
+        );
 
-        if (playerSelectionTypeMap.get(event.getPlayer().getUniqueId()) == null) {
-            playerData.getPlayerSelectionTypeMap().put(
-                    event.getPlayer().getUniqueId(),
-                    playerData.DEFAULT_SELECTION_TYPE
-            );
-        }
+        playerData.setAreaForPlayer(playerUUID, playerData.DEFAULT_AREA_NAME);
     }
 }
