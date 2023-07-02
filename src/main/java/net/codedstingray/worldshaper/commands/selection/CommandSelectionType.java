@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
@@ -21,22 +22,23 @@ public class CommandSelectionType implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
 
         if (args.length == 0) {
-            SelectionType selectionType = WorldShaper.getInstance().getPlayerSelectionTypeMap().get(player.getUniqueId());
+            SelectionType selectionType = playerData.getPlayerSelectionTypeMap().get(player.getUniqueId());
             sendWorldShaperMessage(player, "Your current selection type is " + TextColor.AQUA + "\"" + selectionType.getName() + "\"");
 
             return true;
         }
 
         String selectionTypeName = args[0];
-        SelectionType selectionType = WorldShaper.getInstance().getSelectionTypeByName(selectionTypeName);
+        SelectionType selectionType = playerData.getSelectionTypeByName(selectionTypeName);
         if (selectionType == null) {
             sendWorldShaperMessage(player, TextColor.RED + "Selection Type \"" + selectionTypeName + "\" does not exist.");
             return false;
         }
 
-        WorldShaper.getInstance().getPlayerSelectionTypeMap().put(player.getUniqueId(), selectionType);
+        playerData.getPlayerSelectionTypeMap().put(player.getUniqueId(), selectionType);
         sendWorldShaperMessage(player, "Selection Type set to " + TextColor.AQUA + "\"" + selectionType.getName() + "\"");
         return true;
     }

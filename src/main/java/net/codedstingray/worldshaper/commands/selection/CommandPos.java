@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
 import net.codedstingray.worldshaper.util.chat.TextColor;
@@ -28,7 +29,8 @@ public class CommandPos implements CommandExecutor {
             return false;
         }
 
-        Selection selection = WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId());
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
 
         int index;
         if (args.length > 0) {

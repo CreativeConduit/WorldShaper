@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
@@ -21,8 +22,9 @@ public class CommandRemovePos implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
 
-        Selection selection = WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
         int index = selection.getControlPositions().size() - 1;
         if (args.length > 0) {
             try {

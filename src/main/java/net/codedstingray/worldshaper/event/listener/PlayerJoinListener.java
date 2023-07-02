@@ -2,6 +2,7 @@ package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.WorldShaperManifest;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.PlayerSelectionMap;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.chat.TextColor;
@@ -28,18 +29,19 @@ public class PlayerJoinListener implements Listener {
                 TextColor.AQUA + WorldShaperManifest.PLUGIN_VERSION +
                 TextColor.RESET + ".");
 
-        PlayerSelectionMap playerSelectionMap = WorldShaper.getInstance().getPlayerSelectionMap();
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerSelectionMap playerSelectionMap = playerData.getPlayerSelectionMap();
 
         if (playerSelectionMap.getSelection(event.getPlayer().getUniqueId()) == null) {
-            WorldShaper.getInstance().getPlayerSelectionMap().addNewPlayerSelection(event.getPlayer().getUniqueId());
+            playerData.getPlayerSelectionMap().addNewPlayerSelection(event.getPlayer().getUniqueId());
         }
 
-        Map<UUID, SelectionType> playerSelectionTypeMap = WorldShaper.getInstance().getPlayerSelectionTypeMap();
+        Map<UUID, SelectionType> playerSelectionTypeMap = playerData.getPlayerSelectionTypeMap();
 
         if (playerSelectionTypeMap.get(event.getPlayer().getUniqueId()) == null) {
-            WorldShaper.getInstance().getPlayerSelectionTypeMap().put(
+            playerData.getPlayerSelectionTypeMap().put(
                     event.getPlayer().getUniqueId(),
-                    WorldShaper.getInstance().getDefaultSelectionType()
+                    playerData.DEFAULT_SELECTION_TYPE
             );
         }
     }

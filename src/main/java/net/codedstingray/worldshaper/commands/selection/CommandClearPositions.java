@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,8 +21,9 @@ public class CommandClearPositions implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
 
-        WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId()).clearControlPositions();
+        playerData.getPlayerSelectionMap().getSelection(player.getUniqueId()).clearControlPositions();
         sendWorldShaperMessage(player, "Cleared all selection control positions.");
         return true;
     }

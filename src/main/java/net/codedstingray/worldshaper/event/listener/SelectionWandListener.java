@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.items.SelectionWand;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
@@ -13,8 +14,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3i;
-
-import java.util.Objects;
 
 public class SelectionWandListener implements Listener {
 
@@ -29,9 +28,10 @@ public class SelectionWandListener implements Listener {
             return;
         }
 
-        SelectionType selectionType = Objects.requireNonNullElse(
-                WorldShaper.getInstance().getPlayerSelectionTypeMap().get(player.getUniqueId()),
-                WorldShaper.getInstance().getDefaultSelectionType()
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        SelectionType selectionType = playerData.getPlayerSelectionTypeMap().getOrDefault(
+                player.getUniqueId(),
+                playerData.DEFAULT_SELECTION_TYPE
         );
 
         Vector3i clickedPosition = LocationUtils.locationToBlockVector(clickedBlock.getLocation());

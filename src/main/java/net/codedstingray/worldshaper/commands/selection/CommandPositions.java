@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
 import net.codedstingray.worldshaper.util.chat.TextColor;
@@ -24,8 +25,9 @@ public class CommandPositions implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
 
-        Selection selection = WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
         StringJoiner joiner = new StringJoiner("\n")
                 .add(GROUPING_PIPE + " === " + TextColor.AQUA + "Your current control positions" + TextColor.RESET + " ===");
         for (int i = 0; i < selection.getControlPositions().size(); i++) {

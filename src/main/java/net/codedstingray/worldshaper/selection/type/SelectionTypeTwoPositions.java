@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.selection.type;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import org.bukkit.entity.Player;
 import org.joml.Vector3i;
@@ -35,9 +36,10 @@ public class SelectionTypeTwoPositions implements SelectionType {
     }
 
     private void setSelectionControlPosition(int index, Player player, Vector3i clickedPosition) {
-        UUID world = player.getWorld().getUID();
+        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
 
-        Selection selection = WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId());
+        UUID world = player.getWorld().getUID();
+        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
         selection.setControlPosition(index, clickedPosition, world);
     }
 }
