@@ -1,10 +1,7 @@
 package net.codedstingray.worldshaper.commands;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.commands.selection.CommandClearPositions;
-import net.codedstingray.worldshaper.commands.selection.CommandPos;
-import net.codedstingray.worldshaper.commands.selection.CommandPositions;
-import net.codedstingray.worldshaper.commands.selection.CommandRemovePos;
+import net.codedstingray.worldshaper.commands.selection.*;
 import net.codedstingray.worldshaper.commands.utility.CommandWand;
 
 import java.util.Objects;
@@ -25,5 +22,6 @@ public class CommandInitializer {
         Objects.requireNonNull(plugin.getCommand("positions")).setExecutor(new CommandPositions());
         Objects.requireNonNull(plugin.getCommand("removepos")).setExecutor(new CommandRemovePos());
         Objects.requireNonNull(plugin.getCommand("clearpositions")).setExecutor(new CommandClearPositions());
+        Objects.requireNonNull(plugin.getCommand("selectiontype")).setExecutor(new CommandSelectionType());
     }
 }

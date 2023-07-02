@@ -20,3 +20,6 @@ commands:
   clearpositions:
     description: Clears the list of selection control points.
     usage: /<command>
+  selectiontype:
+    description: Sets your selection type.
+    usage: /<command> [selection type name]

@@ -2,7 +2,7 @@ package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.items.SelectionWand;
-import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.block.Block;
@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3i;
 
-import java.util.UUID;
+import java.util.Objects;
 
 public class SelectionWandListener implements Listener {
 
@@ -29,20 +29,21 @@ public class SelectionWandListener implements Listener {
             return;
         }
 
+        SelectionType selectionType = Objects.requireNonNullElse(
+                WorldShaper.getInstance().getPlayerSelectionTypeMap().get(player.getUniqueId()),
+                WorldShaper.getInstance().getDefaultSelectionType()
+        );
+
+        Vector3i clickedPosition = LocationUtils.locationToBlockVector(clickedBlock.getLocation());
+
         int index;
         switch (action) {
-            case LEFT_CLICK_BLOCK -> index = 0;
-            case RIGHT_CLICK_BLOCK -> index = 1;
+            case LEFT_CLICK_BLOCK -> index = selectionType.onLeftClick(player, clickedPosition);
+            case RIGHT_CLICK_BLOCK -> index = selectionType.onRightClick(player, clickedPosition);
             default -> {
                 return;
             }
         }
-
-        Vector3i clickedPosition = LocationUtils.locationToBlockVector(clickedBlock.getLocation());
-        UUID world = player.getWorld().getUID();
-
-        Selection selection = WorldShaper.getInstance().getPlayerSelectionMap().getSelection(player.getUniqueId());
-        selection.setControlPosition(index, clickedPosition, world);
 
         ChatFormattingUtils.sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, clickedPosition));
 

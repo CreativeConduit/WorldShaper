@@ -3,10 +3,14 @@ package net.codedstingray.worldshaper.event.listener;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.WorldShaperManifest;
 import net.codedstingray.worldshaper.selection.PlayerSelectionMap;
+import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.Map;
+import java.util.UUID;
 
 import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
 
@@ -28,6 +32,15 @@ public class PlayerJoinListener implements Listener {
 
         if (playerSelectionMap.getSelection(event.getPlayer().getUniqueId()) == null) {
             WorldShaper.getInstance().getPlayerSelectionMap().addNewPlayerSelection(event.getPlayer().getUniqueId());
+        }
+
+        Map<UUID, SelectionType> playerSelectionTypeMap = WorldShaper.getInstance().getPlayerSelectionTypeMap();
+
+        if (playerSelectionTypeMap.get(event.getPlayer().getUniqueId()) == null) {
+            WorldShaper.getInstance().getPlayerSelectionTypeMap().put(
+                    event.getPlayer().getUniqueId(),
+                    WorldShaper.getInstance().getDefaultSelectionType()
+            );
         }
     }
 }
