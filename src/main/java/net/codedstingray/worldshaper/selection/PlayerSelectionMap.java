@@ -18,7 +18,7 @@ public class PlayerSelectionMap {
      * @param player The player which shall be mapped to a new selection
      */
     public void addNewPlayerSelection(UUID player) {
-        playerMappedSelections.put(player, new Selection());
+        playerMappedSelections.put(player, new Selection(player));
     }
 
     /**

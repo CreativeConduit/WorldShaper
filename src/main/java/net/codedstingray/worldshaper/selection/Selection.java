@@ -1,5 +1,7 @@
 package net.codedstingray.worldshaper.selection;
 
+import net.codedstingray.worldshaper.event.SelectionModifiedEvent;
+import org.bukkit.Bukkit;
 import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -15,10 +17,16 @@ public class Selection implements Iterable<Vector3i> {
     private static final String MESSAGE_WORLD_UUID_MUST_NOT_BE_NULL = "A selection's world UUID must not be null.";
     private static final String MESSAGE_INDEX_MUST_BE_AT_LEAST_0 = "Selection control position index must be at least 1.";
 
+    private final UUID playerUUID;
+
     private UUID worldUUID;
 
     private final List<Vector3i> controlPositions = new ArrayList<>();
     private List<Vector3i> unmodifiableControlPositions;
+
+    public Selection(UUID player) {
+        playerUUID = player;
+    }
 
     /**
      * The {@link UUID} of the {@link org.bukkit.World world} the selection is currently in. If a new Position is set
@@ -53,8 +61,7 @@ public class Selection implements Iterable<Vector3i> {
             controlPositions.set(index, position);
         }
 
-        unmodifiableControlPositions = null;
-
+        onSelectionModified();
         return index;
     }
 
@@ -82,7 +89,7 @@ public class Selection implements Iterable<Vector3i> {
             }
         }
         controlPositions.set(index, position);
-        unmodifiableControlPositions = null;
+        onSelectionModified();
     }
 
     /**
@@ -100,7 +107,7 @@ public class Selection implements Iterable<Vector3i> {
             controlPositions.remove(controlPositions.size() - 1);
         }
 
-        unmodifiableControlPositions = null;
+        onSelectionModified();
         return true;
     }
 
@@ -144,6 +151,11 @@ public class Selection implements Iterable<Vector3i> {
             controlPositions.clear();
             this.worldUUID = world;
         }
+    }
+
+    private void onSelectionModified() {
+        unmodifiableControlPositions = null;
+        Bukkit.getPluginManager().callEvent(new SelectionModifiedEvent(this, playerUUID));
     }
 
     @Override
