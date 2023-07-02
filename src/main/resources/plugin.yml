@@ -26,3 +26,6 @@ commands:
   area:
     description: Sets your area type.
     usage: /<command> [area type name]
+  set:
+    description: Sets all blocks in the area to the provided Material pattern
+    usage: /<command> <pattern>

@@ -52,7 +52,7 @@ public class CuboidArea implements Area {
 
     @Override
     public Iterator<Vector3i> iterator() {
-        return  new Iterator<>() {
+        return new Iterator<>() {
             private final Vector3i current = new Vector3i(minPos);
 
             @Override
