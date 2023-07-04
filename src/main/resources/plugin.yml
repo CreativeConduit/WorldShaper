@@ -29,3 +29,6 @@ commands:
   set:
     description: Sets all blocks in the area to the provided Material pattern
     usage: /<command> <pattern>
+  replace:
+    description: Replaces all blocks of a given type with the new material
+    usage: /<command> <mask> <pattern>

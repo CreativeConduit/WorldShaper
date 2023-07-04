@@ -2,6 +2,7 @@ package net.codedstingray.worldshaper.commands;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.commands.area.CommandArea;
+import net.codedstingray.worldshaper.commands.area.operations.CommandReplace;
 import net.codedstingray.worldshaper.commands.area.operations.CommandSet;
 import net.codedstingray.worldshaper.commands.selection.*;
 import net.codedstingray.worldshaper.commands.utility.CommandWand;
@@ -27,5 +28,6 @@ public class CommandInitializer {
         Objects.requireNonNull(plugin.getCommand("selectiontype")).setExecutor(new CommandSelectionType());
         Objects.requireNonNull(plugin.getCommand("area")).setExecutor(new CommandArea());
         Objects.requireNonNull(plugin.getCommand("set")).setExecutor(new CommandSet());
+        Objects.requireNonNull(plugin.getCommand("replace")).setExecutor(new CommandReplace());
     }
 }
