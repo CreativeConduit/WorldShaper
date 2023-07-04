@@ -4,6 +4,7 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
+import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,6 +17,7 @@ import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
@@ -57,9 +59,9 @@ public class CommandSet implements CommandExecutor {
             throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
         }
 
-        World world = Bukkit.getWorld(worldUUID);
+        World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
         for(Vector3i position: area) {
-            Block block = world.getBlockAt(position.x, position.y, position.z);
+            Block block = world.getBlockAt(LocationUtils.vectorToLocation(position, world));
             block.setType(blockType);
         }
 
