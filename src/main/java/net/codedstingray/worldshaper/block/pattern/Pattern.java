@@ -23,7 +23,7 @@ public class Pattern {
         for (PatternEntry entry: entries) {
             cumulativeChance += entry.percentage;
             if (r < cumulativeChance) {
-                return Optional.of(entries.get(r).blockData);
+                return Optional.of(entry.blockData);
             }
         }
         return Optional.empty();
@@ -52,8 +52,12 @@ public class Pattern {
 
         public Builder with(int percentage, BlockData blockData) {
             Objects.requireNonNull(blockData);
-            if (percentage <= 0) {
-                throw new IllegalArgumentException("Percentage must be above 0");
+            if (percentage < 0) {
+                throw new IllegalArgumentException("Percentage must be 0 or above");
+            }
+
+            if (percentage == 0) {
+                entryIndicesWithoutPercentage.add(entries.size());
             }
 
             entries.add(new PatternEntry(percentage, blockData));

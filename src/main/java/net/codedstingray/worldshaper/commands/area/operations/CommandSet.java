@@ -2,11 +2,13 @@ package net.codedstingray.worldshaper.commands.area.operations;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
+import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.block.pattern.PatternParseException;
+import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -54,15 +56,18 @@ public class CommandSet implements CommandExecutor {
             return true;
         }
 
-        Material blockType = Material.matchMaterial(args[0]);
-        if(blockType == null) {
-            throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
+        Pattern pattern;
+        try {
+            pattern = PatternParser.parsePattern(args[0]);
+        } catch (PatternParseException e) {
+            sendWorldShaperMessage(player, TextColor.RED + "Unable to parse pattern: " + e.getMessage());
+            return false;
         }
 
         World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
         for(Vector3i position: area) {
             Block block = world.getBlockAt(LocationUtils.vectorToLocation(position, world));
-            block.setType(blockType);
+            pattern.getRandomBlockData().ifPresent(block::setBlockData);
         }
 
         return true;

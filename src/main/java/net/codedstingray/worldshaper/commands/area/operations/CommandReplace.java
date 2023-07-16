@@ -2,6 +2,9 @@ package net.codedstingray.worldshaper.commands.area.operations;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
+import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.block.pattern.PatternParseException;
+import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
@@ -57,16 +60,20 @@ public class CommandReplace implements CommandExecutor {
         if(replacedMaterial == null) {
             throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
         }
-        Material blockType = Material.matchMaterial(args[1]);
-        if(blockType == null) {
-            throw new IllegalArgumentException("Unable to parse material \"" + args[1] + "\"");
+
+        Pattern pattern;
+        try {
+            pattern = PatternParser.parsePattern(args[1]);
+        } catch (PatternParseException e) {
+            sendWorldShaperMessage(player, TextColor.RED + "Unable to parse pattern: " + e.getMessage());
+            return false;
         }
 
         World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
         for(Vector3i position: area) {
             Block block = world.getBlockAt(LocationUtils.vectorToLocation(position, world));
             if (block.getBlockData().getMaterial().equals(replacedMaterial)) {
-                block.setType(blockType);
+                pattern.getRandomBlockData().ifPresent(block::setBlockData);
             }
         }
 

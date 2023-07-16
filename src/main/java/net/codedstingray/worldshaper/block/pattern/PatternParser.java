@@ -15,6 +15,8 @@ public class PatternParser {
         while (index < patternStringChars.length) {
             try {
                 index = parsePatternEntry(patternStringChars, index, patternBuilder);
+            } catch (PatternParseException e) {
+                throw e;
             } catch (IndexOutOfBoundsException e) {
                 throw new PatternParseException("Premature end of pattern string at entry: \"" + patternString.substring(index) + "\"", e);
             } catch (Throwable t) {
@@ -46,6 +48,7 @@ public class PatternParser {
         if (Character.isLetter(patternStringChars[mainIndex])) {
             int subIndex = scanBlockId(patternStringChars, mainIndex);
             if (subIndex < patternStringChars.length && patternStringChars[subIndex] == '[') {
+                // this may throw an IndexOutOfBoundsException which is handled in the calling method
                 subIndex = scanBlockProperties(patternStringChars, subIndex);
             }
 
@@ -62,7 +65,7 @@ public class PatternParser {
 
         builder.with(percentageValue, blockData);
 
-        return mainIndex + 1;
+        return mainIndex;
     }
 
     private static int scanPercentage(char[] patternStringChars, int mainIndex) {

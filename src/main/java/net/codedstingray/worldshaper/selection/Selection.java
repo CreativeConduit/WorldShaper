@@ -112,6 +112,16 @@ public class Selection implements Iterable<Vector3i> {
     }
 
     /**
+     * Clears the control positions and world UUID.
+     */
+    public void clearControlPositions() {
+        controlPositions.clear();
+        unmodifiableControlPositions = null;
+        worldUUID = null;
+        onSelectionModified();
+    }
+
+    /**
      * Returns the control position at the given index within the set of control positions.
      *
      * @param index The index of the queried control position
@@ -135,15 +145,6 @@ public class Selection implements Iterable<Vector3i> {
             unmodifiableControlPositions = Collections.unmodifiableList(controlPositions);
         }
         return unmodifiableControlPositions;
-    }
-
-    /**
-     * Clears the control positions and world UUID.
-     */
-    public void clearControlPositions() {
-        controlPositions.clear();
-        unmodifiableControlPositions = null;
-        worldUUID = null;
     }
 
     private void clearPositionsIfWorldIsDifferent(UUID world) {
