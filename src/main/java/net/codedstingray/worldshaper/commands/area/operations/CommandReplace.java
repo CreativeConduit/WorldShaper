@@ -2,6 +2,9 @@ package net.codedstingray.worldshaper.commands.area.operations;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
+import net.codedstingray.worldshaper.block.mask.Mask;
+import net.codedstingray.worldshaper.block.mask.MaskParseException;
+import net.codedstingray.worldshaper.block.mask.MaskParser;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
 import net.codedstingray.worldshaper.block.pattern.PatternParseException;
 import net.codedstingray.worldshaper.block.pattern.PatternParser;
@@ -9,7 +12,6 @@ import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -56,10 +58,19 @@ public class CommandReplace implements CommandExecutor {
             return true;
         }
 
-        Material replacedMaterial = Material.matchMaterial(args[0]);
-        if(replacedMaterial == null) {
-            throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
+//        Material replacedMaterial = Material.matchMaterial(args[0]);
+//        if(replacedMaterial == null) {
+//            throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
+//        }
+
+        Mask replaceMask;
+        try {
+            replaceMask = MaskParser.parseMask(args[0]);
+        } catch (MaskParseException e) {
+            sendWorldShaperMessage(player, TextColor.RED + "Unable to parse mask: " + e.getMessage());
+            return true;
         }
+
 
         Pattern pattern;
         try {
@@ -72,7 +83,8 @@ public class CommandReplace implements CommandExecutor {
         World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
         for(Vector3i position: area) {
             Block block = world.getBlockAt(LocationUtils.vectorToLocation(position, world));
-            if (block.getBlockData().getMaterial().equals(replacedMaterial)) {
+            //if (block.getBlockData().getMaterial().equals(replacedMaterial)) {
+            if (replaceMask.matches(LocationUtils.vectorToLocation(position, world))) {
                 pattern.getRandomBlockData().ifPresent(block::setBlockData);
             }
         }

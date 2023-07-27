@@ -29,11 +29,11 @@ public class Pattern {
         return Optional.empty();
     }
 
-    public static Builder builder() {
-        return new Builder();
+    private record PatternEntry(int percentage, BlockData blockData) {
     }
 
-    private record PatternEntry(int percentage, BlockData blockData) {
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
