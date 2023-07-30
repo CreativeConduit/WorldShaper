@@ -21,12 +21,15 @@ public class CommandInitializer {
      */
     public void initCommands(WorldShaper plugin) {
         Objects.requireNonNull(plugin.getCommand("wand")).setExecutor(new CommandWand());
+
         Objects.requireNonNull(plugin.getCommand("pos")).setExecutor(new CommandPos());
         Objects.requireNonNull(plugin.getCommand("positions")).setExecutor(new CommandPositions());
         Objects.requireNonNull(plugin.getCommand("removepos")).setExecutor(new CommandRemovePos());
         Objects.requireNonNull(plugin.getCommand("clearpositions")).setExecutor(new CommandClearPositions());
+
         Objects.requireNonNull(plugin.getCommand("selectiontype")).setExecutor(new CommandSelectionType());
         Objects.requireNonNull(plugin.getCommand("area")).setExecutor(new CommandArea());
+
         Objects.requireNonNull(plugin.getCommand("set")).setExecutor(new CommandSet());
         Objects.requireNonNull(plugin.getCommand("replace")).setExecutor(new CommandReplace());
     }

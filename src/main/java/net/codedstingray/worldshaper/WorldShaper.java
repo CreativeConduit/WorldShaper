@@ -1,7 +1,7 @@
 package net.codedstingray.worldshaper;
 
 import net.codedstingray.worldshaper.commands.CommandInitializer;
-import net.codedstingray.worldshaper.data.PlayerData;
+import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.event.listener.AreaModificationHandler;
 import net.codedstingray.worldshaper.event.listener.PlayerJoinListener;
 import net.codedstingray.worldshaper.event.listener.SelectionWandListener;
@@ -16,13 +16,13 @@ public class WorldShaper extends JavaPlugin {
 
     private static WorldShaper INSTANCE;
 
-    private PlayerData playerData;
+    private PluginData pluginData;
 
     @Override
     public void onLoad() {
         INSTANCE = this;
 
-        playerData = new PlayerData();
+        pluginData = new PluginData();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class WorldShaper extends JavaPlugin {
         getLogger().info("WorldShaper successfully initialized");
     }
 
-    public PlayerData getPlayerData() {
-        return playerData;
+    public PluginData getPluginData() {
+        return pluginData;
     }
 
     public static WorldShaper getInstance() {

@@ -22,16 +22,16 @@ public class CommandArea implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         if (args.length == 0) {
-            Area area = playerData.getAreaForPlayer(player.getUniqueId());
+            Area area = playerData.getArea();
             sendWorldShaperMessage(player, "Your current area is of type " + TextColor.AQUA + "\"" + area.getName() + "\"");
             return true;
         }
 
         String areaName = args[0];
-        boolean success = playerData.setAreaForPlayer(player.getUniqueId(), areaName);
+        boolean success = playerData.setArea(areaName);
 
         if (success) {
             sendWorldShaperMessage(player, "Area set to type " + TextColor.AQUA + "\"" + areaName + "\"");

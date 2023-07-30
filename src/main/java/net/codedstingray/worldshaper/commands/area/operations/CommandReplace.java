@@ -35,7 +35,7 @@ public class CommandReplace implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         if (args.length < 2) {
             sendWorldShaperMessage(player, TextColor.RED + "You need to provide a pattern to set; Usage:");
@@ -46,22 +46,17 @@ public class CommandReplace implements CommandExecutor {
             return false;
         }
 
-        Area area = playerData.getAreaForPlayer(player.getUniqueId());
+        Area area = playerData.getArea();
         if (area == null || !area.isValid()) {
             sendWorldShaperMessage(player, TextColor.RED + "Set an area before using this command");
             return true;
         }
 
-        UUID worldUUID = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId()).getWorldUUID();
+        UUID worldUUID = playerData.getSelection().getWorldUUID();
         if (!player.getWorld().getUID().equals(worldUUID)) {
             sendWorldShaperMessage(player, TextColor.RED + "Area is in a different world. Switch to that world or create a new area in this world to use this command");
             return true;
         }
-
-//        Material replacedMaterial = Material.matchMaterial(args[0]);
-//        if(replacedMaterial == null) {
-//            throw new IllegalArgumentException("Unable to parse material \"" + args[0] + "\"");
-//        }
 
         Mask replaceMask;
         try {
@@ -83,7 +78,6 @@ public class CommandReplace implements CommandExecutor {
         World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
         for(Vector3i position: area) {
             Block block = world.getBlockAt(LocationUtils.vectorToLocation(position, world));
-            //if (block.getBlockData().getMaterial().equals(replacedMaterial)) {
             if (replaceMask.matches(LocationUtils.vectorToLocation(position, world))) {
                 pattern.getRandomBlockData().ifPresent(block::setBlockData);
             }

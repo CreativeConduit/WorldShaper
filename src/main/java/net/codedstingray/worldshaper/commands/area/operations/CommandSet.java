@@ -33,7 +33,7 @@ public class CommandSet implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         if (args.length == 0) {
             sendWorldShaperMessage(player, TextColor.RED + "You need to provide a pattern to set; Usage:");
@@ -44,13 +44,13 @@ public class CommandSet implements CommandExecutor {
             return false;
         }
 
-        Area area = playerData.getAreaForPlayer(player.getUniqueId());
+        Area area = playerData.getArea();
         if (area == null || !area.isValid()) {
             sendWorldShaperMessage(player, TextColor.RED + "Set an area before using this command");
             return true;
         }
 
-        UUID worldUUID = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId()).getWorldUUID();
+        UUID worldUUID = playerData.getSelection().getWorldUUID();
         if (!player.getWorld().getUID().equals(worldUUID)) {
             sendWorldShaperMessage(player, TextColor.RED + "Area is in a different world. Switch to that world or create a new area in this world to use this command");
             return true;

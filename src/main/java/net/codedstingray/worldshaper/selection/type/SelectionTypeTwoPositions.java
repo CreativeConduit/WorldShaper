@@ -36,10 +36,10 @@ public class SelectionTypeTwoPositions implements SelectionType {
     }
 
     private void setSelectionControlPosition(int index, Player player, Vector3i clickedPosition) {
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         UUID world = player.getWorld().getUID();
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getSelection();
         selection.setControlPosition(index, clickedPosition, world);
     }
 }

@@ -25,9 +25,9 @@ public class CommandPositions implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getSelection();
         StringJoiner joiner = new StringJoiner("\n")
                 .add(GROUPING_PIPE + " === " + TextColor.AQUA + "Your current control positions" + TextColor.RESET + " ===");
         for (int i = 0; i < selection.getControlPositions().size(); i++) {

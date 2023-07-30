@@ -2,67 +2,62 @@ package net.codedstingray.worldshaper.data;
 
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.area.AreaFactory;
-import net.codedstingray.worldshaper.area.CuboidArea;
-import net.codedstingray.worldshaper.area.CuboidAreaFactory;
-import net.codedstingray.worldshaper.selection.PlayerSelectionMap;
+import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
-import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
-import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
- * A data class that holds various player related data, mostly through the use of maps.
+ * An object that holds various data for one player.
  */
 public class PlayerData {
 
-    public final SelectionType DEFAULT_SELECTION_TYPE;
-    public final String DEFAULT_AREA_NAME = CuboidArea.NAME;
+    private final PluginData pluginData;
 
-    private final PlayerSelectionMap playerSelectionMap = new PlayerSelectionMap();
-    private final Map<String, SelectionType> selectionTypeMap = new HashMap<>();
-    private final Map<UUID, SelectionType> playerSelectionTypeMap = new HashMap<>();
+    private final Selection selection;
+    private SelectionType selectionType;
+    private Area area;
 
-    private final Map<String, AreaFactory> areaFactoriesMap = new HashMap<>();
-    private final Map<UUID, Area> playerAreaMap = new HashMap<>();
+    private PlayerData(PluginData pluginData, Selection selection, SelectionType selectionType, String areaName) {
+        this.pluginData = pluginData;
 
-    public PlayerData() {
-        selectionTypeMap.put(SelectionTypeTwoPositions.NAME, new SelectionTypeTwoPositions());
-        selectionTypeMap.put(SelectionTypeIndefinitePositions.NAME, new SelectionTypeIndefinitePositions());
-
-        DEFAULT_SELECTION_TYPE = selectionTypeMap.get(SelectionTypeTwoPositions.NAME);
-
-
-        areaFactoriesMap.put(CuboidArea.NAME, new CuboidAreaFactory());
+        this.selection = selection;
+        this.selectionType = selectionType;
+        setArea(areaName);
     }
 
-    public Map<UUID, SelectionType> getPlayerSelectionTypeMap() {
-        return playerSelectionTypeMap;
+    public Selection getSelection() {
+        return selection;
     }
 
-    public SelectionType getSelectionTypeByName(String name) {
-        return selectionTypeMap.get(name);
+    public SelectionType getSelectionType() {
+        return selectionType;
     }
 
-    public PlayerSelectionMap getPlayerSelectionMap() {
-        return playerSelectionMap;
+    public void setSelectionType(SelectionType selectionType) {
+        this.selectionType = selectionType;
     }
 
-    public Area getAreaForPlayer(UUID player) {
-        return playerAreaMap.get(player);
+    public Area getArea() {
+        return area;
     }
 
-    public boolean setAreaForPlayer(UUID player, String areaName) {
-        AreaFactory factory = areaFactoriesMap.get(areaName);
+    public boolean setArea(String areaName) {
+        AreaFactory factory = pluginData.getAreaFactory(areaName);
         if (factory == null) {
             return false;
         }
 
-        Area area = factory.create();
-        playerAreaMap.put(player, area);
-        area.updateArea(playerSelectionMap.getSelection(player));
+        area = factory.create();
+        area.updateArea(selection);
         return true;
+    }
+
+    public static PlayerData create(PluginData pluginData, UUID player) {
+        return new PlayerData(
+                pluginData,
+                new Selection(player),
+                pluginData.DEFAULT_SELECTION_TYPE,
+                pluginData.DEFAULT_AREA_NAME);
     }
 }

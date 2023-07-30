@@ -21,9 +21,9 @@ public class CommandClearPositions implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        playerData.getPlayerSelectionMap().getSelection(player.getUniqueId()).clearControlPositions();
+        playerData.getSelection().clearControlPositions();
         sendWorldShaperMessage(player, "Cleared all selection control positions.");
         return true;
     }

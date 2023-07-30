@@ -24,20 +24,20 @@ public class SelectionTypeIndefinitePositions implements SelectionType {
 
     @Override
     public int onLeftClick(Player player, Vector3i clickedPosition) {
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         UUID world = player.getWorld().getUID();
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getSelection();
         selection.clearControlPositions();
         return selection.addControlPosition(clickedPosition, world);
     }
 
     @Override
     public int onRightClick(Player player, Vector3i clickedPosition) {
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         UUID world = player.getWorld().getUID();
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getSelection();
         return selection.addControlPosition(clickedPosition, world);
     }
 }

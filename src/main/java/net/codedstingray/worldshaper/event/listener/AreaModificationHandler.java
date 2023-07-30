@@ -11,8 +11,8 @@ public class AreaModificationHandler implements Listener {
 
     @EventHandler
     public void onSelectionModified(SelectionModifiedEvent event) {
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
-        Area area = playerData.getAreaForPlayer(event.getPlayerUUID());
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(event.getPlayerUUID());
+        Area area = playerData.getArea();
         area.updateArea(event.getSelection());
     }
 }

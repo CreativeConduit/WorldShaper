@@ -22,9 +22,9 @@ public class CommandRemovePos implements CommandExecutor {
             sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        Selection selection = playerData.getSelection();
         int index = selection.getControlPositions().size() - 1;
         if (args.length > 0) {
             try {

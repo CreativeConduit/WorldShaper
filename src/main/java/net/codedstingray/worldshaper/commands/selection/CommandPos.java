@@ -29,8 +29,8 @@ public class CommandPos implements CommandExecutor {
             return false;
         }
 
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
-        Selection selection = playerData.getPlayerSelectionMap().getSelection(player.getUniqueId());
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        Selection selection = playerData.getSelection();
 
         int index;
         if (args.length > 0) {

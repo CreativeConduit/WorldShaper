@@ -28,11 +28,8 @@ public class SelectionWandListener implements Listener {
             return;
         }
 
-        PlayerData playerData = WorldShaper.getInstance().getPlayerData();
-        SelectionType selectionType = playerData.getPlayerSelectionTypeMap().getOrDefault(
-                player.getUniqueId(),
-                playerData.DEFAULT_SELECTION_TYPE
-        );
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        SelectionType selectionType = playerData.getSelectionType();
 
         Vector3i clickedPosition = LocationUtils.locationToBlockVector(clickedBlock.getLocation());
 
