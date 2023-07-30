@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
 import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
 
 @ParametersAreNonnullByDefault
@@ -19,7 +20,7 @@ public class CommandArea implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return false;
         }
         PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
@@ -37,7 +38,7 @@ public class CommandArea implements CommandExecutor {
             sendWorldShaperMessage(player, "Area set to type " + TextColor.AQUA + "\"" + areaName + "\"");
             return true;
         } else {
-            sendWorldShaperMessage(player, TextColor.RED + "Area tof type \"" + areaName + "\" does not exist.");
+            sendWorldShaperErrorMessage(player, "Area tof type \"" + areaName + "\" does not exist.");
             return false;
         }
     }

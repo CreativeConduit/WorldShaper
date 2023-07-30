@@ -4,7 +4,6 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
-import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,6 +15,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
 import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
 import static net.codedstingray.worldshaper.util.world.LocationUtils.locationToBlockVector;
 
@@ -25,7 +25,7 @@ public class CommandPos implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return false;
         }
 
@@ -37,12 +37,12 @@ public class CommandPos implements CommandExecutor {
             try {
                 index = Integer.parseInt(args[0]) - 1;
             } catch (NumberFormatException e) {
-                sendWorldShaperMessage(player, TextColor.RED + "Index for /pos must be an integer.");
+                sendWorldShaperErrorMessage(player, "Index for /pos must be an integer.");
                 return false;
             }
 
             if (index < 0) {
-                sendWorldShaperMessage(player, TextColor.RED + "Index for /pos must be 1 or higher.");
+                sendWorldShaperErrorMessage(player, "Index for /pos must be 1 or higher.");
                 return false;
             }
         } else {

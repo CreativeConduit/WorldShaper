@@ -4,7 +4,6 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
-import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,9 +11,10 @@ import org.bukkit.entity.Player;
 import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.StringJoiner;
+import java.util.LinkedList;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendGroupedMessages;
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
 
 @ParametersAreNonnullByDefault
 public class CommandPositions implements CommandExecutor {
@@ -22,23 +22,23 @@ public class CommandPositions implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return false;
         }
         PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         Selection selection = playerData.getSelection();
-        StringJoiner joiner = new StringJoiner("\n")
-                .add(GROUPING_PIPE + " === " + TextColor.AQUA + "Your current control positions" + TextColor.RESET + " ===");
+
+        LinkedList<String> messages = new LinkedList<>();
         for (int i = 0; i < selection.getControlPositions().size(); i++) {
             Vector3i controlPosition = selection.getControlPosition(i);
             if (controlPosition != null) {
-                joiner.add(GROUPING_PIPE + " [" + (i + 1) + "] " + ChatFormattingUtils.toString(controlPosition));
+                messages.add("[" + (i + 1) + "] " + ChatFormattingUtils.vectorToString(controlPosition));
             } else {
-                joiner.add(GROUPING_PIPE + " [" + (i + 1) + "] - not set -");
+                messages.add("[" + (i + 1) + "] - not set -");
             }
         }
-        player.sendMessage(joiner.add(GROUPING_END).toString());
+        sendGroupedMessages(player, "Your current control positions", messages);
 
         return true;
     }

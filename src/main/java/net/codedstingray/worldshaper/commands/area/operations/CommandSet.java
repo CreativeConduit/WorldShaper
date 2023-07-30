@@ -6,7 +6,6 @@ import net.codedstingray.worldshaper.block.pattern.Pattern;
 import net.codedstingray.worldshaper.block.pattern.PatternParseException;
 import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.data.PlayerData;
-import net.codedstingray.worldshaper.util.chat.TextColor;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -22,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
 
 @ParametersAreNonnullByDefault
 public class CommandSet implements CommandExecutor {
@@ -30,29 +29,29 @@ public class CommandSet implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sendWorldShaperMessage(sender, TextColor.RED + "This command can only be used by a player.");
+            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return false;
         }
         PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
         if (args.length == 0) {
-            sendWorldShaperMessage(player, TextColor.RED + "You need to provide a pattern to set; Usage:");
+            sendWorldShaperErrorMessage(player, "You need to provide a pattern to set; Usage:");
             return false;
         }
         if (args.length > 1) {
-            sendWorldShaperMessage(player, TextColor.RED + "Too many arguments; Usage:");
+            sendWorldShaperErrorMessage(player, "Too many arguments; Usage:");
             return false;
         }
 
         Area area = playerData.getArea();
         if (area == null || !area.isValid()) {
-            sendWorldShaperMessage(player, TextColor.RED + "Set an area before using this command");
+            sendWorldShaperErrorMessage(player, "Set an area before using this command");
             return true;
         }
 
         UUID worldUUID = playerData.getSelection().getWorldUUID();
         if (!player.getWorld().getUID().equals(worldUUID)) {
-            sendWorldShaperMessage(player, TextColor.RED + "Area is in a different world. Switch to that world or create a new area in this world to use this command");
+            sendWorldShaperErrorMessage(player, "Area is in a different world. Switch to that world or create a new area in this world to use this command");
             return true;
         }
 
@@ -60,7 +59,7 @@ public class CommandSet implements CommandExecutor {
         try {
             pattern = PatternParser.parsePattern(args[0]);
         } catch (PatternParseException e) {
-            sendWorldShaperMessage(player, TextColor.RED + "Unable to parse pattern: " + e.getMessage());
+            sendWorldShaperErrorMessage(player, "Unable to parse pattern: " + e.getMessage());
             return false;
         }
 
