@@ -74,7 +74,7 @@ public class Selection implements Iterable<Vector3i> {
      * @param position The position to be set
      * @param world The UUID of the world the position has been set in
      */
-    public void setControlPosition(int index, Vector3i position, UUID world) {
+    public boolean setControlPosition(int index, Vector3i position, UUID world) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(MESSAGE_INDEX_MUST_BE_AT_LEAST_0);
         }
@@ -88,8 +88,13 @@ public class Selection implements Iterable<Vector3i> {
                 controlPositions.add(null);
             }
         }
+
+        if (position.equals(controlPositions.get(index))) {
+            return false;
+        }
         controlPositions.set(index, position);
         onSelectionModified();
+        return true;
     }
 
     /**

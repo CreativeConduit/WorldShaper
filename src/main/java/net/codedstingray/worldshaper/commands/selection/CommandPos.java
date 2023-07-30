@@ -53,8 +53,8 @@ public class CommandPos implements CommandExecutor {
         Vector3i playerPosition = locationToBlockVector(playerLocation);
         UUID world = Objects.requireNonNull(playerLocation.getWorld()).getUID();
 
-        selection.setControlPosition(index, playerPosition, world);
-        sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, playerPosition));
+        boolean changed = selection.setControlPosition(index, playerPosition, world);
+        sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, playerPosition, changed));
 
         return true;
     }

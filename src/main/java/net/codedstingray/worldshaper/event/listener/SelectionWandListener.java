@@ -42,8 +42,8 @@ public class SelectionWandListener implements Listener {
             }
         }
 
-        ChatFormattingUtils.sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, clickedPosition));
-
+        boolean changed = playerData.getSelection().setControlPosition(index, clickedPosition, player.getWorld().getUID());
+        ChatFormattingUtils.sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, clickedPosition, changed));
         event.setCancelled(true);
     }
 }

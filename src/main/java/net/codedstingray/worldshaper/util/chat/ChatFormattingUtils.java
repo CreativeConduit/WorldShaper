@@ -88,8 +88,11 @@ public class ChatFormattingUtils {
      * @param position The position that has been set
      * @return The created message
      */
-    public static String positionSetMessage(int index, Vector3i position) {
-        return "Position " + TextColor.AQUA + (index + 1) + TextColor.RESET +
-                " set to " + ChatFormattingUtils.vectorToString(position) + ".";
+    public static String positionSetMessage(int index, Vector3i position, boolean changed) {
+        return changed ?
+                "Position " + TextColor.AQUA + (index + 1) + TextColor.RESET +
+                " set to " + ChatFormattingUtils.vectorToString(position) + "." :
+                "Position " + TextColor.AQUA + (index + 1) + TextColor.RESET +
+                " was already at " + ChatFormattingUtils.vectorToString(position) + ".";
     }
 }
