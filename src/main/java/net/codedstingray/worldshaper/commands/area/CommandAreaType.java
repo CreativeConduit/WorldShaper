@@ -21,6 +21,7 @@ package net.codedstingray.worldshaper.commands.area;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.data.PlayerData;
+import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,11 +30,12 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+import java.util.Set;
+
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
 
 @ParametersAreNonnullByDefault
-public class CommandArea implements CommandExecutor {
+public class CommandAreaType implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -41,11 +43,16 @@ public class CommandArea implements CommandExecutor {
             sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return false;
         }
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        PluginData pluginData = WorldShaper.getInstance().getPluginData();
+        PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
 
         if (args.length == 0) {
             Area area = playerData.getArea();
+            Set<String> allAreaTypes = pluginData.getAllRegisteredAreaTypes();
+
             sendWorldShaperMessage(player, "Your current area is of type " + TextColor.AQUA + "\"" + area.getName() + "\"");
+            sendGroupedMessages(player, "The following area types are available", allAreaTypes);
+
             return true;
         }
 

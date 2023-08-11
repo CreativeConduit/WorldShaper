@@ -23,7 +23,7 @@ commands:
   selectiontype:
     description: Sets your selection type.
     usage: /<command> [selection type name]
-  area:
+  areatype:
     description: Sets your area type.
     usage: /<command> [area type name]
   set:

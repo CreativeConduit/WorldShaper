@@ -25,9 +25,7 @@ import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * A data class that holds various plugin related data, mostly through the use of maps.
@@ -43,21 +41,29 @@ public class PluginData {
     private final Map<UUID, PlayerData> playerDataMap = new HashMap<>();
 
     public PluginData() {
-        selectionTypesByName.put(SelectionTypeTwoPositions.NAME, new SelectionTypeTwoPositions());
-        selectionTypesByName.put(SelectionTypeIndefinitePositions.NAME, new SelectionTypeIndefinitePositions());
+        selectionTypesByName.put(SelectionTypeTwoPositions.NAME.toLowerCase(), new SelectionTypeTwoPositions());
+        selectionTypesByName.put(SelectionTypeIndefinitePositions.NAME.toLowerCase(), new SelectionTypeIndefinitePositions());
 
         DEFAULT_SELECTION_TYPE = selectionTypesByName.get(SelectionTypeTwoPositions.NAME);
 
 
-        areaFactoriesMap.put(CuboidArea.NAME, new CuboidAreaFactory());
+        areaFactoriesMap.put(CuboidArea.NAME.toLowerCase(), new CuboidAreaFactory());
     }
 
     public SelectionType getSelectionTypeByName(String name) {
-        return selectionTypesByName.get(name);
+        return selectionTypesByName.get(name.toLowerCase());
     }
 
     public AreaFactory getAreaFactory(String areaName) {
-        return areaFactoriesMap.get(areaName);
+        return areaFactoriesMap.get(areaName.toLowerCase());
+    }
+
+    public Set<String> getAllRegisteredSelectionTypes() {
+        return selectionTypesByName.keySet();
+    }
+
+    public Set<String> getAllRegisteredAreaTypes() {
+        return areaFactoriesMap.keySet();
     }
 
     public PlayerData getPlayerDataForPlayer(UUID player) {

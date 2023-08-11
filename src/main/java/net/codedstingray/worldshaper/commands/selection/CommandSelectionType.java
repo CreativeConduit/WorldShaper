@@ -30,8 +30,9 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+import java.util.Set;
+
+import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandSelectionType implements CommandExecutor {
@@ -47,7 +48,10 @@ public class CommandSelectionType implements CommandExecutor {
 
         if (args.length == 0) {
             SelectionType selectionType = playerData.getSelectionType();
+            Set<String> allSelectionTypes = pluginData.getAllRegisteredSelectionTypes();
+
             sendWorldShaperMessage(player, "Your current selection type is " + TextColor.AQUA + "\"" + selectionType.getName() + "\"");
+            sendGroupedMessages(player, "The following selection types are available", allSelectionTypes);
 
             return true;
         }
