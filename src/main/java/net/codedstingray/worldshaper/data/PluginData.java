@@ -26,6 +26,7 @@ import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePosit
 import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A data class that holds various plugin related data, mostly through the use of maps.
@@ -44,7 +45,7 @@ public class PluginData {
         selectionTypesByName.put(SelectionTypeTwoPositions.NAME.toLowerCase(), new SelectionTypeTwoPositions());
         selectionTypesByName.put(SelectionTypeIndefinitePositions.NAME.toLowerCase(), new SelectionTypeIndefinitePositions());
 
-        DEFAULT_SELECTION_TYPE = selectionTypesByName.get(SelectionTypeTwoPositions.NAME);
+        DEFAULT_SELECTION_TYPE = selectionTypesByName.get(SelectionTypeTwoPositions.NAME.toLowerCase());
 
 
         areaFactoriesMap.put(CuboidArea.NAME.toLowerCase(), new CuboidAreaFactory());
@@ -59,7 +60,7 @@ public class PluginData {
     }
 
     public Set<String> getAllRegisteredSelectionTypes() {
-        return selectionTypesByName.keySet();
+        return selectionTypesByName.values().stream().map(SelectionType::getName).collect(Collectors.toSet());
     }
 
     public Set<String> getAllRegisteredAreaTypes() {

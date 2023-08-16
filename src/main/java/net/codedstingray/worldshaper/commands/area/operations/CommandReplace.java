@@ -41,7 +41,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
 
 @ParametersAreNonnullByDefault
 public class CommandReplace implements CommandExecutor {

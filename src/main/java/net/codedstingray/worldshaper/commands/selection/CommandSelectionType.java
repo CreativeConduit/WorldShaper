@@ -22,7 +22,6 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
-import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +31,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.Set;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
+import static net.codedstingray.worldshaper.chat.MessageSender.*;
 
 @ParametersAreNonnullByDefault
 public class CommandSelectionType implements CommandExecutor {
@@ -50,7 +50,7 @@ public class CommandSelectionType implements CommandExecutor {
             SelectionType selectionType = playerData.getSelectionType();
             Set<String> allSelectionTypes = pluginData.getAllRegisteredSelectionTypes();
 
-            sendWorldShaperMessage(player, "Your current selection type is " + TextColor.AQUA + "\"" + selectionType.getName() + "\"");
+            sendWorldShaperMessage(player, "Your current selection type is " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
             sendGroupedMessages(player, "The following selection types are available", allSelectionTypes);
 
             return true;
@@ -64,7 +64,7 @@ public class CommandSelectionType implements CommandExecutor {
         }
 
         playerData.setSelectionType(selectionType);
-        sendWorldShaperMessage(player, "Selection Type set to " + TextColor.AQUA + "\"" + selectionType.getName() + "\"");
+        sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
         return true;
     }
 }

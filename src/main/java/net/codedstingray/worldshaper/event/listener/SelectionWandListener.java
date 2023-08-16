@@ -22,7 +22,7 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.items.SelectionWand;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
-import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -32,6 +32,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.joml.Vector3i;
+
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 
 public class SelectionWandListener implements Listener {
 
@@ -61,7 +63,7 @@ public class SelectionWandListener implements Listener {
         }
 
         boolean changed = playerData.getSelection().setControlPosition(index, clickedPosition, player.getWorld().getUID());
-        ChatFormattingUtils.sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, clickedPosition, changed));
+        sendWorldShaperMessage(player, ChatMessageFormatter.positionSetMessage(index, clickedPosition, changed));
         event.setCancelled(true);
     }
 }

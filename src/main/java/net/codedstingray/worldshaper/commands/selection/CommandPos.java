@@ -21,7 +21,7 @@ package net.codedstingray.worldshaper.commands.selection;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
-import net.codedstingray.worldshaper.util.chat.ChatFormattingUtils;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,8 +33,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 import static net.codedstingray.worldshaper.util.world.LocationUtils.locationToBlockVector;
 
 @ParametersAreNonnullByDefault
@@ -72,7 +72,7 @@ public class CommandPos implements CommandExecutor {
         UUID world = Objects.requireNonNull(playerLocation.getWorld()).getUID();
 
         boolean changed = selection.setControlPosition(index, playerPosition, world);
-        sendWorldShaperMessage(player, ChatFormattingUtils.positionSetMessage(index, playerPosition, changed));
+        sendWorldShaperMessage(player, ChatMessageFormatter.positionSetMessage(index, playerPosition, changed));
 
         return true;
     }

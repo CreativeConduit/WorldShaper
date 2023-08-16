@@ -22,7 +22,6 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
-import net.codedstingray.worldshaper.util.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +31,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.Set;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.*;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
+import static net.codedstingray.worldshaper.chat.MessageSender.*;
 
 @ParametersAreNonnullByDefault
 public class CommandAreaType implements CommandExecutor {
@@ -50,7 +50,7 @@ public class CommandAreaType implements CommandExecutor {
             Area area = playerData.getArea();
             Set<String> allAreaTypes = pluginData.getAllRegisteredAreaTypes();
 
-            sendWorldShaperMessage(player, "Your current area is of type " + TextColor.AQUA + "\"" + area.getName() + "\"");
+            sendWorldShaperMessage(player, "Your current area is of type " + ACCENT_COLOR + "\"" + area.getName() + "\"");
             sendGroupedMessages(player, "The following area types are available", allAreaTypes);
 
             return true;
@@ -60,10 +60,10 @@ public class CommandAreaType implements CommandExecutor {
         boolean success = playerData.setArea(areaName);
 
         if (success) {
-            sendWorldShaperMessage(player, "Area set to type " + TextColor.AQUA + "\"" + areaName + "\"");
+            sendWorldShaperMessage(player, "Area set to type " + ACCENT_COLOR + "\"" + areaName + "\"");
             return true;
         } else {
-            sendWorldShaperErrorMessage(player, "Area tof type \"" + areaName + "\" does not exist.");
+            sendWorldShaperErrorMessage(player, "Area of type \"" + areaName + "\" does not exist.");
             return false;
         }
     }

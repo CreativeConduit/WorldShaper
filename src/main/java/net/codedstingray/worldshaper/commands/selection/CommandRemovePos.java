@@ -21,7 +21,7 @@ package net.codedstingray.worldshaper.commands.selection;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
-import net.codedstingray.worldshaper.util.chat.TextColor;
+import net.codedstingray.worldshaper.chat.TextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,8 +29,9 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.util.chat.ChatFormattingUtils.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 
 @ParametersAreNonnullByDefault
 public class CommandRemovePos implements CommandExecutor {
@@ -57,9 +58,9 @@ public class CommandRemovePos implements CommandExecutor {
         if (index >= 0) {
             boolean madeChange = selection.removeControlPosition(index);
             if (madeChange) {
-                sendWorldShaperMessage(player, "Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " removed.");
+                sendWorldShaperMessage(player, "Control position " + ACCENT_COLOR + (index + 1) + TextColor.RESET + " removed.");
             } else {
-                sendWorldShaperMessage(player, "Control position " + TextColor.AQUA + (index + 1) + TextColor.RESET + " was already not set.");
+                sendWorldShaperMessage(player, "Control position " + ACCENT_COLOR + (index + 1) + TextColor.RESET + " was already not set.");
             }
             return true;
         } else {

@@ -18,20 +18,22 @@
 
 package net.codedstingray.worldshaper.items;
 
-import net.codedstingray.worldshaper.util.chat.TextColor;
+import net.codedstingray.worldshaper.chat.TextColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
+
 /**
  * Class holding the {@link ItemStack} for the selection wand as well as associated name and lore metadata.
  */
 public class SelectionWand {
 
-    public static final String SELECTION_WAND_NAME = TextColor.AQUA + "Area Wand" + TextColor.WHITE;
-    public static final String SELECTION_WAND_LORE = TextColor.WHITE + "The " + TextColor.AQUA + "Selection Wand"
+    public static final String SELECTION_WAND_NAME = ACCENT_COLOR + "Area Wand" + TextColor.WHITE;
+    public static final String SELECTION_WAND_LORE = TextColor.WHITE + "The " + ACCENT_COLOR + "Selection Wand"
             + TextColor.WHITE + " is used to select WorldShaper Areas";
 
     /**
