@@ -85,6 +85,7 @@ public class ChatMessageFormatter {
     /* ======================= *\
     |* generic utility methods *|
     \* ======================= */
+    //TODO: extract these methods into their own ObjectChatFormatter
 
     /**
      * Returns a String representation of the given vector in WorldShaper vector format.
@@ -99,6 +100,7 @@ public class ChatMessageFormatter {
     /* ================================ *\
     |* specific text formatting methods *|
     \* ================================ */
+    //TODO extract these methods into their own String suppliers
 
     /**
      * Creates a position set message.

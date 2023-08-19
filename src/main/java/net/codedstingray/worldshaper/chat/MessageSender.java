@@ -48,6 +48,7 @@ public class MessageSender {
 
     /**
      * Sends the given list of messages in the WorldShaper grouped messages format to the given message receiver.
+     * @param receiver The message receiver
      * @param header The grouping header
      * @param messages The grouped messages
      */
@@ -57,6 +58,7 @@ public class MessageSender {
 
     /**
      * Sends the given list of messages in the WorldShaper grouped messages format to the given message receiver.
+     * @param receiver The message receiver
      * @param header The grouping header
      * @param messages The grouped messages
      */
