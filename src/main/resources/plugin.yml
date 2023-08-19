@@ -5,6 +5,9 @@ main: net.codedstingray.worldshaper.WorldShaper
 api-version: 1.19
 description: WorldShaper is an in-game map editor.
 commands:
+  worldshaper:
+    description: Sends WorldShaper information to the caller.
+    usage: /<command>
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>

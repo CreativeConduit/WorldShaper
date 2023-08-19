@@ -127,4 +127,18 @@ public class ChatMessageFormatter {
 
         return groupedMessages("WorldShaper", messages);
     }
+
+    public static String worldShaperInfoMessage() {
+        List<String> messages = new LinkedList<>();
+        messages.add("Using " +
+                ACCENT_COLOR + "WorldShaper" +
+                TextColor.RESET + " version " +
+                ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
+                TextColor.RESET + ".");
+        messages.add("Created by " + ACCENT_COLOR + "CodedStingray");
+        messages.add("Feel free to check out my YouTube channel at");
+        messages.add(ACCENT_COLOR + TextColor.UNDERLINE + "https://youtube.com/@CodedStingray");
+
+        return groupedMessages("WorldShaper", messages);
+    }
 }

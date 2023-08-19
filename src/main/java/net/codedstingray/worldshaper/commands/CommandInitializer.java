@@ -24,6 +24,7 @@ import net.codedstingray.worldshaper.commands.area.operations.CommandReplace;
 import net.codedstingray.worldshaper.commands.area.operations.CommandSet;
 import net.codedstingray.worldshaper.commands.selection.*;
 import net.codedstingray.worldshaper.commands.utility.CommandWand;
+import net.codedstingray.worldshaper.commands.utility.CommandWorldShaper;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public class CommandInitializer {
      * @param plugin The WorldShaper plugin, necessary for command registration
      */
     public void initCommands(WorldShaper plugin) {
+        Objects.requireNonNull(plugin.getCommand("worldshaper")).setExecutor(new CommandWorldShaper());
         Objects.requireNonNull(plugin.getCommand("wand")).setExecutor(new CommandWand());
 
         Objects.requireNonNull(plugin.getCommand("pos")).setExecutor(new CommandPos());
