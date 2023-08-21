@@ -18,6 +18,7 @@
 
 package net.codedstingray.worldshaper;
 
+import net.codedstingray.worldshaper.action.ActionController;
 import net.codedstingray.worldshaper.commands.CommandInitializer;
 import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.event.listener.AreaModificationHandler;
@@ -36,11 +37,15 @@ public class WorldShaper extends JavaPlugin {
 
     private PluginData pluginData;
 
+    private ActionController actionController;
+
     @Override
     public void onLoad() {
         INSTANCE = this;
 
         pluginData = new PluginData();
+
+        actionController = new ActionController();
     }
 
     @Override
@@ -56,6 +61,10 @@ public class WorldShaper extends JavaPlugin {
 
     public PluginData getPluginData() {
         return pluginData;
+    }
+
+    public ActionController getActionController() {
+        return actionController;
     }
 
     public static WorldShaper getInstance() {
