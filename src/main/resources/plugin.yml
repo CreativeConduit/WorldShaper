@@ -11,6 +11,12 @@ commands:
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>
+  undo:
+    description: Undoes the last action.
+    usage: /<command>
+  redo:
+    description: Redoes the last undone action.
+    usage: /<command>
   pos:
     description: Adds your current position as a control position for your selection.
     usage: /<command> [index]

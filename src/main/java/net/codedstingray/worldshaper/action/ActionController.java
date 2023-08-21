@@ -23,15 +23,62 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.util.Objects;
+import java.util.Stack;
 
 public class ActionController {
 
-    public void applyAction(Action action) {
+    private final Stack<Action> performedActions = new Stack<>();
+    private final Stack<Action> undoneActions = new Stack<>();
+
+    public void performAction(Action action) {
+        undoneActions.clear();
+        applyAction(action);
+        performedActions.push(action);
+    }
+
+    public void undoAction() {
+        Action action = performedActions.pop();
+        undoAction(action);
+        undoneActions.push(action);
+    }
+
+    public void redoAction() {
+        Action action = undoneActions.pop();
+        applyAction(action);
+        performedActions.push(action);
+    }
+
+    private void applyAction(Action action) {
         World world = Objects.requireNonNull(Bukkit.getWorld(action.worldUUID));
 
         for (Action.ActionItem actionItem: action) {
             Block block = world.getBlockAt(actionItem.location());
             block.setBlockData(actionItem.to());
         }
+    }
+
+    private void undoAction(Action action) {
+        World world = Objects.requireNonNull(Bukkit.getWorld(action.worldUUID));
+
+        for (Action.ActionItem actionItem: action) {
+            Block block = world.getBlockAt(actionItem.location());
+            block.setBlockData(actionItem.from());
+        }
+    }
+
+    public boolean isMainStackEmpty() {
+        return performedActions.empty();
+    }
+
+    public Action peekMainStack() {
+        return performedActions.peek();
+    }
+
+    public boolean isUndoStackEmpty() {
+        return undoneActions.empty();
+    }
+
+    public Action peekUndoStack() {
+        return undoneActions.peek();
     }
 }

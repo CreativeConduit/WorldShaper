@@ -117,7 +117,7 @@ public class CommandReplace implements CommandExecutor {
         }
 
         Action action = new Action(worldUUID, actionItems);
-        WorldShaper.getInstance().getActionController().applyAction(action);
+        WorldShaper.getInstance().getActionController().performAction(action);
 
         return true;
     }
