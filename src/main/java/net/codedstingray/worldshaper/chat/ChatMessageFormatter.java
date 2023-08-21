@@ -29,6 +29,8 @@ import java.util.StringJoiner;
 public class ChatMessageFormatter {
 
     public static final String ACCENT_COLOR = TextColor.AQUA.toString();
+    public static final String WARNING_COLOR = TextColor.YELLOW.toString();
+    public static final String ERROR_COLOR = TextColor.RED.toString();
 
     public static final String GROUPING_PIPE = ACCENT_COLOR + "|" + TextColor.RESET;
     public static final String GROUPING_END = ACCENT_COLOR + "\\" + TextColor.RESET;
@@ -49,11 +51,19 @@ public class ChatMessageFormatter {
     }
 
     /**
+     * Formats a message to the WorldShaper warning message format.
+     * @param message The warning message
+     */
+    public static String worldShaperWarningMessage(String message) {
+        return WORLDSHAPER_MESSAGE_PREFIX + WARNING_COLOR + message;
+    }
+
+    /**
      * Formats a message to the WorldShaper error message format.
      * @param message The error message
      */
     public static String worldShaperErrorMessage(String message) {
-        return WORLDSHAPER_MESSAGE_PREFIX + TextColor.RED + message;
+        return WORLDSHAPER_MESSAGE_PREFIX + ERROR_COLOR + message;
     }
 
     /**

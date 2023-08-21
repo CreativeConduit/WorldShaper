@@ -38,12 +38,21 @@ public class MessageSender {
     }
 
     /**
+     * Sends a message in the WorldShaper warning message format to the given message receiver.
+     * @param receiver The message receiver
+     * @param message The warning message
+     */
+    public static void sendWorldShaperWarningMessage(CommandSender receiver, String message) {
+        receiver.sendMessage(worldShaperWarningMessage(message));
+    }
+
+    /**
      * Sends a message in the WorldShaper error message format to the given message receiver.
      * @param receiver The message receiver
      * @param message The error message
      */
     public static void sendWorldShaperErrorMessage(CommandSender receiver, String message) {
-        receiver.sendMessage(worldShaperErrorMessage(TextColor.RED + message));
+        receiver.sendMessage(worldShaperErrorMessage(message));
     }
 
     /**
