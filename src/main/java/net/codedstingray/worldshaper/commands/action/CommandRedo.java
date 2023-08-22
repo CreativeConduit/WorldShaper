@@ -21,6 +21,8 @@ package net.codedstingray.worldshaper.commands.action;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionController;
+import net.codedstingray.worldshaper.action.ActionStack;
+import net.codedstingray.worldshaper.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,19 +44,21 @@ public class CommandRedo implements CommandExecutor {
         }
 
         ActionController actionController = WorldShaper.getInstance().getActionController();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        ActionStack playerActionStack = playerData.getActionStack();
 
-        if (actionController.isUndoStackEmpty()) {
+        if (playerActionStack.isUndoStackEmpty()) {
             sendWorldShaperWarningMessage(player, "No action to redo");
             return true;
         }
 
-        Action lastAction = actionController.peekUndoStack();
+        Action lastAction = playerActionStack.peekUndoStack();
         if (!lastAction.worldUUID.equals(player.getWorld().getUID())) {
             sendWorldShaperErrorMessage(player, "Cannot perform redo: the last undone action took place in a different world from the one you are in.");
             return true;
         }
 
-        actionController.redoAction();
+        actionController.redoAction(playerActionStack);
 
         return true;
     }

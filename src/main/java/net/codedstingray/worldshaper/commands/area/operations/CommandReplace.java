@@ -20,6 +20,7 @@ package net.codedstingray.worldshaper.commands.area.operations;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.action.Action;
+import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
 import net.codedstingray.worldshaper.block.mask.MaskParseException;
@@ -117,7 +118,8 @@ public class CommandReplace implements CommandExecutor {
         }
 
         Action action = new Action(worldUUID, actionItems);
-        WorldShaper.getInstance().getActionController().performAction(action);
+        ActionStack playerActionStack = playerData.getActionStack();
+        WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
 
         return true;
     }

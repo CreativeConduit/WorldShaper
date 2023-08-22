@@ -21,6 +21,8 @@ package net.codedstingray.worldshaper.commands.action;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionController;
+import net.codedstingray.worldshaper.action.ActionStack;
+import net.codedstingray.worldshaper.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,19 +44,21 @@ public class CommandUndo implements CommandExecutor {
         }
 
         ActionController actionController = WorldShaper.getInstance().getActionController();
+        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        ActionStack playerActionStack = playerData.getActionStack();
 
-        if (actionController.isMainStackEmpty()) {
+        if (playerActionStack.isMainStackEmpty()) {
             sendWorldShaperWarningMessage(player, "No action to undo");
             return true;
         }
 
-        Action lastAction = actionController.peekMainStack();
+        Action lastAction = playerActionStack.peekMainStack();
         if (!lastAction.worldUUID.equals(player.getWorld().getUID())) {
             sendWorldShaperErrorMessage(player, "Cannot perform undo: the last action took place in a different world from the one you are in.");
             return true;
         }
 
-        actionController.undoAction();
+        actionController.undoAction(playerActionStack);
 
         return true;
     }

@@ -18,6 +18,7 @@
 
 package net.codedstingray.worldshaper.data;
 
+import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.area.AreaFactory;
 import net.codedstingray.worldshaper.selection.Selection;
@@ -30,18 +31,23 @@ import java.util.UUID;
  */
 public class PlayerData {
 
+    //back reference
     private final PluginData pluginData;
 
     private final Selection selection;
     private SelectionType selectionType;
     private Area area;
 
-    private PlayerData(PluginData pluginData, Selection selection, SelectionType selectionType, String areaName) {
+    private final ActionStack actionStack;
+
+    private PlayerData(PluginData pluginData, Selection selection, SelectionType selectionType, String areaName, ActionStack actionStack) {
         this.pluginData = pluginData;
 
         this.selection = selection;
         this.selectionType = selectionType;
         setArea(areaName);
+
+        this.actionStack = actionStack;
     }
 
     public Selection getSelection() {
@@ -71,11 +77,17 @@ public class PlayerData {
         return true;
     }
 
+    public ActionStack getActionStack() {
+        return actionStack;
+    }
+
     public static PlayerData create(PluginData pluginData, UUID player) {
         return new PlayerData(
                 pluginData,
                 new Selection(player),
                 pluginData.DEFAULT_SELECTION_TYPE,
-                pluginData.DEFAULT_AREA_NAME);
+                pluginData.DEFAULT_AREA_NAME,
+                new ActionStack()
+        );
     }
 }
