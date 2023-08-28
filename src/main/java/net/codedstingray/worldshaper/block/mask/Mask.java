@@ -28,6 +28,8 @@ import java.util.Objects;
 
 public class Mask {
 
+    public static final Mask MASK_ALL = new MaskAll();
+
     private final List<MaskEntry> entries;
 
     private Mask(List<MaskEntry> entries) {
@@ -44,7 +46,6 @@ public class Mask {
     }
 
     private record MaskEntry(Material material, int blockOffset, boolean not) {
-
         private boolean matches(Location location) {
             Location checkLocation = blockOffset == 0 ? location : location.add(0, blockOffset, 0);
 
@@ -71,6 +72,17 @@ public class Mask {
 
         public Mask build() {
             return new Mask(entries);
+        }
+    }
+
+    private static class MaskAll extends Mask {
+        private MaskAll() {
+            super(null);
+        }
+
+        @Override
+        public boolean matches(Location location) {
+            return true;
         }
     }
 }

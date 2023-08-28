@@ -26,21 +26,18 @@ import net.codedstingray.worldshaper.block.pattern.Pattern;
 import net.codedstingray.worldshaper.block.pattern.PatternParseException;
 import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.data.PlayerData;
-import net.codedstingray.worldshaper.util.world.LocationUtils;
+import net.codedstingray.worldshaper.operation.Operation;
+import net.codedstingray.worldshaper.operation.OperationPlace;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
 
@@ -85,24 +82,9 @@ public class CommandSet implements CommandExecutor {
         }
 
         World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
-        List<Action.ActionItem> actionItems = new LinkedList<>();
+        Operation operation = new OperationPlace(pattern);
+        Action action = operation.performOperation(area, world);
 
-        for(Vector3i position: area) {
-            Optional<BlockData> toOpt = pattern.getRandomBlockData();
-            if (toOpt.isEmpty()) {
-                continue;
-            }
-
-            Location location = LocationUtils.vectorToLocation(position, world);
-            Block block = world.getBlockAt(location);
-            BlockData from = block.getBlockData();
-            BlockData to = toOpt.get();
-
-            Action.ActionItem actionItem = new Action.ActionItem(location, from, to);
-            actionItems.add(actionItem);
-        }
-
-        Action action = new Action(worldUUID, actionItems);
         ActionStack playerActionStack = playerData.getActionStack();
         WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
 
