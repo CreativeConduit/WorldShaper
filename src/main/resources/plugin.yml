@@ -2,7 +2,7 @@ name: WorldShaper
 version: 0.1-SNAPSHOT
 author: CodedStingray
 main: net.codedstingray.worldshaper.WorldShaper
-api-version: 1.19
+api-version: 1.20
 description: WorldShaper is an in-game map editor.
 commands:
   worldshaper:
