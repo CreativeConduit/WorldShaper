@@ -44,6 +44,7 @@ public class Selection implements Iterable<Vector3i> {
 
     public Selection(UUID player) {
         playerUUID = player;
+        unmodifiableControlPositions = controlPositions;
     }
 
     /**
@@ -139,7 +140,6 @@ public class Selection implements Iterable<Vector3i> {
      */
     public void clearControlPositions() {
         controlPositions.clear();
-        unmodifiableControlPositions = null;
         worldUUID = null;
         onSelectionModified();
     }
@@ -151,11 +151,11 @@ public class Selection implements Iterable<Vector3i> {
      * @return The control position at the given index, or null if no control position is found at this index.
      */
     public Vector3i getControlPosition(int index) {
-        try {
-            return controlPositions.get(index);
-        } catch (IndexOutOfBoundsException e) {
+        if (index < 0 || index >= controlPositions.size()) {
             return null;
         }
+
+        return controlPositions.get(index);
     }
 
     /**
@@ -164,9 +164,6 @@ public class Selection implements Iterable<Vector3i> {
      * @return An unmodifiable copy of the control positions
      */
     public List<Vector3i> getControlPositions() {
-        if (unmodifiableControlPositions == null) {
-            unmodifiableControlPositions = Collections.unmodifiableList(controlPositions);
-        }
         return unmodifiableControlPositions;
     }
 
@@ -178,7 +175,7 @@ public class Selection implements Iterable<Vector3i> {
     }
 
     private void onSelectionModified() {
-        unmodifiableControlPositions = null;
+        unmodifiableControlPositions = Collections.unmodifiableList(controlPositions);
         Bukkit.getPluginManager().callEvent(new SelectionModifiedEvent(this, playerUUID));
     }
 
