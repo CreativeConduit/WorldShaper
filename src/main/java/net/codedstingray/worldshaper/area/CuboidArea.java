@@ -19,12 +19,15 @@
 package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.world.Direction;
 import net.codedstingray.worldshaper.util.world.VectorUtils;
 import org.joml.Vector3i;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@ParametersAreNonnullByDefault
 public class CuboidArea implements Area {
 
     public static final String NAME = "cuboid";
@@ -33,6 +36,16 @@ public class CuboidArea implements Area {
     private Vector3i maxPos;
 
     private boolean isValid;
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public boolean isValid() {
+        return isValid;
+    }
 
     @Override
     public void updateArea(Selection selection) {
@@ -59,13 +72,75 @@ public class CuboidArea implements Area {
     }
 
     @Override
-    public String getName() {
-        return NAME;
+    public void move(Direction direction, int distance) {
+        minPos.add(new Vector3i(direction.baseVector).mul(distance));
+        maxPos.add(new Vector3i(direction.baseVector).mul(distance));
     }
 
     @Override
-    public boolean isValid() {
-        return isValid;
+    public void expand(Direction direction, int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Cannot expand area by a negative amount");
+        }
+
+        switch (direction) {
+            case NORTH -> minPos.add(0, 0, -amount);
+            case SOUTH -> maxPos.add(0, 0, amount);
+            case EAST -> maxPos.add(amount, 0, 0);
+            case WEST -> minPos.add(-amount, 0, 0);
+            case UP -> maxPos.add(0, amount, 0);
+            case DOWN -> minPos.add(0, -amount, 0);
+            default -> {
+            }
+        }
+    }
+
+    @Override
+    public void retract(Direction direction, int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Cannot retract area by a negative amount");
+        }
+
+        switch (direction) {
+            case NORTH -> {
+                minPos.add(0, 0, amount);
+                if (minPos.z > maxPos.z) {
+                    minPos.z = maxPos.z;
+                }
+            }
+            case SOUTH -> {
+                maxPos.add(0, 0, -amount);
+                if (maxPos.z < minPos.z) {
+                    maxPos.z = minPos.z;
+                }
+            }
+            case EAST -> {
+                maxPos.add(-amount, 0, 0);
+                if (maxPos.x < minPos.x) {
+                    maxPos.x = minPos.x;
+                }
+            }
+            case WEST -> {
+                minPos.add(amount, 0, 0);
+                if (minPos.x > maxPos.x) {
+                    minPos.x = maxPos.x;
+                }
+            }
+            case UP -> {
+                maxPos.add(0, -amount, 0);
+                if (maxPos.y < minPos.y) {
+                    maxPos.y = minPos.y;
+                }
+            }
+            case DOWN -> {
+                minPos.add(0, amount, 0);
+                if (minPos.y > maxPos.y) {
+                    minPos.y = maxPos.y;
+                }
+            }
+            default -> {
+            }
+        }
     }
 
     @Override

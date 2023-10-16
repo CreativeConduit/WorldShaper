@@ -35,6 +35,15 @@ commands:
   areatype:
     description: Sets your area type.
     usage: /<command> [area type name]
+  movearea:
+    description: Moves the area.
+    usage: /<command> <distance> [direction]
+  expand:
+    description: Expands the area.
+    usage: /<command> <amount> [direction]
+  retract:
+    description: Retracts the area.
+    usage: /<command> <amount> [direction]
   set:
     description: Sets all blocks in the area to the provided Material pattern
     usage: /<command> <pattern>

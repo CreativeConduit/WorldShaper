@@ -19,11 +19,17 @@
 package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.world.Direction;
 import org.joml.Vector3i;
 
 public interface Area extends Iterable<Vector3i> {
-    void updateArea(Selection selection);
-
     String getName();
     boolean isValid();
+
+    void updateArea(Selection selection);
+
+    void move(Direction direction, int distance);
+
+    void expand(Direction direction, int amount);
+    void retract(Direction direction, int amount);
 }

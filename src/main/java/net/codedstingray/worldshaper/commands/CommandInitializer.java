@@ -22,6 +22,9 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.commands.action.CommandRedo;
 import net.codedstingray.worldshaper.commands.action.CommandUndo;
 import net.codedstingray.worldshaper.commands.area.CommandAreaType;
+import net.codedstingray.worldshaper.commands.area.CommandExpand;
+import net.codedstingray.worldshaper.commands.area.CommandMoveArea;
+import net.codedstingray.worldshaper.commands.area.CommandRetract;
 import net.codedstingray.worldshaper.commands.area.operations.CommandReplace;
 import net.codedstingray.worldshaper.commands.area.operations.CommandSet;
 import net.codedstingray.worldshaper.commands.selection.*;
@@ -54,6 +57,10 @@ public class CommandInitializer {
 
         Objects.requireNonNull(plugin.getCommand("selectiontype")).setExecutor(new CommandSelectionType());
         Objects.requireNonNull(plugin.getCommand("areatype")).setExecutor(new CommandAreaType());
+
+        Objects.requireNonNull(plugin.getCommand("movearea")).setExecutor(new CommandMoveArea());
+        Objects.requireNonNull(plugin.getCommand("expand")).setExecutor(new CommandExpand());
+        Objects.requireNonNull(plugin.getCommand("retract")).setExecutor(new CommandRetract());
 
         Objects.requireNonNull(plugin.getCommand("set")).setExecutor(new CommandSet());
         Objects.requireNonNull(plugin.getCommand("replace")).setExecutor(new CommandReplace());
