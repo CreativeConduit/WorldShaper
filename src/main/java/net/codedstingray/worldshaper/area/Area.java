@@ -19,8 +19,8 @@
 package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.world.Direction;
-import org.joml.Vector3i;
 
 public interface Area extends Iterable<Vector3i> {
     String getName();

@@ -19,8 +19,8 @@
 package net.codedstingray.worldshaper.selection;
 
 import net.codedstingray.worldshaper.event.SelectionModifiedEvent;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.Bukkit;
-import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
@@ -111,7 +111,7 @@ public class Selection implements Iterable<Vector3i> {
         if (position.equals(controlPositions.get(index))) {
             return false;
         }
-        controlPositions.set(index, position);
+        controlPositions.set(index, position.toImmutable());
         onSelectionModified();
         return true;
     }

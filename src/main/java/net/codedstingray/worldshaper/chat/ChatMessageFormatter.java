@@ -19,7 +19,7 @@
 package net.codedstingray.worldshaper.chat;
 
 import net.codedstingray.worldshaper.WorldShaperManifest;
-import org.joml.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -103,7 +103,7 @@ public class ChatMessageFormatter {
      * @return The formatted String representation
      */
     public static String vectorToString(Vector3i vector) {
-        return ACCENT_COLOR + "[" + TextColor.RESET + vector.x + ", " + vector.y + ", " + vector.z + ACCENT_COLOR + "]" + TextColor.RESET;
+        return ACCENT_COLOR + "[" + TextColor.RESET + vector.getX() + ", " + vector.getY() + ", " + vector.getZ() + ACCENT_COLOR + "]" + TextColor.RESET;
     }
 
 

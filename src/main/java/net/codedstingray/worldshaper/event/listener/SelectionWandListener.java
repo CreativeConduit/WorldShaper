@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.items.SelectionWand;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -31,7 +32,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.joml.Vector3i;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 

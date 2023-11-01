@@ -18,8 +18,8 @@
 
 package net.codedstingray.worldshaper.selection.type;
 
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.entity.Player;
-import org.joml.Vector3i;
 
 /**
  * A Selection Type representing the selection of only 2 control positions, the first position being selected with a

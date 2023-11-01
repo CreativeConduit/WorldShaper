@@ -19,9 +19,11 @@
 package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3im;
 import net.codedstingray.worldshaper.util.world.Direction;
-import net.codedstingray.worldshaper.util.world.VectorUtils;
-import org.joml.Vector3i;
+import net.codedstingray.worldshaper.util.vector.VectorUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
@@ -32,8 +34,8 @@ public class CuboidArea implements Area {
 
     public static final String NAME = "cuboid";
 
-    private Vector3i minPos;
-    private Vector3i maxPos;
+    private Vector3im minPos;
+    private Vector3im maxPos;
 
     private boolean isValid;
 
@@ -53,15 +55,15 @@ public class CuboidArea implements Area {
         Vector3i pos2 = selection.getControlPosition(1);
 
         if (pos1 != null && pos2 != null) {
-            minPos = new Vector3i(
-                    Math.min(pos1.x, pos2.x),
-                    Math.min(pos1.y, pos2.y),
-                    Math.min(pos1.z, pos2.z)
+            minPos = new Vector3im(
+                    Math.min(pos1.getX(), pos2.getX()),
+                    Math.min(pos1.getY(), pos2.getY()),
+                    Math.min(pos1.getZ(), pos2.getZ())
             );
-            maxPos = new Vector3i(
-                    Math.max(pos1.x, pos2.x),
-                    Math.max(pos1.y, pos2.y),
-                    Math.max(pos1.z, pos2.z)
+            maxPos = new Vector3im(
+                    Math.max(pos1.getX(), pos2.getX()),
+                    Math.max(pos1.getY(), pos2.getY()),
+                    Math.max(pos1.getZ(), pos2.getZ())
             );
             isValid = true;
         } else {
@@ -73,8 +75,8 @@ public class CuboidArea implements Area {
 
     @Override
     public void move(Direction direction, int distance) {
-        minPos.add(new Vector3i(direction.baseVector).mul(distance));
-        maxPos.add(new Vector3i(direction.baseVector).mul(distance));
+        minPos.add(direction.baseVector.scale(distance));
+        maxPos.add(direction.baseVector.scale(distance));
     }
 
     @Override
@@ -146,7 +148,7 @@ public class CuboidArea implements Area {
     @Override
     public Iterator<Vector3i> iterator() {
         return new Iterator<>() {
-            private final Vector3i current = new Vector3i(minPos);
+            private final Vector3im current = new Vector3im(minPos);
 
             @Override
             public boolean hasNext() {
@@ -156,7 +158,7 @@ public class CuboidArea implements Area {
             @Override
             public Vector3i next() {
                 if(!hasNext()) throw new NoSuchElementException();
-                Vector3i result = new Vector3i(current);
+                Vector3i result = new Vector3ii(current);
 
                 //move pointer
                 current.add(VectorUtils.BASE_X);

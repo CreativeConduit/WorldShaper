@@ -22,12 +22,12 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;

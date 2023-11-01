@@ -21,8 +21,8 @@ package net.codedstingray.worldshaper.selection.type;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.entity.Player;
-import org.joml.Vector3i;
 
 /**
  * A Selection Type representing the selection of an indefinite number of control positions, a right click adding the

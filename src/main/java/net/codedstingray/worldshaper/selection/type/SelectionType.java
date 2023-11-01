@@ -18,8 +18,8 @@
 
 package net.codedstingray.worldshaper.selection.type;
 
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.entity.Player;
-import org.joml.Vector3i;
 
 /**
  * The Selection Type defines the behavior of the Selection Wand.

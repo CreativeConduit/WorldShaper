@@ -22,12 +22,12 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.LinkedList;

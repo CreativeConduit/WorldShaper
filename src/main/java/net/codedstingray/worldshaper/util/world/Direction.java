@@ -18,7 +18,8 @@
 
 package net.codedstingray.worldshaper.util.world;
 
-import org.joml.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 
 public enum Direction {
 
@@ -32,7 +33,7 @@ public enum Direction {
     public final Vector3i baseVector;
 
     Direction(int x, int y, int z) {
-        this.baseVector = new Vector3i(x, y, z);
+        this.baseVector = new Vector3ii(x, y, z);
     }
 
     public static Direction calculateFromRelativeDirection(Direction base, String relativeDirection) {
