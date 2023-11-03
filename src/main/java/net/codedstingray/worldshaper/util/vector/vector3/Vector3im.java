@@ -18,6 +18,8 @@
 
 package net.codedstingray.worldshaper.util.vector.vector3;
 
+import com.google.common.base.Objects;
+
 public class Vector3im implements Vector3i {
 
     public int x, y, z;
@@ -146,5 +148,19 @@ public class Vector3im implements Vector3i {
     @Override
     public Vector3ii toImmutableCopy() {
         return new Vector3ii(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Vector3i v)) {
+            return false;
+        }
+
+        return v.getX() == x && v.getY() == y && v.getZ() == z;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(x, y, z);
     }
 }

@@ -109,6 +109,7 @@ public class Selection implements Iterable<Vector3i> {
         }
 
         if (position.equals(controlPositions.get(index))) {
+            onSelectionNotModified();
             return false;
         }
         controlPositions.set(index, position.toImmutable());
@@ -176,7 +177,11 @@ public class Selection implements Iterable<Vector3i> {
 
     private void onSelectionModified() {
         unmodifiableControlPositions = Collections.unmodifiableList(controlPositions);
-        Bukkit.getPluginManager().callEvent(new SelectionModifiedEvent(this, playerUUID));
+        Bukkit.getPluginManager().callEvent(new SelectionModifiedEvent(this, playerUUID, true));
+    }
+
+    private void onSelectionNotModified() {
+        Bukkit.getPluginManager().callEvent(new SelectionModifiedEvent(this, playerUUID, false));
     }
 
     @Override

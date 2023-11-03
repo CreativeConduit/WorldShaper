@@ -39,10 +39,12 @@ public class SelectionModifiedEvent extends Event {
 
     private final Selection selection;
     private final UUID player;
+    private final boolean didChange;
 
-    public SelectionModifiedEvent(Selection selection, UUID player) {
+    public SelectionModifiedEvent(Selection selection, UUID player, boolean didChange) {
         this.selection = selection;
         this.player = player;
+        this.didChange = didChange;
     }
 
     public Selection getSelection() {
@@ -51,5 +53,9 @@ public class SelectionModifiedEvent extends Event {
 
     public UUID getPlayerUUID() {
         return player;
+    }
+
+    public boolean didChange() {
+        return didChange;
     }
 }
