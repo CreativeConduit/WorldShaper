@@ -50,14 +50,14 @@ public class CuboidArea implements Area {
     }
 
     @Override
-    public boolean isValid() {
-        return isValid;
-    }
-
-    @Override
     @Nonnull
     public SelectionType getDefaultSelectionType() {
         return WorldShaper.getInstance().getPluginData().getSelectionTypeByName(SelectionTypeTwoPositions.NAME);
+    }
+
+    @Override
+    public boolean isValid() {
+        return isValid;
     }
 
     @Override

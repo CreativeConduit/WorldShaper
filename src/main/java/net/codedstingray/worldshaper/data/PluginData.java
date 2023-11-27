@@ -18,9 +18,7 @@
 
 package net.codedstingray.worldshaper.data;
 
-import net.codedstingray.worldshaper.area.AreaFactory;
-import net.codedstingray.worldshaper.area.CuboidArea;
-import net.codedstingray.worldshaper.area.CuboidAreaFactory;
+import net.codedstingray.worldshaper.area.*;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
@@ -49,6 +47,7 @@ public class PluginData {
 
 
         areaFactoriesMap.put(CuboidArea.NAME.toLowerCase(), new CuboidAreaFactory());
+        areaFactoriesMap.put(PointsArea.NAME.toLowerCase(), new PointsAreaFactory());
     }
 
     public SelectionType getSelectionTypeByName(String name) {
