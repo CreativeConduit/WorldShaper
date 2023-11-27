@@ -19,11 +19,21 @@
 package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.world.Direction;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public interface Area extends Iterable<Vector3i> {
+
+    @Nonnull
     String getName();
+    @Nonnull
+    SelectionType getDefaultSelectionType();
+
     boolean isValid();
 
     void updateArea(Selection selection);

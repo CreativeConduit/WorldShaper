@@ -22,6 +22,7 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
+import net.codedstingray.worldshaper.selection.type.SelectionType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,7 +61,11 @@ public class CommandAreaType implements CommandExecutor {
         boolean success = playerData.setArea(areaName);
 
         if (success) {
+            SelectionType selectionType = playerData.getArea().getDefaultSelectionType();
+            playerData.setSelectionType(selectionType);
+
             sendWorldShaperMessage(player, "Area set to type " + ACCENT_COLOR + "\"" + areaName + "\"");
+            sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
             return true;
         } else {
             sendWorldShaperErrorMessage(player, "Area of type \"" + areaName + "\" does not exist.");

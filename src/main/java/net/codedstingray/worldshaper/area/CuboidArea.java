@@ -18,13 +18,17 @@
 
 package net.codedstingray.worldshaper.area;
 
+import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.selection.Selection;
+import net.codedstingray.worldshaper.selection.type.SelectionType;
+import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3im;
 import net.codedstingray.worldshaper.util.world.Direction;
 import net.codedstingray.worldshaper.util.vector.VectorUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -40,6 +44,7 @@ public class CuboidArea implements Area {
     private boolean isValid;
 
     @Override
+    @Nonnull
     public String getName() {
         return NAME;
     }
@@ -47,6 +52,12 @@ public class CuboidArea implements Area {
     @Override
     public boolean isValid() {
         return isValid;
+    }
+
+    @Override
+    @Nonnull
+    public SelectionType getDefaultSelectionType() {
+        return WorldShaper.getInstance().getPluginData().getSelectionTypeByName(SelectionTypeTwoPositions.NAME);
     }
 
     @Override
