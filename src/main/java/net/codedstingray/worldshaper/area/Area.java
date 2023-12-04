@@ -38,6 +38,8 @@ public interface Area extends Iterable<Vector3i> {
 
     void updateArea(Selection selection);
 
+    boolean isInArea(Vector3i position);
+
     void move(Direction direction, int distance);
 
     void expand(Direction direction, int amount);

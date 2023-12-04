@@ -85,6 +85,14 @@ public class CuboidArea implements Area {
     }
 
     @Override
+    public boolean isInArea(Vector3i position) {
+        return isValid() &&
+                position.getX() >= minPos.x && position.getX() <= maxPos.x &&
+                position.getY() >= minPos.y && position.getY() <= maxPos.y &&
+                position.getZ() >= minPos.z && position.getZ() <= maxPos.z;
+    }
+
+    @Override
     public void move(Direction direction, int distance) {
         minPos.add(direction.baseVector.scale(distance));
         maxPos.add(direction.baseVector.scale(distance));

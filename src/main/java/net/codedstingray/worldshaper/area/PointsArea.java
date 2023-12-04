@@ -61,6 +61,11 @@ public class PointsArea implements Area {
     }
 
     @Override
+    public boolean isInArea(Vector3i position) {
+        return points.contains(position);
+    }
+
+    @Override
     public void move(Direction direction, int distance) {
         Vector3i moveVector = direction.baseVector.scale(distance);
         points.forEach(point -> point.add(moveVector));

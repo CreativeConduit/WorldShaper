@@ -22,7 +22,10 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.area.Area;
 import org.bukkit.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 @FunctionalInterface
+@ParametersAreNonnullByDefault
 public interface Operation {
 
     Action performOperation(Area area, World world);

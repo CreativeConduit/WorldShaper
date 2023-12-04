@@ -45,8 +45,20 @@ commands:
     description: Retracts the area.
     usage: /<command> <amount> [direction]
   set:
-    description: Sets all blocks in the area to the provided Material pattern
+    description: Sets all blocks in the area to the provided material pattern
     usage: /<command> <pattern>
   replace:
     description: Replaces all blocks of a given type with the new material
     usage: /<command> <mask> <pattern>
+  walls:
+    description: Sets all wall blocks of the area to the provided material pattern
+    usage: /<command> <pattern>
+  ceiling:
+    description: Sets all ceiling blocks of the area to the provided material pattern
+    usage: /<command> <pattern>
+  floor:
+    description: Sets all floor blocks of the area to the provided material pattern
+    usage: /<command> <pattern>
+  hull:
+    description: Sets all hull blocks of the area to the provided material pattern
+    usage: /<command> <pattern>

@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -33,27 +34,39 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @ParametersAreNonnullByDefault
 public class OperationPlace implements Operation {
 
     private final Pattern pattern;
     private final Mask mask;
+    private final Modifier modifier;
 
     public OperationPlace(Pattern pattern) {
-        this(pattern, Mask.MASK_ALL);
+        this(pattern, Mask.MASK_ALL, Modifier.ALL);
     }
 
     public OperationPlace(Pattern pattern, Mask mask) {
+        this(pattern, mask, Modifier.ALL);
+    }
+
+    public OperationPlace(Pattern pattern, Modifier modifier) {
+        this(pattern, Mask.MASK_ALL, modifier);
+    }
+
+    public OperationPlace(Pattern pattern, Mask mask, Modifier modifier) {
         this.pattern = pattern;
         this.mask = mask;
+        this.modifier = modifier;
     }
 
     @Override
     public Action performOperation(Area area, World world) {
         List<Action.ActionItem> actionItems = new LinkedList<>();
         for(Vector3i position: area) {
-            if (!mask.matches(LocationUtils.vectorToLocation(position, world))) {
+            if (!modifier.isBlockInModification(area, position) ||
+                    !mask.matches(LocationUtils.vectorToLocation(position, world))) {
                 continue;
             }
 
@@ -72,5 +85,44 @@ public class OperationPlace implements Operation {
         }
 
         return new Action(world.getUID(), actionItems);
+    }
+
+    public enum Modifier {
+        ALL((area, position) -> true),
+        WALLS((area, position) -> {
+            Vector3ii positionImmutable = position.toImmutable();
+            return !(area.isInArea(positionImmutable.add(1, 0, 0)) &&
+                     area.isInArea(positionImmutable.add(-1, 0, 0)) &&
+                     area.isInArea(positionImmutable.add(0, 0, 1)) &&
+                     area.isInArea(positionImmutable.add(0, 0, -1)));
+        }),
+        CEILING((area, position) -> {
+            Vector3ii positionImmutable = position.toImmutable();
+            return !area.isInArea(positionImmutable.add(0, 1, 0));
+        }),
+        FLOOR((area, position) -> {
+            Vector3ii positionImmutable = position.toImmutable();
+            return !area.isInArea(positionImmutable.add(0, -1, 0));
+        }),
+        HULL((area,  position) -> {
+            Vector3ii positionImmutable = position.toImmutable();
+            return !(area.isInArea(positionImmutable.add(1, 0, 0)) &&
+                    area.isInArea(positionImmutable.add(-1, 0, 0)) &&
+                    area.isInArea(positionImmutable.add(0, 1, 0)) &&
+                    area.isInArea(positionImmutable.add(0, -1, 0)) &&
+                    area.isInArea(positionImmutable.add(0, 0, 1)) &&
+                    area.isInArea(positionImmutable.add(0, 0, -1)));
+        });
+
+
+        private final BiFunction<Area, Vector3i, Boolean> conditionFunction;
+
+        Modifier(BiFunction<Area, Vector3i, Boolean> conditionFunction) {
+            this.conditionFunction = conditionFunction;
+        }
+
+        public boolean isBlockInModification(Area area, Vector3i position) {
+            return conditionFunction.apply(area, position);
+        }
     }
 }
