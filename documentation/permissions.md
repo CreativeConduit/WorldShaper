@@ -20,9 +20,9 @@ be sufficient for most servers.
 
 ## Detailed Permissions
 
-The detailed permissions allow you to make detailed configurations to your players' WorldShaper permissions.<br/>Note
-that these will always be overridden by the shortcut permissions. This means that even giving a negative permission
-will not prevent a player from using a command / interaction if they have the corresponding shortcut permission.
+The detailed permissions allow you to make detailed configurations to your players' WorldShaper permissions.<br/>You
+can combine the shortcut permissions with negative permissions to give players broad access to WorldShaper features but
+then deny certain individual permissions.
 
 | Permission                                   | Description                                                                                                                              |
 |----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
