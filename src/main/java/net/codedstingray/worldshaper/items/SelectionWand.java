@@ -32,9 +32,9 @@ import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COL
  */
 public class SelectionWand {
 
-    public static final String SELECTION_WAND_NAME = ACCENT_COLOR + "Area Wand" + TextColor.WHITE;
+    public static final String SELECTION_WAND_NAME = ACCENT_COLOR + "Selection Wand" + TextColor.WHITE;
     public static final String SELECTION_WAND_LORE = TextColor.WHITE + "The " + ACCENT_COLOR + "Selection Wand"
-            + TextColor.WHITE + " is used to select WorldShaper Areas";
+            + TextColor.WHITE + " is used to make WorldShaper selections";
 
     /**
      * The selection wand {@link ItemStack}.
