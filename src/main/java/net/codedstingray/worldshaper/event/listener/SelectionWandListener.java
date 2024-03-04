@@ -38,13 +38,18 @@ import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMe
 public class SelectionWandListener implements Listener {
 
     @EventHandler
-    public void onLeftClick(PlayerInteractEvent event) {
+    public void onMouseClick(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
         Action action = event.getAction();
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
 
-        if(item == null || clickedBlock == null || !item.isSimilar(SelectionWand.SELECTION_WAND)) {
+        if (item == null || clickedBlock == null || !item.isSimilar(SelectionWand.SELECTION_WAND)) {
+            return;
+        }
+
+        if (!player.hasPermission("worldshaper.builder.interact.wand")) {
+            sendWorldShaperMessage(player, "You do not have the permission to use the WorldShaper wand.");
             return;
         }
 

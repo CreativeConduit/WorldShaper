@@ -8,57 +8,74 @@ commands:
   worldshaper:
     description: Sends WorldShaper information to the caller.
     usage: /<command>
+    permission: worldshaper.builder.command.util.worldshaper
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>
+    permission: worldshaper.builder.interact.wand
+  selectiontype:
+    description: Sets your selection type.
+    usage: /<command> [selection type name]
+    permission: worldshaper.builder.interact.wand
+  pos:
+    description: Adds your current position as a control position for your selection.
+    usage: /<command> [index]
+    permission: worldshaper.builder.command.selection
+  positions:
+    description: Lists all current control positions for your selection.
+    usage: /<command>
+    permission: worldshaper.builder.command.selection
+  removepos:
+    description: Removes a control position
+    usage: /<command> [index]
+    permission: worldshaper.builder.command.selection
+  clearpositions:
+    description: Clears the list of selection control points.
+    usage: /<command>
+    permission: worldshaper.builder.command.selection
+  areatype:
+    description: Sets your area type.
+    usage: /<command> [area type name]
+    permission: worldshaper.builder.command.area.areatype
+  movearea:
+    description: Moves the area.
+    usage: /<command> <distance> [direction]
+    permission: worldshaper.builder.command.area.movearea
+  expand:
+    description: Expands the area.
+    usage: /<command> <amount> [direction]
+    permission: worldshaper.builder.command.area.expand
+  retract:
+    description: Retracts the area.
+    usage: /<command> <amount> [direction]
+    permission: worldshaper.builder.command.area.retract
   undo:
     description: Undoes the last action.
     usage: /<command>
   redo:
     description: Redoes the last undone action.
     usage: /<command>
-  pos:
-    description: Adds your current position as a control position for your selection.
-    usage: /<command> [index]
-  positions:
-    description: Lists all current control positions for your selection.
-    usage: /<command>
-  removepos:
-    description: Removes a control position
-    usage: /<command> [index]
-  clearpositions:
-    description: Clears the list of selection control points.
-    usage: /<command>
-  selectiontype:
-    description: Sets your selection type.
-    usage: /<command> [selection type name]
-  areatype:
-    description: Sets your area type.
-    usage: /<command> [area type name]
-  movearea:
-    description: Moves the area.
-    usage: /<command> <distance> [direction]
-  expand:
-    description: Expands the area.
-    usage: /<command> <amount> [direction]
-  retract:
-    description: Retracts the area.
-    usage: /<command> <amount> [direction]
   set:
     description: Sets all blocks in the area to the provided material pattern
     usage: /<command> <pattern>
+    permission: worldshaper.builder.command.edit.set
   replace:
     description: Replaces all blocks of a given type with the new material
     usage: /<command> <mask> <pattern>
+    permission: worldshaper.builder.command.edit.replace
   walls:
     description: Sets all wall blocks of the area to the provided material pattern
     usage: /<command> <pattern>
+    permission: worldshaper.builder.command.edit.ceiling
   ceiling:
     description: Sets all ceiling blocks of the area to the provided material pattern
     usage: /<command> <pattern>
+    permission: worldshaper.builder.command.edit.floor
   floor:
     description: Sets all floor blocks of the area to the provided material pattern
     usage: /<command> <pattern>
+    permission: worldshaper.builder.command.edit.hull
   hull:
     description: Sets all hull blocks of the area to the provided material pattern
     usage: /<command> <pattern>
+    permission: worldshaper.builder.command.edit.walls
