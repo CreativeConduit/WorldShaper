@@ -133,6 +133,9 @@ public class ChatMessageFormatter {
                 TextColor.RESET + " version " +
                 ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
                 TextColor.RESET + ".");
+        messages.add("Native Minecraft version is " +
+                ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
+                TextColor.RESET + ".");
         messages.add("Created by " + ACCENT_COLOR + "CodedStingray");
 
         return groupedMessages("WorldShaper", messages);
@@ -144,6 +147,9 @@ public class ChatMessageFormatter {
                 ACCENT_COLOR + "WorldShaper" +
                 TextColor.RESET + " version " +
                 ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
+                TextColor.RESET + ".");
+        messages.add("Native Minecraft version is " +
+                ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
                 TextColor.RESET + ".");
         messages.add("Created by " + ACCENT_COLOR + "CodedStingray");
         messages.add("Feel free to check out my YouTube channel at");
