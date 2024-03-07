@@ -12,11 +12,11 @@ commands:
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>
-    permission: worldshaper.builder.interact.wand
+    permission: worldshaper.builder.command.selection
   selectiontype:
     description: Sets your selection type.
     usage: /<command> [selection type name]
-    permission: worldshaper.builder.interact.wand
+    permission: worldshaper.builder.command.selection
   pos:
     description: Adds your current position as a control position for your selection.
     usage: /<command> [index]

@@ -1,0 +1,40 @@
+/*
+ * WorldShaper: a powerful in-game map editor for Minecraft
+ * Copyright (C) 2024 CodedStingray
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.codedstingray.worldshaper.permission;
+
+import org.bukkit.permissions.Permissible;
+
+import java.util.Arrays;
+
+public class PermissionUtil {
+
+    /**
+     * Checks if the given {@link Permissible} has any of the provided permissions.
+     *
+     * @param permissable The permissable that is to be checked
+     * @param permissions The list of permissions to be checked against
+     * @return {@code true} if the given permissable has at least one of the given permissions, {@code false} otherwise
+     */
+    public static boolean hasAnyOf(Permissible permissable, String[] permissions) {
+        return permissable.getEffectivePermissions().stream()
+                .anyMatch(info -> Arrays.stream(permissions)
+                        .anyMatch(permission -> permission.equals(info.getPermission()))
+                );
+    }
+}

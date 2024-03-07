@@ -34,6 +34,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperWarningMessage;
+import static net.codedstingray.worldshaper.permission.Permissions.PERMISSION_SELECTION;
 
 public class SelectionWandListener implements Listener {
 
@@ -48,8 +50,8 @@ public class SelectionWandListener implements Listener {
             return;
         }
 
-        if (!player.hasPermission("worldshaper.builder.interact.wand")) {
-            sendWorldShaperMessage(player, "You do not have the permission to use the WorldShaper wand.");
+        if (!player.hasPermission(PERMISSION_SELECTION)) {
+            sendWorldShaperWarningMessage(player, "You do not have the permission to use the WorldShaper wand.");
             return;
         }
 

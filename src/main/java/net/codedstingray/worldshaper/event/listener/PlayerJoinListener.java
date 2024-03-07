@@ -20,6 +20,7 @@ package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PluginData;
+import net.codedstingray.worldshaper.permission.PermissionUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -28,6 +29,7 @@ import java.util.UUID;
 
 import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.playerJoinMessage;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendRawMessage;
+import static net.codedstingray.worldshaper.permission.Permissions.ALL_PERMISSIONS;
 
 /**
  * A {@link Listener Bukkit event listener} handling behavior on player join.
@@ -36,7 +38,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        sendRawMessage(event.getPlayer(), playerJoinMessage());
+        if (PermissionUtil.hasAnyOf(event.getPlayer(), ALL_PERMISSIONS)) {
+            sendRawMessage(event.getPlayer(), playerJoinMessage());
+        }
 
         PluginData pluginData = WorldShaper.getInstance().getPluginData();
         UUID playerUUID = event.getPlayer().getUniqueId();

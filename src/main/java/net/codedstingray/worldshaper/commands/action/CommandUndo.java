@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionController;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.data.PlayerData;
+import net.codedstingray.worldshaper.permission.PermissionUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,8 +31,8 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperWarningMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.*;
+import static net.codedstingray.worldshaper.permission.Permissions.EDIT_PERMISSIONS;
 
 @ParametersAreNonnullByDefault
 public class CommandUndo implements CommandExecutor {
@@ -41,6 +42,10 @@ public class CommandUndo implements CommandExecutor {
         if (!(sender instanceof Player player)) {
             sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
             return true;
+        }
+
+        if (!PermissionUtil.hasAnyOf(player, EDIT_PERMISSIONS)) {
+            sendWorldShaperWarningMessage(player, "You do not have the permission to use this command.");
         }
 
         ActionController actionController = WorldShaper.getInstance().getActionController();
