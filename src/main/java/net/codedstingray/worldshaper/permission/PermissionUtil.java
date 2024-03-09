@@ -27,14 +27,11 @@ public class PermissionUtil {
     /**
      * Checks if the given {@link Permissible} has any of the provided permissions.
      *
-     * @param permissable The permissable that is to be checked
+     * @param permissible The permissible that is to be checked
      * @param permissions The list of permissions to be checked against
-     * @return {@code true} if the given permissable has at least one of the given permissions, {@code false} otherwise
+     * @return {@code true} if the given permissible has at least one of the given permissions, {@code false} otherwise
      */
-    public static boolean hasAnyOf(Permissible permissable, String[] permissions) {
-        return permissable.getEffectivePermissions().stream()
-                .anyMatch(info -> Arrays.stream(permissions)
-                        .anyMatch(permission -> permission.equals(info.getPermission()))
-                );
+    public static boolean hasAnyOf(Permissible permissible, String[] permissions) {
+        return Arrays.stream(permissions).anyMatch(permissible::hasPermission);
     }
 }

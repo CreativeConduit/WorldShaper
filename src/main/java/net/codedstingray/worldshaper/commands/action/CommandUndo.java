@@ -46,6 +46,7 @@ public class CommandUndo implements CommandExecutor {
 
         if (!PermissionUtil.hasAnyOf(player, EDIT_PERMISSIONS)) {
             sendWorldShaperWarningMessage(player, "You do not have the permission to use this command.");
+            return true;
         }
 
         ActionController actionController = WorldShaper.getInstance().getActionController();

@@ -50,6 +50,8 @@ public class SelectionWandListener implements Listener {
             return;
         }
 
+        event.setCancelled(true);
+
         if (!player.hasPermission(PERMISSION_SELECTION)) {
             sendWorldShaperWarningMessage(player, "You do not have the permission to use the WorldShaper wand.");
             return;
@@ -71,6 +73,5 @@ public class SelectionWandListener implements Listener {
 
         boolean changed = playerData.getSelection().setControlPosition(index, clickedPosition, player.getWorld().getUID());
         sendWorldShaperMessage(player, ChatMessageFormatter.positionSetMessage(index, clickedPosition, changed));
-        event.setCancelled(true);
     }
 }
