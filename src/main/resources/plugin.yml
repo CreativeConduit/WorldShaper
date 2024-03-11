@@ -12,7 +12,7 @@ commands:
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>
-    permission: worldshaper.builder.command.selection
+    permission: worldshaper.builder.interaction.selection
   selectiontype:
     description: Sets your selection type.
     usage: /<command> [selection type name]
@@ -20,19 +20,19 @@ commands:
   pos:
     description: Adds your current position as a control position for your selection.
     usage: /<command> [index]
-    permission: worldshaper.builder.command.selection
+    permission: worldshaper.builder.interaction.selection
   positions:
     description: Lists all current control positions for your selection.
     usage: /<command>
-    permission: worldshaper.builder.command.selection
+    permission: worldshaper.builder.interaction.selection
   removepos:
     description: Removes a control position
     usage: /<command> [index]
-    permission: worldshaper.builder.command.selection
+    permission: worldshaper.builder.interaction.selection
   clearpositions:
     description: Clears the list of selection control points.
     usage: /<command>
-    permission: worldshaper.builder.command.selection
+    permission: worldshaper.builder.interaction.selection
   areatype:
     description: Sets your area type.
     usage: /<command> [area type name]

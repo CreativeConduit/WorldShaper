@@ -19,8 +19,8 @@
 package net.codedstingray.worldshaper.permission;
 
 public class Permissions {
+    public static final String PERMISSION_SELECTION   = "worldshaper.builder.interaction.selection";
     public static final String PERMISSION_WORLDSHAPER = "worldshaper.builder.command.util.worldshaper";
-    public static final String PERMISSION_SELECTION   = "worldshaper.builder.command.selection";
     public static final String PERMISSION_AREATYPE    = "worldshaper.builder.command.area.areatype";
     public static final String PERMISSION_EXPAND      = "worldshaper.builder.command.area.expand";
     public static final String PERMISSION_RETRACT     = "worldshaper.builder.command.area.retract";
@@ -33,8 +33,8 @@ public class Permissions {
     public static final String PERMISSION_WALLS       = "worldshaper.builder.command.edit.walls";
 
     public static final String[] ALL_PERMISSIONS = {
-            PERMISSION_WORLDSHAPER,
             PERMISSION_SELECTION,
+            PERMISSION_WORLDSHAPER,
             PERMISSION_AREATYPE,
             PERMISSION_EXPAND,
             PERMISSION_RETRACT,
