@@ -22,6 +22,7 @@ import net.codedstingray.worldshaper.area.*;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeTwoPositions;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,12 +35,16 @@ public class PluginData {
     public final SelectionType DEFAULT_SELECTION_TYPE;
     public final String DEFAULT_AREA_NAME = CuboidArea.NAME;
 
+    private final WorldShaperConfiguration worldShaperConfiguration;
+
     private final Map<String, SelectionType> selectionTypesByName = new HashMap<>();
     private final Map<String, AreaFactory> areaFactoriesMap = new HashMap<>();
 
     private final Map<UUID, PlayerData> playerDataMap = new HashMap<>();
 
-    public PluginData() {
+    public PluginData(FileConfiguration config) {
+        this.worldShaperConfiguration = new WorldShaperConfiguration(config);
+
         selectionTypesByName.put(SelectionTypeTwoPositions.NAME.toLowerCase(), new SelectionTypeTwoPositions());
         selectionTypesByName.put(SelectionTypeIndefinitePositions.NAME.toLowerCase(), new SelectionTypeIndefinitePositions());
 
@@ -48,6 +53,10 @@ public class PluginData {
 
         areaFactoriesMap.put(CuboidArea.NAME.toLowerCase(), new CuboidAreaFactory());
         areaFactoriesMap.put(PointsArea.NAME.toLowerCase(), new PointsAreaFactory());
+    }
+
+    public WorldShaperConfiguration getWorldShaperConfiguration() {
+        return worldShaperConfiguration;
     }
 
     public SelectionType getSelectionTypeByName(String name) {

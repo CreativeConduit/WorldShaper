@@ -19,7 +19,9 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.chat.TextColor;
 import net.codedstingray.worldshaper.data.PlayerData;
+import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
@@ -33,8 +35,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.*;
 import static net.codedstingray.worldshaper.util.world.LocationUtils.locationToBlockVector;
 
 @ParametersAreNonnullByDefault
@@ -47,7 +48,8 @@ public class CommandPos implements CommandExecutor {
             return false;
         }
 
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        PluginData pluginData = WorldShaper.getInstance().getPluginData();
+        PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
         Selection selection = playerData.getSelection();
 
         int index;
@@ -65,6 +67,14 @@ public class CommandPos implements CommandExecutor {
             }
         } else {
             index = selection.getControlPositions().size();
+        }
+
+        int maxSelectionSize = pluginData.getWorldShaperConfiguration().getMaxSelectionSize();
+        if (index >= maxSelectionSize) {
+            sendWorldShaperWarningMessage(player, "Max selection size exceeded. Tried to set index " +
+                    ChatMessageFormatter.ACCENT_COLOR + (index + 1) + TextColor.RESET + ", but max is " +
+                    ChatMessageFormatter.ACCENT_COLOR + maxSelectionSize + TextColor.RESET + ".");
+            return true;
         }
 
         Location playerLocation = player.getLocation();

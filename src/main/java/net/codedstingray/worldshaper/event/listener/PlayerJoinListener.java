@@ -38,13 +38,14 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (PermissionUtil.hasAnyOf(event.getPlayer(), ALL_PERMISSIONS)) {
+        PluginData pluginData = WorldShaper.getInstance().getPluginData();
+
+        if (pluginData.getWorldShaperConfiguration().getAlwaysShowJoinMessage() ||
+                PermissionUtil.hasAnyOf(event.getPlayer(), ALL_PERMISSIONS)) {
             sendRawMessage(event.getPlayer(), playerJoinMessage());
         }
 
-        PluginData pluginData = WorldShaper.getInstance().getPluginData();
         UUID playerUUID = event.getPlayer().getUniqueId();
-
         pluginData.createPlayerDataIfNotPresent(playerUUID);
     }
 }

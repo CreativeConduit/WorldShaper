@@ -1,0 +1,5 @@
+general:
+  always-show-join-message: false
+
+selection:
+  max-selection-size: 32

@@ -43,7 +43,9 @@ public class WorldShaper extends JavaPlugin {
     public void onLoad() {
         INSTANCE = this;
 
-        pluginData = new PluginData();
+        saveDefaultConfig();
+
+        pluginData = new PluginData(getConfig());
 
         actionController = new ActionController();
     }
