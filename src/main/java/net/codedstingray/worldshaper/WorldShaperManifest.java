@@ -26,7 +26,7 @@ public class WorldShaperManifest {
     /**
      * The current version of the plugin.
      */
-    public static final String PLUGIN_VERSION = "0.1-SNAPSHOT";
+    public static final String PLUGIN_VERSION = "0.1";
 
     /**
      * The native Minecraft version of the plugin.
