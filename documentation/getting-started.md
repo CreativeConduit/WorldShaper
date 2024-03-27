@@ -64,3 +64,44 @@ The following commands can be used to perform area operations.
 | `/floor <pattern>`          | Sets all floor blocks of the mask to the given pattern. A block is considered part of the floor of an area if the block beneath it is not in the Area.              |
 | `/ceiling <pattern>`        | Sets all ceiling blocks of the mask to the given pattern. A block is considered part of the ceiling of an area if the block above it is not in the Area.            |
 | `/hull <pattern>`           | Sets all hull blocks of the mask to the given pattern. A block is considered part of the hull of an area if any of its neighbours are not in the Area.              |
+
+## Patterns and Masks
+
+### The Pattern
+
+The Pattern is a parameter type that needs to be provided to most operation commands.<br>
+A pattern is a comma-separated list of pattern entries `<pattern-entry-1>,<pattern-entry-2>,<pattern-entry-3>,...`.<br>
+Each pattern entry consists of 2 parts. The first part is the percentage value. This one is optional. The second part
+is the non-optional block string (like `oak_stairs[facing=south,waterlogged=true]`).<br>
+Each entry therefor has the format `[<percentage>%]<block-string>`.
+
+An example of a full pattern might therefor be `80%wheat[age=7],wheat[age=6],wheat[age=5]`.
+
+The percentage values define what percentage of the pattern the block makes up. There are however some quirks in how the
+actual percentages are calculated from these values:
+- If the percentages add up to 100%, all blocks will be affected by the pattern. according to those percentages.
+  - Example: The pattern `70%stone,20%cobblestone,10%andesite` will lead to 70% of blocks being set to stone, 20% being set to cobblestone and 10% being set to andesite.
+- If the percentages add up to less than 100%, but all pattern entries have a percentage value attached, the remaining percent of blocks will be unaffected by the pattern.
+  - Example: The pattern `70%stone,20% cobblestone` will lead to 70% of blocks being set to stone, 20% being set to cobblestone and the remaining 10% being unaffected.
+- If the percentages add up to less than 100%, but some pattern entries have no percentage attached, the remaining percent will be filled in equal parts by the blocks that have no percentages attached.
+  - Example: The pattern `70%stone,cobblestone,andesite` will lead to 70% of blocks being set to stone, 15% being set to cobblestone and 15% being set to andesite.
+- If the percentages add up to more than 100%, all percentage values will be scaled down accordingly. In effect, the percentage value act as weights instead in this case. Any entries without percentage values will effectively be set to 0%.
+  - Example: The pattern `90%stone,30%cobblestone` will lead to 75% of blocks being set to stone and 25% of blocks being set to cobblestone.
+  - Example: The pattern `90%stone,30%cobblestone,andesite` will lead to 75% of blocks being set to stone and 25% of blocks being set to cobblestone. No blocks will be set to andesite despite it being in the pattern.
+
+### The Mask
+
+The Mask is another parameter type used in a lot of operation commands.<br>
+A mask is a comma-separated list of mask entries `<mask-entry-1>,<mask-entry-2>,<mask-entry-3>,...`.<br>
+Each mask entry is a block type (notably not the full block state like in the pattern) and an optional modifier before it.<br>
+The format is therefor `[modifier]<block-type>`.<br>
+There are currently 3 modifiers:
+- `!` negates the block type, meaning a block must not be this block type to match.
+  - A common use is `!air`
+- `>` means "above", so a block must be above another block with this block type to match.
+  - Common uses are `>farmland`, `>grass_block`
+- `<` means "below", so a block must be below another block with this block type to match.
+
+A mask entry can only ever have one modifier.<br>
+
+The mask entries are effectively or-connected, so a block must match any of the provided mask entries to match the mask as a whole.
