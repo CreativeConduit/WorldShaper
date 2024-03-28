@@ -1,5 +1,5 @@
 name: WorldShaper
-version: 0.1
+version: 0.2-SNAPSHOT
 author: CodedStingray
 main: net.codedstingray.worldshaper.WorldShaper
 api-version: 1.20
