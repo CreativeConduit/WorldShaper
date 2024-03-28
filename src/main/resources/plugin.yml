@@ -65,17 +65,17 @@ commands:
     permission: worldshaper.builder.command.edit.replace
   walls:
     description: Sets all wall blocks of the area to the provided material pattern
-    usage: /<command> <pattern>
+    usage: /<command> [mask] <pattern>
     permission: worldshaper.builder.command.edit.ceiling
   ceiling:
     description: Sets all ceiling blocks of the area to the provided material pattern
-    usage: /<command> <pattern>
+    usage: /<command> [mask] <pattern>
     permission: worldshaper.builder.command.edit.floor
   floor:
     description: Sets all floor blocks of the area to the provided material pattern
-    usage: /<command> <pattern>
+    usage: /<command> [mask] <pattern>
     permission: worldshaper.builder.command.edit.hull
   hull:
     description: Sets all hull blocks of the area to the provided material pattern
-    usage: /<command> <pattern>
+    usage: /<command> [mask] <pattern>
     permission: worldshaper.builder.command.edit.walls

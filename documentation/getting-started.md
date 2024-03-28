@@ -10,7 +10,7 @@ To get started, you want to get yourself the Selection Wand by calling `/wand`.
 
 Every player has a Selection. The Selection is a list of control points that is used for many things, most notably
 defining Areas. <br>
-You can view your current selection with `/positions` and can be cleared with `/clearpositions`.
+You can view your current selection with `/selection` and can be cleared with `/clearselection`.
 
 ### Modifying your Selection
 
@@ -60,10 +60,10 @@ The following commands can be used to perform area operations.
 |-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `/set <pattern>`            | Sets all blocks in the area to the given pattern.                                                                                                                   |
 | `/replace <mask> <pattern>` | Replaces all blocks that match the mask with the given pattern.                                                                                                     |
-| `/walls <pattern>`          | Sets all wall blocks of the mask to the given pattern. A block is considered part of the wall of an area if at least one of its side neighbours is not in the Area. |
-| `/floor <pattern>`          | Sets all floor blocks of the mask to the given pattern. A block is considered part of the floor of an area if the block beneath it is not in the Area.              |
-| `/ceiling <pattern>`        | Sets all ceiling blocks of the mask to the given pattern. A block is considered part of the ceiling of an area if the block above it is not in the Area.            |
-| `/hull <pattern>`           | Sets all hull blocks of the mask to the given pattern. A block is considered part of the hull of an area if any of its neighbours are not in the Area.              |
+| `/walls [mask] <pattern>`   | Sets all wall blocks of the mask to the given pattern. A block is considered part of the wall of an area if at least one of its side neighbours is not in the Area. |
+| `/floor [mask] <pattern>`   | Sets all floor blocks of the mask to the given pattern. A block is considered part of the floor of an area if the block beneath it is not in the Area.              |
+| `/ceiling [mask] <pattern>` | Sets all ceiling blocks of the mask to the given pattern. A block is considered part of the ceiling of an area if the block above it is not in the Area.            |
+| `/hull [mask] <pattern>`    | Sets all hull blocks of the mask to the given pattern. A block is considered part of the hull of an area if any of its neighbours are not in the Area.              |
 
 ## Patterns and Masks
 
