@@ -21,7 +21,7 @@ commands:
     description: Adds your current position as a control position for your selection.
     usage: /<command> [index]
     permission: worldshaper.builder.interaction.selection
-  positions:
+  selection:
     description: Lists all current control positions for your selection.
     usage: /<command>
     permission: worldshaper.builder.interaction.selection
@@ -29,7 +29,7 @@ commands:
     description: Removes a control position
     usage: /<command> [index]
     permission: worldshaper.builder.interaction.selection
-  clearpositions:
+  clearselection:
     description: Clears the list of selection control points.
     usage: /<command>
     permission: worldshaper.builder.interaction.selection

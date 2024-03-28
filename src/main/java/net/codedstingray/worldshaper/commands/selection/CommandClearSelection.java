@@ -20,22 +20,18 @@ package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.data.PlayerData;
-import net.codedstingray.worldshaper.selection.Selection;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.LinkedList;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendGroupedMessages;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 
 @ParametersAreNonnullByDefault
-public class CommandPositions implements CommandExecutor {
+public class CommandClearSelection implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -45,19 +41,8 @@ public class CommandPositions implements CommandExecutor {
         }
         PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        Selection selection = playerData.getSelection();
-
-        LinkedList<String> messages = new LinkedList<>();
-        for (int i = 0; i < selection.getControlPositions().size(); i++) {
-            Vector3i controlPosition = selection.getControlPosition(i);
-            if (controlPosition != null) {
-                messages.add("[" + (i + 1) + "] " + ChatMessageFormatter.vectorToString(controlPosition));
-            } else {
-                messages.add("[" + (i + 1) + "] - not set -");
-            }
-        }
-        sendGroupedMessages(player, "Your current control positions", messages);
-
+        playerData.getSelection().clearControlPositions();
+        sendWorldShaperMessage(player, "Cleared all selection control positions.");
         return true;
     }
 }

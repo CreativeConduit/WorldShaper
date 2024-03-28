@@ -50,9 +50,9 @@ public class CommandInitializer {
         Objects.requireNonNull(plugin.getCommand("redo")).setExecutor(new CommandRedo());
 
         Objects.requireNonNull(plugin.getCommand("pos")).setExecutor(new CommandPos());
-        Objects.requireNonNull(plugin.getCommand("positions")).setExecutor(new CommandPositions());
         Objects.requireNonNull(plugin.getCommand("removepos")).setExecutor(new CommandRemovePos());
-        Objects.requireNonNull(plugin.getCommand("clearpositions")).setExecutor(new CommandClearPositions());
+        Objects.requireNonNull(plugin.getCommand("selection")).setExecutor(new CommandSelection());
+        Objects.requireNonNull(plugin.getCommand("clearselection")).setExecutor(new CommandClearSelection());
 
         Objects.requireNonNull(plugin.getCommand("selectiontype")).setExecutor(new CommandSelectionType());
         Objects.requireNonNull(plugin.getCommand("areatype")).setExecutor(new CommandAreaType());
