@@ -33,38 +33,42 @@ import java.util.Set;
 
 import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
 import static net.codedstingray.worldshaper.chat.MessageSender.*;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandSelectionType implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
-        }
-        PluginData pluginData = WorldShaper.getInstance().getPluginData();
-        PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
+        try {
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 0, 1);
 
-        if (args.length == 0) {
-            SelectionType selectionType = playerData.getSelectionType();
-            Set<String> allSelectionTypes = pluginData.getAllRegisteredSelectionTypes();
+            PluginData pluginData = WorldShaper.getInstance().getPluginData();
+            PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
 
-            sendWorldShaperMessage(player, "Your current selection type is " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
-            sendGroupedMessages(player, "The following selection types are available", allSelectionTypes);
+            if (args.length == 0) {
+                SelectionType selectionType = playerData.getSelectionType();
+                Set<String> allSelectionTypes = pluginData.getAllRegisteredSelectionTypes();
 
+                sendWorldShaperMessage(player, "Your current selection type is " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
+                sendGroupedMessages(player, "The following selection types are available", allSelectionTypes);
+
+                return true;
+            }
+
+            String selectionTypeName = args[0];
+            SelectionType selectionType = pluginData.getSelectionTypeByName(selectionTypeName);
+            if (selectionType == null) {
+                sendWorldShaperErrorMessage(player, "Selection Type \"" + selectionTypeName + "\" does not exist.");
+                return false;
+            }
+
+            playerData.setSelectionType(selectionType);
+            sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
             return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
         }
-
-        String selectionTypeName = args[0];
-        SelectionType selectionType = pluginData.getSelectionTypeByName(selectionTypeName);
-        if (selectionType == null) {
-            sendWorldShaperErrorMessage(player, "Selection Type \"" + selectionTypeName + "\" does not exist.");
-            return false;
-        }
-
-        playerData.setSelectionType(selectionType);
-        sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
-        return true;
     }
 }

@@ -27,22 +27,24 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandClearSelection implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
-        }
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        try {
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 0, 0);
+            PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        playerData.getSelection().clearControlPositions();
-        sendWorldShaperMessage(player, "Cleared all selection control positions.");
-        return true;
+            playerData.getSelection().clearControlPositions();
+            sendWorldShaperMessage(player, "Cleared all selection control positions.");
+            return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
+        }
     }
 }

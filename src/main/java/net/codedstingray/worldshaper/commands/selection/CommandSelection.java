@@ -19,9 +19,9 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,32 +32,34 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.LinkedList;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendGroupedMessages;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandSelection implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
-        }
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+        try {
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 0, 0);
+            PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
-        Selection selection = playerData.getSelection();
+            Selection selection = playerData.getSelection();
 
-        LinkedList<String> messages = new LinkedList<>();
-        for (int i = 0; i < selection.getControlPositions().size(); i++) {
-            Vector3i controlPosition = selection.getControlPosition(i);
-            if (controlPosition != null) {
-                messages.add("[" + (i + 1) + "] " + ChatMessageFormatter.vectorToString(controlPosition));
-            } else {
-                messages.add("[" + (i + 1) + "] - not set -");
+            LinkedList<String> messages = new LinkedList<>();
+            for (int i = 0; i < selection.getControlPositions().size(); i++) {
+                Vector3i controlPosition = selection.getControlPosition(i);
+                if (controlPosition != null) {
+                    messages.add("[" + (i + 1) + "] " + ChatMessageFormatter.vectorToString(controlPosition));
+                } else {
+                    messages.add("[" + (i + 1) + "] - not set -");
+                }
             }
-        }
-        sendGroupedMessages(player, "Your Current Selection", messages);
+            sendGroupedMessages(player, "Your Current Selection", messages);
 
-        return true;
+            return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
+        }
     }
 }
