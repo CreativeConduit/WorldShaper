@@ -26,6 +26,8 @@ import net.codedstingray.worldshaper.commands.area.CommandExpand;
 import net.codedstingray.worldshaper.commands.area.CommandMoveArea;
 import net.codedstingray.worldshaper.commands.area.CommandRetract;
 import net.codedstingray.worldshaper.commands.area.operations.*;
+import net.codedstingray.worldshaper.commands.clipboard.CommandCopy;
+import net.codedstingray.worldshaper.commands.clipboard.CommandPaste;
 import net.codedstingray.worldshaper.commands.selection.*;
 import net.codedstingray.worldshaper.commands.utility.CommandWand;
 import net.codedstingray.worldshaper.commands.utility.CommandWorldShaper;
@@ -67,5 +69,8 @@ public class CommandInitializer {
         Objects.requireNonNull(plugin.getCommand("ceiling")).setExecutor(new CommandCeiling());
         Objects.requireNonNull(plugin.getCommand("floor")).setExecutor(new CommandFloor());
         Objects.requireNonNull(plugin.getCommand("hull")).setExecutor(new CommandHull());
+
+        Objects.requireNonNull(plugin.getCommand("copy")).setExecutor(new CommandCopy());
+        Objects.requireNonNull(plugin.getCommand("paste")).setExecutor(new CommandPaste());
     }
 }

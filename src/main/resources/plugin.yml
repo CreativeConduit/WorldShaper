@@ -78,3 +78,11 @@ commands:
     description: Sets all hull blocks of the area to the provided material pattern
     usage: /<command> [mask] <pattern>
     permission: worldshaper.builder.command.edit.walls
+  copy:
+    description: Copies your current selection
+    usage: /<command>
+    permission: worldshaper.builder.command.clipboard.copy
+  paste:
+    description: Pastes your clipboard content into the world
+    usage: /<command>
+    permission: worldshaper.builder.command.clipboard.paste

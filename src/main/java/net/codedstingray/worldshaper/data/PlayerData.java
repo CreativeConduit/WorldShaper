@@ -21,9 +21,11 @@ package net.codedstingray.worldshaper.data;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.area.AreaFactory;
+import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,6 +39,8 @@ public class PlayerData {
     private final Selection selection;
     private SelectionType selectionType;
     private Area area;
+
+    private Clipboard clipboard = null;
 
     private final ActionStack actionStack;
 
@@ -75,6 +79,14 @@ public class PlayerData {
         area = factory.create();
         area.updateArea(selection);
         return true;
+    }
+
+    public Optional<Clipboard> getClipboard() {
+        return Optional.ofNullable(clipboard);
+    }
+
+    public void setClipboard(Clipboard clipboard) {
+        this.clipboard = clipboard;
     }
 
     public ActionStack getActionStack() {
