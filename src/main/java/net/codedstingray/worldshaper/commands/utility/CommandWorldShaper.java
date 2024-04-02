@@ -26,6 +26,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.worldShaperInfoMessage;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendRawMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
+import static net.codedstingray.worldshaper.permission.Permissions.EDIT_PERMISSIONS;
 
 /**
  * {@link CommandExecutor} for the /worldshaper command.
@@ -34,8 +36,16 @@ import static net.codedstingray.worldshaper.chat.MessageSender.sendRawMessage;
 public class CommandWorldShaper implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
-        sendRawMessage(commandSender, worldShaperInfoMessage());
-        return true;
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        try {
+            checkPermissionsAnyOf(sender, EDIT_PERMISSIONS);
+            verifyArgumentSize(args, 0, 0);
+
+            sendRawMessage(sender, worldShaperInfoMessage());
+
+            return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
+        }
     }
 }

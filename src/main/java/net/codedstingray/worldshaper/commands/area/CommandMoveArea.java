@@ -31,37 +31,34 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandMoveArea implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
+        try {
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 1, 2);
+
+            int distance = Integer.parseInt(args[0]);
+            Direction direction = DirectionUtils.determineDirectionFromPlayer(player, args.length > 1 ? args[1] : null);
+
+            if (direction == null) {
+                return false;
+            }
+
+            Area area = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId()).getArea();
+            area.move(direction, distance);
+
+            sendWorldShaperMessage(player, "Moved area " + ChatMessageFormatter.ACCENT_COLOR + distance +
+                    TextColor.RESET + " blocks " + ChatMessageFormatter.ACCENT_COLOR + direction.name().toLowerCase());
+
+            return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
         }
-
-        if (args.length == 0) {
-            sendWorldShaperErrorMessage(player, "You must provide a distance");
-            return false;
-        }
-
-        int distance = Integer.parseInt(args[0]);
-        Direction direction = DirectionUtils.determineDirectionFromPlayer(player, args.length > 1 ? args[1] : null);
-
-        if (direction == null) {
-            return false;
-        }
-
-        Area area = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId()).getArea();
-        area.move(direction, distance);
-
-        sendWorldShaperMessage(player, "Moved area " + ChatMessageFormatter.ACCENT_COLOR + distance +
-                TextColor.RESET + " blocks " + ChatMessageFormatter.ACCENT_COLOR + direction.name().toLowerCase());
-
-        return true;
     }
 }

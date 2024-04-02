@@ -29,47 +29,49 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import java.util.Set;
 
-import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
 import static net.codedstingray.worldshaper.chat.MessageSender.*;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandAreaType implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
-        }
-        PluginData pluginData = WorldShaper.getInstance().getPluginData();
-        PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
+        try {
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 0, 1);
+            PluginData pluginData = WorldShaper.getInstance().getPluginData();
+            PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
 
-        if (args.length == 0) {
-            Area area = playerData.getArea();
-            Set<String> allAreaTypes = pluginData.getAllRegisteredAreaTypes();
+            if (args.length == 0) {
+                Area area = playerData.getArea();
+                Set<String> allAreaTypes = pluginData.getAllRegisteredAreaTypes();
 
-            sendWorldShaperMessage(player, "Your current area is of type " + ACCENT_COLOR + "\"" + area.getName() + "\"");
-            sendGroupedMessages(player, "The following area types are available", allAreaTypes);
+                sendWorldShaperMessage(player, "Your current area is of type " + ACCENT_COLOR + "\"" + area.getName() + "\"");
+                sendGroupedMessages(player, "The following area types are available", allAreaTypes);
 
-            return true;
-        }
+                return true;
+            }
 
-        String areaName = args[0];
-        boolean success = playerData.setArea(areaName);
+            String areaName = args[0];
+            boolean success = playerData.setArea(areaName);
 
-        if (success) {
-            SelectionType selectionType = playerData.getArea().getDefaultSelectionType();
-            playerData.setSelectionType(selectionType);
+            if (success) {
+                SelectionType selectionType = playerData.getArea().getDefaultSelectionType();
+                playerData.setSelectionType(selectionType);
 
-            sendWorldShaperMessage(player, "Area set to type " + ACCENT_COLOR + "\"" + areaName + "\"");
-            sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
-            return true;
-        } else {
-            sendWorldShaperErrorMessage(player, "Area of type \"" + areaName + "\" does not exist.");
-            return false;
+                sendWorldShaperMessage(player, "Area set to type " + ACCENT_COLOR + "\"" + areaName + "\"");
+                sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
+                return true;
+            } else {
+                sendWorldShaperErrorMessage(player, "Area of type \"" + areaName + "\" does not exist.");
+                return false;
+            }
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
         }
     }
 }

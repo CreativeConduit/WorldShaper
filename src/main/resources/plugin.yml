@@ -8,7 +8,6 @@ commands:
   worldshaper:
     description: Sends WorldShaper information to the caller.
     usage: /<command>
-    permission: worldshaper.builder.command.util.worldshaper
   wand:
     description: Gives you the WorldShaper selection wand.
     usage: /<command>

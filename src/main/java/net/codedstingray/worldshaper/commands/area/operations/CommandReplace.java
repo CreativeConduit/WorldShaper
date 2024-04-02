@@ -23,11 +23,7 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
-import net.codedstingray.worldshaper.block.mask.MaskParseException;
-import net.codedstingray.worldshaper.block.mask.MaskParser;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
-import net.codedstingray.worldshaper.block.pattern.PatternParseException;
-import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.operation.Operation;
 import net.codedstingray.worldshaper.operation.OperationPlace;
@@ -42,64 +38,36 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
 public class CommandReplace implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
-            return false;
-        }
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
-
-        if (args.length < 2) {
-            sendWorldShaperErrorMessage(player, "You need to provide a pattern to set; Usage:");
-            return false;
-        }
-        if (args.length > 2) {
-            sendWorldShaperErrorMessage(player, "Too many arguments; Usage:");
-            return false;
-        }
-
-        Area area = playerData.getArea();
-        if (area == null || !area.isValid()) {
-            sendWorldShaperErrorMessage(player, "Set an area before using this command");
-            return true;
-        }
-
-        UUID worldUUID = playerData.getSelection().getWorldUUID();
-        if (!player.getWorld().getUID().equals(worldUUID)) {
-            sendWorldShaperErrorMessage(player, "Area is in a different world. Switch to that world or create a new area in this world to use this command");
-            return true;
-        }
-
-        Mask replaceMask;
         try {
-            replaceMask = MaskParser.parseMask(args[0]);
-        } catch (MaskParseException e) {
-            sendWorldShaperErrorMessage(player, "Unable to parse mask: " + e.getMessage());
+            Player player = playerFromCommandSender(sender);
+            verifyArgumentSize(args, 2, 2);
+
+            PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+            Area area = getAreaFromPlayerData(playerData);
+
+            UUID worldUUID = getWorldAndCheckWithSelection(player, playerData);
+
+            Mask replaceMask = getMaskFromArgument(args[0]);
+            Pattern pattern = getPatternFromArgument(args[1]);
+
+
+            World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
+            Operation operation = new OperationPlace(pattern, replaceMask);
+            Action action = operation.performOperation(area, world);
+
+            ActionStack playerActionStack = playerData.getActionStack();
+            WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
+
             return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
         }
-
-
-        Pattern pattern;
-        try {
-            pattern = PatternParser.parsePattern(args[1]);
-        } catch (PatternParseException e) {
-            sendWorldShaperErrorMessage(player, "Unable to parse pattern: " + e.getMessage());
-            return false;
-        }
-
-        World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
-        Operation operation = new OperationPlace(pattern, replaceMask);
-        Action action = operation.performOperation(area, world);
-
-        ActionStack playerActionStack = playerData.getActionStack();
-        WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
-
-        return true;
     }
 }

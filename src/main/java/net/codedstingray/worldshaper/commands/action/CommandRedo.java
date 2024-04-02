@@ -23,7 +23,6 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionController;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.data.PlayerData;
-import net.codedstingray.worldshaper.permission.PermissionUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,40 +32,39 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperWarningMessage;
+import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 import static net.codedstingray.worldshaper.permission.Permissions.EDIT_PERMISSIONS;
 
 @ParametersAreNonnullByDefault
 public class CommandRedo implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] strings) {
-        if (!(sender instanceof Player player)) {
-            sendWorldShaperErrorMessage(sender, "This command can only be used by a player.");
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        try {
+            Player player = playerFromCommandSender(sender);
+            checkPermissionsAnyOf(player, EDIT_PERMISSIONS);
+            verifyArgumentSize(args, 0, 0);
+
+            ActionController actionController = WorldShaper.getInstance().getActionController();
+            PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
+            ActionStack playerActionStack = playerData.getActionStack();
+
+            if (playerActionStack.isUndoStackEmpty()) {
+                sendWorldShaperWarningMessage(player, "No action to redo");
+                return true;
+            }
+
+            Action lastAction = playerActionStack.peekUndoStack();
+            if (!lastAction.worldUUID.equals(player.getWorld().getUID())) {
+                sendWorldShaperErrorMessage(player, "Cannot perform redo: the last undone action took place in a different world from the one you are in.");
+                return true;
+            }
+
+            actionController.redoAction(playerActionStack);
+
             return true;
+        } catch (CommandInputParseException e) {
+            return handleCommandInputParseException(sender, e);
         }
-
-        if (!PermissionUtil.hasAnyOf(player, EDIT_PERMISSIONS)) {
-            sendWorldShaperWarningMessage(player, "You do not have the permission to use this command.");
-            return true;
-        }
-
-        ActionController actionController = WorldShaper.getInstance().getActionController();
-        PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
-        ActionStack playerActionStack = playerData.getActionStack();
-
-        if (playerActionStack.isUndoStackEmpty()) {
-            sendWorldShaperWarningMessage(player, "No action to redo");
-            return true;
-        }
-
-        Action lastAction = playerActionStack.peekUndoStack();
-        if (!lastAction.worldUUID.equals(player.getWorld().getUID())) {
-            sendWorldShaperErrorMessage(player, "Cannot perform redo: the last undone action took place in a different world from the one you are in.");
-            return true;
-        }
-
-        actionController.redoAction(playerActionStack);
-
-        return true;
     }
 }
