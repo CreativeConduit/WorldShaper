@@ -86,3 +86,7 @@ commands:
     description: Pastes your clipboard content into the world
     usage: /<command>
     permission: worldshaper.builder.command.clipboard.paste
+  cut:
+    description: Cuts the contents of your current selection from the world
+    usage: /<command>
+    permission: worldshaper.builder.command.clipboard.cut
