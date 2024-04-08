@@ -31,6 +31,7 @@ public class Action implements Iterable<Action.ActionItem> {
     public Action(UUID worldUUID, List<ActionItem> actionItems) {
         this.worldUUID = worldUUID;
         this.actionItems = Collections.unmodifiableList(actionItems);
+        verifyActionItems();
     }
 
     private void verifyActionItems() {
