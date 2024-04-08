@@ -93,6 +93,16 @@ public class CuboidArea implements Area {
     }
 
     @Override
+    public Vector3ii getBoundingBoxMin() {
+        return minPos.toImmutable();
+    }
+
+    @Override
+    public Vector3ii getBoundingBoxMax() {
+        return maxPos.toImmutable();
+    }
+
+    @Override
     public void move(Direction direction, int distance) {
         minPos.add(direction.baseVector.scale(distance));
         maxPos.add(direction.baseVector.scale(distance));

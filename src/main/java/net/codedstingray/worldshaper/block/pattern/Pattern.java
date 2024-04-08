@@ -18,11 +18,15 @@
 
 package net.codedstingray.worldshaper.block.pattern;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
 import java.util.*;
 
 public class Pattern {
+
+    public static final Pattern ALL_AIR = builder().with(Bukkit.createBlockData(Material.AIR)).build();
 
     private final List<PatternEntry> entries;
     private final int totalWeight;

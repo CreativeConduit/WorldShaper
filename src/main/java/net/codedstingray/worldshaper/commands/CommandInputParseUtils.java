@@ -7,6 +7,7 @@ import net.codedstingray.worldshaper.block.mask.MaskParser;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
 import net.codedstingray.worldshaper.block.pattern.PatternParseException;
 import net.codedstingray.worldshaper.block.pattern.PatternParser;
+import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.permission.PermissionUtil;
 import org.bukkit.command.CommandSender;
@@ -70,6 +71,10 @@ public class CommandInputParseUtils {
         if (sender instanceof Player player && !PermissionUtil.hasAnyOf(player, permissions)) {
             throw new CommandInputParseException("You do not have the permission to use this command.", false, WarningLevel.WARNING);
         }
+    }
+
+    public static Clipboard getClipBoardFromPlayerData(PlayerData playerData) throws CommandInputParseException {
+        return playerData.getClipboard().orElseThrow(() -> new CommandInputParseException("You have nothing in your clipboard.", false, WarningLevel.WARNING));
     }
 
 

@@ -21,6 +21,7 @@ package net.codedstingray.worldshaper.area;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.world.Direction;
 
 import javax.annotation.Nonnull;
@@ -39,6 +40,9 @@ public interface Area extends Iterable<Vector3i> {
     void updateArea(Selection selection);
 
     boolean isInArea(Vector3i position);
+
+    Vector3ii getBoundingBoxMin();
+    Vector3ii getBoundingBoxMax();
 
     void move(Direction direction, int distance);
 

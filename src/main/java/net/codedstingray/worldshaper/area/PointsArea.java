@@ -23,6 +23,8 @@ import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3im;
 import net.codedstingray.worldshaper.util.world.Direction;
 
 import javax.annotation.Nonnull;
@@ -35,6 +37,9 @@ import java.util.List;
 public class PointsArea implements Area {
 
     public static final String NAME = "points";
+
+    private final Vector3im minPos = new Vector3im(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    private final Vector3im maxPos = new Vector3im(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
 
     private List<Vector3i> points =  Collections.emptyList();
 
@@ -58,6 +63,7 @@ public class PointsArea implements Area {
     @Override
     public void updateArea(Selection selection) {
         points = Collections.unmodifiableList(selection.getControlPositions());
+        recalculateBoundingBox();
     }
 
     @Override
@@ -66,9 +72,20 @@ public class PointsArea implements Area {
     }
 
     @Override
+    public Vector3ii getBoundingBoxMin() {
+        return minPos.toImmutable();
+    }
+
+    @Override
+    public Vector3ii getBoundingBoxMax() {
+        return maxPos.toImmutable();
+    }
+
+    @Override
     public void move(Direction direction, int distance) {
         Vector3i moveVector = direction.baseVector.scale(distance);
         points.forEach(point -> point.add(moveVector));
+        recalculateBoundingBox();
     }
 
     @Override
@@ -84,5 +101,23 @@ public class PointsArea implements Area {
     @Override
     public Iterator<Vector3i> iterator() {
         return points.iterator();
+    }
+
+    private void recalculateBoundingBox() {
+        minPos.set(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        maxPos.set(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+
+        points.forEach(point -> {
+            minPos.set(
+                    Math.min(minPos.getX(), point.getX()),
+                    Math.min(minPos.getY(), point.getY()),
+                    Math.min(minPos.getZ(), point.getZ())
+            );
+            maxPos.set(
+                    Math.max(maxPos.getX(), point.getX()),
+                    Math.max(maxPos.getY(), point.getY()),
+                    Math.max(maxPos.getZ(), point.getZ())
+            );
+        });
     }
 }
