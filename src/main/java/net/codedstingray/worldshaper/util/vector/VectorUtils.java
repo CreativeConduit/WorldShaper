@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 
 public class VectorUtils {
     public static final Vector3i ZERO = new Vector3ii(0, 0, 0);
+    public static final Vector3i ONE = new Vector3ii(1, 1, 1);
     public static final Vector3i BASE_X = new Vector3ii(1, 0, 0);
     public static final Vector3i BASE_Y = new Vector3ii(0, 1, 0);
     public static final Vector3i BASE_Z = new Vector3ii(0, 0, 1);

@@ -94,3 +94,7 @@ commands:
     description: Moves the content of your current selection
     usage: /<command> <distance> [direction]
     permission: worldshaper.builder.command.clipboard.move
+  stack:
+    description: Stacks your selection a selected amount of times in the given direction
+    usage: /<command> <amount> [direction]
+    permission: worldshaper.builder.command.clipboard.stack
