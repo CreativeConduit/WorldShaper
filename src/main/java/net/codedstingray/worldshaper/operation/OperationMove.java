@@ -1,12 +1,12 @@
 package net.codedstingray.worldshaper.operation;
 
 import net.codedstingray.worldshaper.action.Action;
+import net.codedstingray.worldshaper.action.Action.ActionItem;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
+import net.codedstingray.worldshaper.clipboard.ClipboardUtils;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
-import net.codedstingray.worldshaper.util.world.PositionedBlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,42 +34,29 @@ public class OperationMove implements Operation {
     public Action performOperation(Area area, World world) {
         Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToBlockVector(playerLocation));
 
-        List<Action.ActionItem> actionItems = new LinkedList<>();
+        List<ActionItem> actionItems = new LinkedList<>();
         Set<Location> pasteLocations = new HashSet<>();
         Vector3i offset = clipboard.getOriginPosition().add(LocationUtils.locationToBlockVector(originLocation));
 
-        clipboard.forEach(positionedBlockData -> createActionItem(world, offset, positionedBlockData).ifPresent(
+        clipboard.forEach(positionedBlockData -> ClipboardUtils.createActionItem(world, offset, positionedBlockData).ifPresent(
                 actionItem -> {
                     actionItems.add(actionItem);
                     pasteLocations.add(actionItem.location());
                 }));
 
-        for (Vector3i position: area) {
-            Location location = LocationUtils.vectorToLocation(position, world);
-            if (pasteLocations.contains(location)) {
-                continue;
-            }
-            Block block = world.getBlockAt(location);
-            BlockData from = block.getBlockData();
-
-            Action.ActionItem actionItem = new Action.ActionItem(location, from, Bukkit.createBlockData(Material.AIR));
-            actionItems.add(actionItem);
-        }
+        area.forEach(position -> cutBlockFromArea(world, pasteLocations, position).ifPresent(actionItems::add));
 
         return new Action(world.getUID(), actionItems);
     }
 
-    private static Optional<Action.ActionItem> createActionItem(World world, Vector3i offset, PositionedBlockData positionedBlockData) {
-        BlockData blockDataTo = positionedBlockData.blockData();
-        Vector3ii position = positionedBlockData.position();
-
-        if (blockDataTo == null) {
+    private Optional<ActionItem> cutBlockFromArea(World world, Set<Location> pasteLocations, Vector3i position) {
+        Location location = LocationUtils.vectorToLocation(position, world);
+        if (pasteLocations.contains(location)) {
             return Optional.empty();
         }
+        Block block = world.getBlockAt(location);
+        BlockData from = block.getBlockData();
 
-        Location blockLocation = LocationUtils.vectorToLocation(position.add(offset), world);
-        BlockData blockDataFrom = world.getBlockData(blockLocation);
-
-        return Optional.of(new Action.ActionItem(blockLocation, blockDataFrom, blockDataTo));
+        return Optional.of(new ActionItem(location, from, Bukkit.createBlockData(Material.AIR)));
     }
 }
