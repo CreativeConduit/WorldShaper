@@ -20,6 +20,7 @@ package net.codedstingray.worldshaper.area;
 
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
+import net.codedstingray.worldshaper.util.vector.VectorUtils;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.world.Direction;
@@ -43,6 +44,9 @@ public interface Area extends Iterable<Vector3i> {
 
     Vector3ii getBoundingBoxMin();
     Vector3ii getBoundingBoxMax();
+    default Vector3ii getBoundingBixSize() {
+        return getBoundingBoxMax().toMutable().sub(getBoundingBoxMin()).add(VectorUtils.ONE).toImmutable();
+    }
 
     void move(Direction direction, int distance);
 
