@@ -98,3 +98,7 @@ commands:
     description: Stacks your selection a selected amount of times in the given direction
     usage: /<command> <amount> [direction]
     permission: worldshaper.builder.command.clipboard.stack
+  rotate:
+    description: Rotates your clipboard by the give angle
+    usage: /<command> <angle>
+    permission: worldshaper.builder.command.clipboard.rotate

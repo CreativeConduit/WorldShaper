@@ -29,7 +29,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
 
     private final BlockData[][][] data;
 
-    private Clipboard(Vector3i originPosition, BlockData[][][] data) {
+    public Clipboard(Vector3i originPosition, BlockData[][][] data) {
         this.originPosition = originPosition.toImmutable();
         this.data = data;
     }

@@ -74,5 +74,6 @@ public class CommandInitializer {
         Objects.requireNonNull(plugin.getCommand("cut")).setExecutor(new CommandCut());
         Objects.requireNonNull(plugin.getCommand("move")).setExecutor(new CommandMove());
         Objects.requireNonNull(plugin.getCommand("stack")).setExecutor(new CommandStack());
+        Objects.requireNonNull(plugin.getCommand("rotate")).setExecutor(new CommandRotate());
     }
 }
