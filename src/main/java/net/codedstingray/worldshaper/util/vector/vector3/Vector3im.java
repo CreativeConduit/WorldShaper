@@ -20,6 +20,9 @@ package net.codedstingray.worldshaper.util.vector.vector3;
 
 import com.google.common.base.Objects;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class Vector3im implements Vector3i {
 
     public int x, y, z;

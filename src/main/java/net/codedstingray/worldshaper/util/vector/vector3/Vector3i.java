@@ -18,6 +18,9 @@
 
 package net.codedstingray.worldshaper.util.vector.vector3;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public interface Vector3i {
 
     int getX();
