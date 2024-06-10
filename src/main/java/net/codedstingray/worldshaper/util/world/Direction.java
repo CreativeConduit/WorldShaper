@@ -23,17 +23,19 @@ import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 
 public enum Direction {
 
-    NORTH(0, 0, -1),
-    EAST(1, 0, 0),
-    SOUTH(0, 0, 1),
-    WEST(-1, 0, 0),
-    UP(0, 1, 0),
-    DOWN(0, -1, 0);
+    NORTH(0, 0, -1, Axis.Z),
+    EAST(1, 0, 0, Axis.X),
+    SOUTH(0, 0, 1, Axis.Z),
+    WEST(-1, 0, 0, Axis.X),
+    UP(0, 1, 0, Axis.Y),
+    DOWN(0, -1, 0, Axis.Y);
 
     public final Vector3i baseVector;
+    public final Axis baseAxis;
 
-    Direction(int x, int y, int z) {
+    Direction(int x, int y, int z, Axis baseAxis) {
         this.baseVector = new Vector3ii(x, y, z);
+        this.baseAxis = baseAxis;
     }
 
     public static Direction calculateFromRelativeDirection(Direction base, String relativeDirection) {

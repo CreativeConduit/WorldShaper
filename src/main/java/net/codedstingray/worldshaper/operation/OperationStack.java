@@ -41,7 +41,7 @@ public class OperationStack implements Operation {
         for (int i = 1; i <= amount; i++) {
             Vector3i offset = direction.baseVector.toMutable()
                     .scale(distance * i)
-                    .add(clipboard.getOriginPosition())
+                    .add(clipboard.getOriginOffset())
                     .add(LocationUtils.locationToBlockVector(playerLocation));
 
             clipboard.forEach(positionedBlockData ->

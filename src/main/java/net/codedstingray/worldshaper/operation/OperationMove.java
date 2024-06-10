@@ -36,7 +36,7 @@ public class OperationMove implements Operation {
 
         List<ActionItem> actionItems = new LinkedList<>();
         Set<Location> pasteLocations = new HashSet<>();
-        Vector3i offset = clipboard.getOriginPosition().add(LocationUtils.locationToBlockVector(originLocation));
+        Vector3i offset = clipboard.getOriginOffset().add(LocationUtils.locationToBlockVector(originLocation));
 
         clipboard.forEach(positionedBlockData -> ClipboardUtils.createActionItem(world, offset, positionedBlockData).ifPresent(
                 actionItem -> {
