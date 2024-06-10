@@ -18,6 +18,8 @@
 
 package net.codedstingray.worldshaper.util.vector;
 
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3f;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3fi;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 
@@ -38,5 +40,27 @@ public class VectorUtils {
             case "down" -> new Vector3ii(0, -1, 0);
             default -> new Vector3ii(0, 0, 0);
         };
+    }
+
+
+    public static Vector3i createVector3i(Vector3i v) {
+        return new Vector3ii(v);
+    }
+
+    public static Vector3i createVector3i(Vector3f v) {
+        return new Vector3ii((int) v.getX(), (int) v.getY(), (int) v.getZ());
+    }
+
+
+    public static Vector3f createVector3f(Vector3f v) {
+        return new Vector3fi(v);
+    }
+
+    public static Vector3f createVector3f(Vector3i v) {
+        return new Vector3fi(v.getX(), v.getY(), v.getZ());
+    }
+
+    public static Vector3f createBlockVector3f(Vector3i v) {
+        return new Vector3fi(v.getX() + 0.5f, v.getY() + 0.5f, v.getZ() + 0.5f);
     }
 }

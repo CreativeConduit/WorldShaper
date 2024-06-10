@@ -3,10 +3,7 @@ package net.codedstingray.worldshaper.clipboard;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.util.transform.AffineTransform;
 import net.codedstingray.worldshaper.util.vector.VectorUtils;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3f;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3im;
+import net.codedstingray.worldshaper.util.vector.vector3.*;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import net.codedstingray.worldshaper.util.world.PositionedBlockData;
 import org.bukkit.World;
@@ -31,24 +28,36 @@ public class Clipboard implements Iterable<PositionedBlockData> {
     /**
      * Represents the lowest position of the bounding box. This position is relative to the origin point.
      */
-    private final Vector3i originOffset;
+    private final Vector3f originOffset;
+    private final Vector3i originBlockOffset;
     private final BlockData[][][] rawData;
 
     private final AffineTransform transform = new AffineTransform();
-    private TransformedBlockData[][][] transformedData; //TODO: change to PositionedBlockData
+    private TransformedBlockData[][][] transformedData;
 
-    private Vector3i appliedBlockDataBasePosition;
+    private Vector3i appliedOriginBlockOffset;
     private BlockData[][][] appliedBlockData;
 
+    private boolean wasTransformNotApplied = false;
 
-    public Clipboard(Vector3i originOffset, BlockData[][][] rawData) {
+
+    public Clipboard(Vector3f originOffset, Vector3i originBlockOffset, BlockData[][][] rawData) {
         this.originOffset = originOffset.toImmutable();
+        this.originBlockOffset = originBlockOffset;
         this.rawData = rawData;
     }
 
     @Nonnull
-    public Vector3ii getOriginOffset() {
+    public Vector3fi getOriginOffset() {
         return originOffset.toImmutable();
+    }
+
+    @Nonnull
+    public Vector3ii getAppliedOriginBlockOffset() {
+        if (appliedOriginBlockOffset == null) {
+            throw new IllegalStateException("Clipboard transform must be applied before the applied origin offset can be accessed. Call Clipboard#applyTransform() before querying the applied origin offset.");
+        }
+        return appliedOriginBlockOffset.toImmutable();
     }
 
     @Nonnull
@@ -72,11 +81,12 @@ public class Clipboard implements Iterable<PositionedBlockData> {
      * @return The clipboard instance
      */
     @Nonnull
-    public static Clipboard createFromArea(World world, Area area, Vector3i absoluteOriginPosition) {
+    public static Clipboard createFromArea(World world, Area area, Vector3f absoluteOriginPosition, Vector3i absoluteBlockOriginPosition) {
         Vector3i boundingBoxMin = area.getBoundingBoxMin();
         Vector3i boundingBoxMax = area.getBoundingBoxMax();
 
-        Vector3i basePosition = boundingBoxMin.toImmutable().sub(absoluteOriginPosition);
+        Vector3f originOffset = VectorUtils.createVector3f(boundingBoxMin).sub(absoluteOriginPosition);
+        Vector3i originBlockOffset = boundingBoxMin.sub(absoluteBlockOriginPosition);
 
         BlockData[][][] data = new BlockData
                 [boundingBoxMax.getX() - boundingBoxMin.getX() + 1]
@@ -90,7 +100,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
             data[dx][dy][dz] = world.getBlockData(LocationUtils.vectorToLocation(areaPosition, world));
         });
 
-        return new Clipboard(basePosition, data);
+        return new Clipboard(originOffset, originBlockOffset, data);
     }
 
     /**
@@ -105,17 +115,30 @@ public class Clipboard implements Iterable<PositionedBlockData> {
         transform.rotateX(x);
         transform.rotateY(y);
 
-        //TODO: clear cached transformed clipboard data
+        clearTransformedData();
+    }
+
+    private void clearTransformedData() {
+        transformedData = null;
+        appliedOriginBlockOffset = null;
+        appliedBlockData = null;
     }
 
     public void applyTransform() {
-        applyTransform(false);
+        applyTransform(false, false);
     }
 
-    public void applyTransform(boolean forceUpdate) {
-        if (forceUpdate || appliedBlockData == null) {
-            //TODO calculate
-            appliedBlockData = rawData;
+    public void applyTransform(boolean forceUpdate, boolean noApply) {
+        if (forceUpdate || wasTransformNotApplied != noApply || appliedBlockData == null) {
+            if (noApply) {
+                appliedBlockData = rawData;
+                appliedOriginBlockOffset = originBlockOffset;
+            } else {
+                //TODO calculate
+                appliedBlockData = rawData;
+                appliedOriginBlockOffset = originBlockOffset;
+            }
+            wasTransformNotApplied = noApply;
         }
     }
 
@@ -137,7 +160,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
             @Override
             public PositionedBlockData next() {
                 if(!hasNext()) throw new NoSuchElementException();
-                PositionedBlockData result = new PositionedBlockData(new Vector3ii(current), appliedBlockData[current.x][ current.y][ current.z]);
+                PositionedBlockData result = new PositionedBlockData(new Vector3ii(current), appliedBlockData[current.x][current.y][current.z]);
 
                 //move pointer
                 current.add(VectorUtils.BASE_X);

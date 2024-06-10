@@ -35,13 +35,14 @@ public class OperationStack implements Operation {
             case NORTH, SOUTH -> area.getBoundingBixSize().z;
         };
 
-        Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToBlockVector(playerLocation));
+        Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToEntityVector(playerLocation), LocationUtils.locationToBlockVector(playerLocation));
+        clipboard.applyTransform(false, true);
 
         List<Action.ActionItem> actionItems = new LinkedList<>();
         for (int i = 1; i <= amount; i++) {
             Vector3i offset = direction.baseVector.toMutable()
                     .scale(distance * i)
-                    .add(clipboard.getOriginOffset())
+                    .add(clipboard.getAppliedOriginBlockOffset())
                     .add(LocationUtils.locationToBlockVector(playerLocation));
 
             clipboard.forEach(positionedBlockData ->
