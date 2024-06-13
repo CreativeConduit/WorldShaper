@@ -18,15 +18,6 @@ import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COL
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
-//TODO: Clipboard holds Transform
-// Transform holds rotation
-// Rotate Command rotates Transform
-// Clipboard has apply() method
-//   apply() takes raw Clipboard Data and creates transformed data which is cached
-//   transform application will also call a rotateBlock()  function from a utility on every block to rotate the block
-//     rotateBlock() will check Block Type (Directional, MultipleFacing, etc) and handle them accordingly
-//   if any other modification is done (like scale / rotate), transformed data is discarded
-// Paste command calls apply() method and then pastes blocks relative to player
 @ParametersAreNonnullByDefault
 public class CommandRotate implements CommandExecutor {
 

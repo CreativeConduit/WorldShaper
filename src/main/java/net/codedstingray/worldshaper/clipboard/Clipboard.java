@@ -8,7 +8,6 @@ import net.codedstingray.worldshaper.util.vector.VectorUtils;
 import net.codedstingray.worldshaper.util.vector.vector3.*;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import net.codedstingray.worldshaper.util.world.PositionedBlockData;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 
@@ -43,9 +42,9 @@ public class Clipboard implements Iterable<PositionedBlockData> {
     private boolean wasTransformNotApplied = false;
 
 
-    public Clipboard(Vector3f originOffset, Vector3i originBlockOffset, BlockData[][][] rawData) {
-        this.originOffset = originOffset.toImmutable();
+    public Clipboard(Vector3i originBlockOffset, BlockData[][][] rawData) {
         this.originBlockOffset = originBlockOffset.toImmutable();
+        this.originOffset = VectorUtils.createVector3f(originBlockOffset)/*.add(0.5f, 0.5f, 0.5f)*/.toImmutable();
         this.rawData = rawData;
     }
 
@@ -87,7 +86,6 @@ public class Clipboard implements Iterable<PositionedBlockData> {
         Vector3i boundingBoxMin = area.getBoundingBoxMin();
         Vector3i boundingBoxMax = area.getBoundingBoxMax();
 
-        Vector3f originOffset = VectorUtils.createVector3f(boundingBoxMin).sub(absoluteOriginPosition).add(0.5f, 0.5f, 0.5f);
         Vector3i originBlockOffset = boundingBoxMin.sub(absoluteBlockOriginPosition);
 
         BlockData[][][] data = new BlockData
@@ -102,7 +100,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
             data[dx][dy][dz] = world.getBlockData(LocationUtils.vectorToLocation(areaPosition, world));
         });
 
-        return new Clipboard(originOffset, originBlockOffset, data);
+        return new Clipboard(originBlockOffset, data);
     }
 
     /**
@@ -114,9 +112,9 @@ public class Clipboard implements Iterable<PositionedBlockData> {
      */
     public void rotate(double x, double y, double z) {
         transform = transform
-                .rotateZ(z)
-                .rotateX(x)
-                .rotateY(y);
+                .rotateZ(-z)
+                .rotateX(-x)
+                .rotateY(-y);
 
         WorldShaper.getInstance().getLogger().info(transform.toString());
 
@@ -148,14 +146,6 @@ public class Clipboard implements Iterable<PositionedBlockData> {
                             Vector3f rotatedBlockCenterVector = transform.apply(blockCenterVector);
 
                             transformedData[x][y][z] = new TransformedBlockData(rawData[x][y][z], rotatedBlockCenterVector);
-
-                            if (x == 0 && y == 0 && z == 0) {
-                                WorldShaper.getInstance().getLogger().info("(0, 0, 0) Block position: " + rotatedBlockCenterVector);
-                            }
-
-                            if (x == rawData.length - 1 && y == rawData[0].length - 1 && z == rawData[0][0].length - 1) {
-                                WorldShaper.getInstance().getLogger().info("(max, max, max) Block position: " + rotatedBlockCenterVector);
-                            }
                         }
                     }
                 }
@@ -192,11 +182,12 @@ public class Clipboard implements Iterable<PositionedBlockData> {
 
                 Transform inverse = transform.inverse();
 
+                Vector3f adjustment = inverse.apply(VectorUtils.createVector3f(VectorUtils.ONE).scale(-1));
+
                 for (int x = 0; x < appliedBlockData.length; x++) {
                     for (int y = 0; y < appliedBlockData[0].length; y++) {
                         for (int z = 0; z < appliedBlockData[0][0].length; z++) {
-                            Vector3f centerPosition = VectorUtils.createVector3f(appliedTransformMinPosition.add(x, y, z))
-                                    .add(0.5f, 0.5f, 0.5f);
+                            Vector3f centerPosition = VectorUtils.createVector3f(appliedTransformMinPosition.add(x, y, z));
 
                             Vector3f v = centerPosition.sub(transformedOriginOffset);
                             Vector3f blockCenterPositionInTransformedBlockData = inverse.apply(v);
@@ -211,8 +202,8 @@ public class Clipboard implements Iterable<PositionedBlockData> {
 
                                 BlockData foundBlockData = transformedData[blockX][blockY][blockZ].blockData;
                                 appliedBlockData[x][y][z] = foundBlockData;
-                            } else {
-                                appliedBlockData[x][y][z] = Bukkit.createBlockData("glass");
+//                            } else {
+//                                appliedBlockData[x][y][z] = Bukkit.createBlockData("glass");
                             }
 
                         }
