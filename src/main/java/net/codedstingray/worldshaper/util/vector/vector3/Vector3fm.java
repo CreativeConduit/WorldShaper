@@ -124,4 +124,9 @@ public class Vector3fm implements Vector3f {
     public Vector3fi toImmutableCopy() {
         return new Vector3fi(this);
     }
+
+    @Override
+    public String toString() {
+        return "Vector3fm[" + x + ", " + y + ", " + z + "]";
+    }
 }

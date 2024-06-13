@@ -157,4 +157,9 @@ public class Vector3ii implements Vector3i {
     public int hashCode() {
         return Objects.hashCode(x, y, z);
     }
+
+    @Override
+    public String toString() {
+        return "Vector3ii[" + x + ", " + y + ", " + z + "]";
+    }
 }

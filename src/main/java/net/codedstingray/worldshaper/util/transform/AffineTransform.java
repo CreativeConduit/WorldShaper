@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.util.transform;
 
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3f;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3fi;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -15,7 +16,6 @@ public record AffineTransform(
 ) implements Transform {
 
     public AffineTransform() {
-        // init to identity matrix
         this(
                 1, 0, 0, 0,
                 0, 1, 0, 0,
@@ -43,7 +43,7 @@ public record AffineTransform(
 
     @Override
     public Vector3f apply(Vector3f v) {
-        return v.set(
+        return new Vector3fi(
                 (float) (v.getX() * m00 + v.getY() * m01 + v.getZ() * m02 + m03),
                 (float) (v.getX() * m10 + v.getY() * m11 + v.getZ() * m12 + m13),
                 (float) (v.getX() * m20 + v.getY() * m21 + v.getZ() * m22 + m23));

@@ -32,7 +32,9 @@ public class OperationMove implements Operation {
 
     @Override
     public Action performOperation(Area area, World world) {
-        Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToEntityVector(playerLocation), LocationUtils.locationToBlockVector(playerLocation));
+        Clipboard clipboard = Clipboard.createFromArea(world, area,
+                LocationUtils.locationToEntityVector(playerLocation),
+                LocationUtils.locationToBlockVector(playerLocation));
         clipboard.applyTransform(false, true);
 
         List<ActionItem> actionItems = new LinkedList<>();

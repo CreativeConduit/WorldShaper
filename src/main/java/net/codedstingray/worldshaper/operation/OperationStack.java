@@ -35,7 +35,9 @@ public class OperationStack implements Operation {
             case NORTH, SOUTH -> area.getBoundingBixSize().z;
         };
 
-        Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToEntityVector(playerLocation), LocationUtils.locationToBlockVector(playerLocation));
+        Clipboard clipboard = Clipboard.createFromArea(world, area,
+                LocationUtils.locationToEntityVector(playerLocation),
+                LocationUtils.locationToBlockVector(playerLocation));
         clipboard.applyTransform(false, true);
 
         List<Action.ActionItem> actionItems = new LinkedList<>();

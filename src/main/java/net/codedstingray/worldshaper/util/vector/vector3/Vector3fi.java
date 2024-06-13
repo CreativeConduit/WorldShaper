@@ -130,4 +130,9 @@ public class Vector3fi implements Vector3f {
     public int hashCode() {
         return Objects.hashCode(x, y, z);
     }
+
+    @Override
+    public String toString() {
+        return "Vector3fi[" + x + ", " + y + ", " + z + "]";
+    }
 }

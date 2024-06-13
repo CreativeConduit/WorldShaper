@@ -1,11 +1,14 @@
 package net.codedstingray.worldshaper.clipboard;
 
+import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.util.transform.AffineTransform;
+import net.codedstingray.worldshaper.util.transform.Transform;
 import net.codedstingray.worldshaper.util.vector.VectorUtils;
 import net.codedstingray.worldshaper.util.vector.vector3.*;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import net.codedstingray.worldshaper.util.world.PositionedBlockData;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 
@@ -28,12 +31,11 @@ public class Clipboard implements Iterable<PositionedBlockData> {
     /**
      * Represents the lowest position of the bounding box. This position is relative to the origin point.
      */
-    private final Vector3f originOffset;
+    private final Vector3fi originOffset;
     private final Vector3i originBlockOffset;
     private final BlockData[][][] rawData;
 
-    private final AffineTransform transform = new AffineTransform();
-    private TransformedBlockData[][][] transformedData;
+    private AffineTransform transform = new AffineTransform();
 
     private Vector3i appliedOriginBlockOffset;
     private BlockData[][][] appliedBlockData;
@@ -43,7 +45,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
 
     public Clipboard(Vector3f originOffset, Vector3i originBlockOffset, BlockData[][][] rawData) {
         this.originOffset = originOffset.toImmutable();
-        this.originBlockOffset = originBlockOffset;
+        this.originBlockOffset = originBlockOffset.toImmutable();
         this.rawData = rawData;
     }
 
@@ -85,7 +87,7 @@ public class Clipboard implements Iterable<PositionedBlockData> {
         Vector3i boundingBoxMin = area.getBoundingBoxMin();
         Vector3i boundingBoxMax = area.getBoundingBoxMax();
 
-        Vector3f originOffset = VectorUtils.createVector3f(boundingBoxMin).sub(absoluteOriginPosition);
+        Vector3f originOffset = VectorUtils.createVector3f(boundingBoxMin).sub(absoluteOriginPosition).add(0.5f, 0.5f, 0.5f);
         Vector3i originBlockOffset = boundingBoxMin.sub(absoluteBlockOriginPosition);
 
         BlockData[][][] data = new BlockData
@@ -111,15 +113,17 @@ public class Clipboard implements Iterable<PositionedBlockData> {
      * @param z The rotation around the z-axis
      */
     public void rotate(double x, double y, double z) {
-        transform.rotateZ(z);
-        transform.rotateX(x);
-        transform.rotateY(y);
+        transform = transform
+                .rotateZ(z)
+                .rotateX(x)
+                .rotateY(y);
+
+        WorldShaper.getInstance().getLogger().info(transform.toString());
 
         clearTransformedData();
     }
 
     private void clearTransformedData() {
-        transformedData = null;
         appliedOriginBlockOffset = null;
         appliedBlockData = null;
     }
@@ -134,10 +138,88 @@ public class Clipboard implements Iterable<PositionedBlockData> {
                 appliedBlockData = rawData;
                 appliedOriginBlockOffset = originBlockOffset;
             } else {
-                //TODO calculate
-                appliedBlockData = rawData;
-                appliedOriginBlockOffset = originBlockOffset;
+                TransformedBlockData[][][] transformedData = new TransformedBlockData[rawData.length][rawData[0].length][rawData[0][0].length];
+
+                // calculate transformed center points for all blocks in the raw clipboard data
+                for (int x = 0; x < rawData.length; x++) {
+                    for (int y = 0; y < rawData[0].length; y++) {
+                        for (int z = 0; z < rawData[0][0].length; z++) {
+                            Vector3f blockCenterVector = new Vector3fm(x + 0.5f, y + 0.5f, z + 0.5f).add(originOffset);
+                            Vector3f rotatedBlockCenterVector = transform.apply(blockCenterVector);
+
+                            transformedData[x][y][z] = new TransformedBlockData(rawData[x][y][z], rotatedBlockCenterVector);
+
+                            if (x == 0 && y == 0 && z == 0) {
+                                WorldShaper.getInstance().getLogger().info("(0, 0, 0) Block position: " + rotatedBlockCenterVector);
+                            }
+
+                            if (x == rawData.length - 1 && y == rawData[0].length - 1 && z == rawData[0][0].length - 1) {
+                                WorldShaper.getInstance().getLogger().info("(max, max, max) Block position: " + rotatedBlockCenterVector);
+                            }
+                        }
+                    }
+                }
+
+                Vector3f transformedOriginOffset = transform.apply(originOffset);
+
+                // calculate transformed corners
+                Vector3f[] corners = {
+                        transformedOriginOffset,
+
+                        transform.apply(new Vector3fi(originOffset.x + rawData.length - 1, originOffset.y, originOffset.z)),
+                        transform.apply(new Vector3fi(originOffset.x, originOffset.y + rawData[0].length - 1, originOffset.z)),
+                        transform.apply(new Vector3fi(originOffset.x, originOffset.y, originOffset.z + rawData[0][0].length - 1)),
+
+                        transform.apply(new Vector3fi(originOffset.x, originOffset.y + rawData[0].length - 1, originOffset.z + rawData[0][0].length - 1)),
+                        transform.apply(new Vector3fi(originOffset.x + rawData.length - 1, originOffset.y, originOffset.z + rawData[0][0].length - 1)),
+                        transform.apply(new Vector3fi(originOffset.x + rawData.length - 1, originOffset.y + rawData[0].length - 1, originOffset.z)),
+
+                        transform.apply(new Vector3fi(originOffset.x + rawData.length - 1, originOffset.y + rawData[0].length - 1, originOffset.z + rawData[0][0].length - 1))
+                };
+
+                // calculate bounding box for applied data
+                Vector3i appliedTransformMinPosition = VectorUtils.roundToVector3i(VectorUtils.getBoundingBoxMinVector(corners));
+                Vector3i appliedTransformMaxPosition = VectorUtils.roundToVector3i(VectorUtils.getBoundingBoxMaxVector(corners)).add(VectorUtils.ONE);
+
+                appliedOriginBlockOffset = appliedTransformMinPosition;
+
+                // calculate applied block data
+                appliedBlockData = new BlockData
+                        [appliedTransformMaxPosition.getX() - appliedTransformMinPosition.getX()]
+                        [appliedTransformMaxPosition.getY() - appliedTransformMinPosition.getY()]
+                        [appliedTransformMaxPosition.getZ() - appliedTransformMinPosition.getZ()];
+
+
+                Transform inverse = transform.inverse();
+
+                for (int x = 0; x < appliedBlockData.length; x++) {
+                    for (int y = 0; y < appliedBlockData[0].length; y++) {
+                        for (int z = 0; z < appliedBlockData[0][0].length; z++) {
+                            Vector3f centerPosition = VectorUtils.createVector3f(appliedTransformMinPosition.add(x, y, z))
+                                    .add(0.5f, 0.5f, 0.5f);
+
+                            Vector3f v = centerPosition.sub(transformedOriginOffset);
+                            Vector3f blockCenterPositionInTransformedBlockData = inverse.apply(v);
+
+                            int blockX = (int) blockCenterPositionInTransformedBlockData.getX();
+                            int blockY = (int) blockCenterPositionInTransformedBlockData.getY();
+                            int blockZ = (int) blockCenterPositionInTransformedBlockData.getZ();
+
+                            if (blockX >= 0 && blockX < transformedData.length &&
+                                    blockY >= 0 && blockY < transformedData[0].length &&
+                                    blockZ >= 0 && blockZ < transformedData[0][0].length) {
+
+                                BlockData foundBlockData = transformedData[blockX][blockY][blockZ].blockData;
+                                appliedBlockData[x][y][z] = foundBlockData;
+                            } else {
+                                appliedBlockData[x][y][z] = Bukkit.createBlockData("glass");
+                            }
+
+                        }
+                    }
+                }
             }
+
             wasTransformNotApplied = noApply;
         }
     }

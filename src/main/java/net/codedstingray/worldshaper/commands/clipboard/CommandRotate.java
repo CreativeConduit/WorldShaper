@@ -1,6 +1,7 @@
 package net.codedstingray.worldshaper.commands.clipboard;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.chat.TextColor;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.commands.CommandInputParseUtils;
 import net.codedstingray.worldshaper.data.PlayerData;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
+import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 //TODO: Clipboard holds Transform
@@ -42,6 +45,9 @@ public class CommandRotate implements CommandExecutor {
             Vector3i bv = axis.baseVector;
 
             clipboard.rotate(bv.getX() * rotationValue, bv.getY() * rotationValue, bv.getZ() * rotationValue);
+
+            sendWorldShaperMessage(player, "Clipboard rotated by " + ACCENT_COLOR + rotationValue + "\u00B0" +
+                    TextColor.RESET+ " on the " + ACCENT_COLOR + axis.toString().toLowerCase() + TextColor.RESET + "-axis");
 
             return true;
         } catch (CommandInputParseException e) {

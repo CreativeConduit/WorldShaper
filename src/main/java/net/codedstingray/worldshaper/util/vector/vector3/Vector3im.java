@@ -166,4 +166,10 @@ public class Vector3im implements Vector3i {
     public int hashCode() {
         return Objects.hashCode(x, y, z);
     }
+
+
+    @Override
+    public String toString() {
+        return "Vector3im[" + x + ", " + y + ", " + z + "]";
+    }
 }

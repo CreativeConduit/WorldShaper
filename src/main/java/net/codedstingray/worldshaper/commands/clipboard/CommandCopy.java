@@ -31,8 +31,9 @@ public class CommandCopy implements CommandExecutor {
 
             UUID worldUUID = getWorldAndCheckWithSelection(player, playerData);
 
-            playerData.setClipboard(Clipboard.createFromArea(Objects.requireNonNull(Bukkit.getWorld(worldUUID)),
-                    area, LocationUtils.locationToEntityVector(player.getLocation()), LocationUtils.locationToBlockVector(player.getLocation())));
+            playerData.setClipboard(Clipboard.createFromArea(Objects.requireNonNull(Bukkit.getWorld(worldUUID)), area,
+                    LocationUtils.locationToEntityVector(player.getLocation()),
+                    LocationUtils.locationToBlockVector(player.getLocation())));
 
             return true;
         } catch (CommandInputParseException e) {
