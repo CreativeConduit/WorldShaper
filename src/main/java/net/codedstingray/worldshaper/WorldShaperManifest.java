@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editor for Minecraft
+ * Copyright (C) 2023-2024 CodedStingray
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

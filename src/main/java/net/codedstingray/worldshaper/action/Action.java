@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editor for Minecraft
+ * Copyright (C) 2023-2024 CodedStingray
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,12 @@ import org.bukkit.block.data.BlockData;
 
 import java.util.*;
 
+/**
+ * An Action is a collection of ActionItems.<br>
+ * An {@link ActionItem} is used to track a change on a single block.<br>
+ * Thus, an Action is used to track changes over a set of blocks. These are used by the {@link ActionController} to
+ * apply a change to a world or to undo a change.
+ */
 public class Action implements Iterable<Action.ActionItem> {
 
     public final UUID worldUUID;
@@ -48,6 +54,13 @@ public class Action implements Iterable<Action.ActionItem> {
         return actionItems.iterator();
     }
 
+    /**
+     * Represents a block change at a specific location.
+     *
+     * @param location The location of the change
+     * @param from The {@link BlockData} before the change
+     * @param to The {@link BlockData} after the change
+     */
     public record ActionItem(Location location, BlockData from, BlockData to) {
         @Override
         public String toString() {

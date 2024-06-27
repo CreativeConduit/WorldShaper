@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editor for Minecraft
+ * Copyright (C) 2023-2024 CodedStingray
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,11 @@ package net.codedstingray.worldshaper.action;
 
 import java.util.Stack;
 
+/**
+ * The ActionStack is a data structure that holds 2 stacks of {@link Action Actions}:<br>
+ * - The main stack represents performed actions that can be undone<br>
+ * - The undo-stack represents undone actions that can be redone
+ */
 public class ActionStack {
 
     private final Stack<Action> performedActions = new Stack<>();
