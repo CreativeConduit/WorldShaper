@@ -38,7 +38,7 @@ public class CommandCut implements CommandExecutor {
             UUID worldUUID = getWorldAndCheckWithSelection(player, playerData);
 
             playerData.setClipboard(Clipboard.createFromArea(Objects.requireNonNull(Bukkit.getWorld(worldUUID)),
-                    area, LocationUtils.locationToBlockVector(player.getLocation())));
+                    area, LocationUtils.locationToEntityVector(player.getLocation()), LocationUtils.locationToBlockVector(player.getLocation())));
 
             World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
             Operation operation = new OperationPlace(Pattern.ALL_AIR);

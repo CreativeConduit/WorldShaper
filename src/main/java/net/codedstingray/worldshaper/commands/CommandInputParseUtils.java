@@ -10,9 +10,12 @@ import net.codedstingray.worldshaper.block.pattern.PatternParser;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.permission.PermissionUtil;
+import net.codedstingray.worldshaper.util.math.MathUtils;
+import net.codedstingray.worldshaper.util.world.Axis;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.*;
@@ -75,6 +78,24 @@ public class CommandInputParseUtils {
 
     public static Clipboard getClipBoardFromPlayerData(PlayerData playerData) throws CommandInputParseException {
         return playerData.getClipboard().orElseThrow(() -> new CommandInputParseException("You have nothing in your clipboard.", false, WarningLevel.WARNING));
+    }
+
+    public static int getRotationFromArgument(String argument) throws CommandInputParseException {
+        try {
+            int rotationValue = Integer.parseInt(argument);
+            return MathUtils.posMod(rotationValue,360);
+        } catch (NumberFormatException e) {
+            throw new CommandInputParseException("Rotation must be a whole number.", true, WarningLevel.ERROR);
+        }
+    }
+
+    public static Axis getAxisFromArgument(String argument) throws CommandInputParseException {
+        Optional<Axis> axis = Axis.fromString(argument);
+        if (axis.isPresent()) {
+            return axis.get();
+        } else {
+            throw new CommandInputParseException("Axis must be \"x\", \"y\" or \"z\".", false, WarningLevel.ERROR);
+        }
     }
 
 

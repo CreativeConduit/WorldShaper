@@ -18,12 +18,12 @@
 
 package net.codedstingray.worldshaper.util.world;
 
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3f;
+import net.codedstingray.worldshaper.util.vector.vector3.Vector3fi;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -39,12 +39,11 @@ public class LocationUtils {
         );
     }
 
-    //TODO: create new Vector type and switch to it
-    public static Vector3d locationToEntityVector(Location location) {
-        return new Vector3d(
-                location.getX(),
-                location.getY(),
-                location.getZ()
+    public static Vector3f locationToEntityVector(Location location) {
+        return new Vector3fi(
+                (float) location.getX(),
+                (float) location.getY(),
+                (float) location.getZ()
         );
     }
 
@@ -57,13 +56,12 @@ public class LocationUtils {
         );
     }
 
-    //TODO: create new Vector type and switch to it
-    public static Location vectorToLocation(Vector3dc vector, @Nullable World world) {
+    public static Location vectorToLocation(Vector3f vector, @Nullable World world) {
         return new Location(
                 world,
-                vector.x(),
-                vector.y(),
-                vector.z()
+                vector.getX(),
+                vector.getY(),
+                vector.getZ()
         );
     }
 }

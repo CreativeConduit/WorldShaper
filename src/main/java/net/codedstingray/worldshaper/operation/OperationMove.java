@@ -32,11 +32,14 @@ public class OperationMove implements Operation {
 
     @Override
     public Action performOperation(Area area, World world) {
-        Clipboard clipboard = Clipboard.createFromArea(world, area, LocationUtils.locationToBlockVector(playerLocation));
+        Clipboard clipboard = Clipboard.createFromArea(world, area,
+                LocationUtils.locationToEntityVector(playerLocation),
+                LocationUtils.locationToBlockVector(playerLocation));
+        clipboard.applyTransform(false, true);
 
         List<ActionItem> actionItems = new LinkedList<>();
         Set<Location> pasteLocations = new HashSet<>();
-        Vector3i offset = clipboard.getOriginPosition().add(LocationUtils.locationToBlockVector(originLocation));
+        Vector3i offset = clipboard.getAppliedOriginBlockOffset().add(LocationUtils.locationToBlockVector(originLocation));
 
         clipboard.forEach(positionedBlockData -> ClipboardUtils.createActionItem(world, offset, positionedBlockData).ifPresent(
                 actionItem -> {

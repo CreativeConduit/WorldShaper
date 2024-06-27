@@ -27,8 +27,10 @@ public class OperationPaste implements Operation {
 
     @Override
     public Action performOperation(Area area, World world) {
+        clipboard.applyTransform();
+
         List<ActionItem> actionItems = new LinkedList<>();
-        Vector3i offset = clipboard.getOriginPosition().add(LocationUtils.locationToBlockVector(playerLocation));
+        Vector3i offset = clipboard.getAppliedOriginBlockOffset().add(LocationUtils.locationToBlockVector(playerLocation));
 
         clipboard.forEach(positionedBlockData ->
                 ClipboardUtils.createActionItem(world, offset, positionedBlockData).ifPresent(actionItems::add));
