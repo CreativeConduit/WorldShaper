@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,9 @@
 
 package net.codedstingray.worldshaper.block.mask;
 
+/**
+ * An exception indicating that the parsing of a {@link String} to a {@link Mask} failed.
+ */
 public class MaskParseException extends Exception {
 
     static final long serialVersionUID = -5699890126207895788L;

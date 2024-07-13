@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,18 @@ package net.codedstingray.worldshaper.block.mask;
 
 import org.bukkit.Material;
 
+/**
+ * Parser used for parsing string representations of masks into {@link Mask} instances.
+ */
 public class MaskParser {
 
+    /**
+     * Parses the given string into a mask.
+     *
+     * @param maskString The {@link String} to be parsed
+     * @return The parsed {@link Mask}
+     * @throws MaskParseException if the string could not be parsed
+     */
     public static Mask parseMask(String maskString) throws MaskParseException {
         String[] maskEntryStrings = maskString.split(",");
 
