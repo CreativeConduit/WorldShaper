@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * An area that directly mirrors the player's {@link Selection}. In other words, the blocks described by this area are
+ * identical to the points in the player's selection.
+ */
 @ParametersAreNonnullByDefault
 public class PointsArea implements Area {
 

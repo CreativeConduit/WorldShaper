@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,11 @@
 
 package net.codedstingray.worldshaper.area;
 
+/**
+ * Implementation of the {@link AreaFactory} interface that creates {@link CuboidArea CuboidAreas}.
+ */
 public class CuboidAreaFactory implements AreaFactory {
+
     @Override
     public Area create() {
         return new CuboidArea();

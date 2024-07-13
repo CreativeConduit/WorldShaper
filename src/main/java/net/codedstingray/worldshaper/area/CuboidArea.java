@@ -1,6 +1,6 @@
 /*
- * WorldShaper: a powerful in-game map editor for Minecraft
- * Copyright (C) 2023 CodedStingray
+ * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * An area in the form of a cuboid. This area uses the first 2 points in the player's {@link Selection} as diagonally
+ * opposite corners of the cuboid.
+ */
 @ParametersAreNonnullByDefault
 public class CuboidArea implements Area {
 
