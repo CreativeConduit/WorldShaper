@@ -31,5 +31,5 @@ public class WorldShaperManifest {
     /**
      * The native Minecraft version of the plugin.
      */
-    public static final String NATIVE_MC_VERSION = "1.20.4";
+    public static final String NATIVE_MC_VERSION = "1.21";
 }
