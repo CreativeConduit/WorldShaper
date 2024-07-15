@@ -32,4 +32,9 @@ public class WorldShaperManifest {
      * The native Minecraft version of the plugin.
      */
     public static final String NATIVE_MC_VERSION = "1.21";
+
+    /**
+     * The native WorldEdit version of the plugin.
+     */
+    public static final String NATIVE_WE_VERSION = "7.3.4";
 }

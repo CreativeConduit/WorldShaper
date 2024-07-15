@@ -150,6 +150,9 @@ public class ChatMessageFormatter {
         messages.add("Native Minecraft version is " +
                 ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
                 TextColor.RESET + ".");
+        messages.add("Native WorldEdit version is " +
+                ACCENT_COLOR + WorldShaperManifest.NATIVE_WE_VERSION +
+                TextColor.RESET + ".");
         messages.add("");
         messages.add("Created by " + ACCENT_COLOR + "CreativeConduit");
         messages.add("Join our Discord at " + ACCENT_COLOR + TextColor.UNDERLINE + "https://discord.gg/BDbVGBmCY7");

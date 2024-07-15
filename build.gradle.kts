@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "net.codedstingray"
+group = "net.creative-conduit"
 version = "0.2-SNAPSHOT"
 
 repositories {
