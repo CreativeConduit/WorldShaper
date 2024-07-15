@@ -133,10 +133,9 @@ public class ChatMessageFormatter {
                 TextColor.RESET + " version " +
                 ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
                 TextColor.RESET + ".");
-        messages.add("Native Minecraft version is " +
-                ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
-                TextColor.RESET + ".");
-        messages.add("Created by " + ACCENT_COLOR + "CodedStingray");
+        messages.add("");
+        messages.add("Created by " + ACCENT_COLOR + "CreativeConduit");
+        messages.add("Join our Discord at " + ACCENT_COLOR + TextColor.UNDERLINE + "https://discord.gg/BDbVGBmCY7");
 
         return groupedMessages("WorldShaper", messages);
     }
@@ -151,9 +150,12 @@ public class ChatMessageFormatter {
         messages.add("Native Minecraft version is " +
                 ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
                 TextColor.RESET + ".");
-        messages.add("Created by " + ACCENT_COLOR + "CodedStingray");
-        messages.add("Feel free to check out my YouTube channel at");
-        messages.add(ACCENT_COLOR + TextColor.UNDERLINE + "https://youtube.com/@CodedStingray");
+        messages.add("Native WorldEdit version is " +
+                ACCENT_COLOR + WorldShaperManifest.NATIVE_WE_VERSION +
+                TextColor.RESET + ".");
+        messages.add("");
+        messages.add("Created by " + ACCENT_COLOR + "CreativeConduit");
+        messages.add("Join our Discord at " + ACCENT_COLOR + TextColor.UNDERLINE + "https://discord.gg/BDbVGBmCY7");
 
         return groupedMessages("WorldShaper", messages);
     }
