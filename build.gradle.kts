@@ -17,6 +17,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly("com.sk89q.worldedit:worldedit-core:7.3.4")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.4")
 }
 
 tasks.test {
