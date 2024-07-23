@@ -21,32 +21,18 @@ package net.codedstingray.worldshaper.commands.area.operations;
 import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.pattern.Pattern;
-import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.session.SessionKey;
-import com.sk89q.worldedit.session.SessionManager;
-import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
-import com.sk89q.worldedit.world.block.BlockTypes;
-import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.action.Action;
-import net.codedstingray.worldshaper.action.ActionStack;
-import net.codedstingray.worldshaper.area.Area;
-import net.codedstingray.worldshaper.data.PlayerData;
-import net.codedstingray.worldshaper.operation.OperationPlace;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
+import net.codedstingray.worldshaper.block.pattern.Pattern;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.Optional;
 
 import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
@@ -60,30 +46,22 @@ public class CommandSet implements CommandExecutor {
             Player player = playerFromCommandSender(sender);
             verifyArgumentSize(args, 1, 1);
 
-//            PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
-//            Area area = getAreaFromPlayerData(playerData);
-//
-//            UUID worldUUID = getWorldAndCheckWithSelection(player, playerData);
-//
-//            Pattern pattern = getPatternFromArgument(args[0]);
-//
-//
-//            World world = Objects.requireNonNull(Bukkit.getWorld(worldUUID));
-//            Operation operation = new OperationPlace(pattern);
-//            Action action = operation.performOperation(area, world);
-//
-//            ActionStack playerActionStack = playerData.getActionStack();
-//            WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
-
             BukkitPlayer wePlayer = BukkitAdapter.adapt(player);
             LocalSession localSession = WorldEdit.getInstance().getSessionManager().get(wePlayer);
 
             Region selection = localSession.getSelection();
 
             try (EditSession editSession = WorldEdit.getInstance().newEditSession(localSession.getSelectionWorld())) {
+                Pattern pattern = getPatternFromArgument(args[0]);
+
                 for (BlockVector3 v: selection) {
-                    //TODO: set proper blocks from pattern
-                    editSession.setBlock(v, BlockTypes.STONE.getDefaultState());
+                    Optional<BlockData> toOpt = pattern.getRandomBlockData();
+                    if (toOpt.isEmpty()) {
+                        continue;
+                    }
+
+                    BlockState blockState = BukkitAdapter.adapt(toOpt.get());
+                    editSession.setBlock(v, blockState);
                 }
                 localSession.remember(editSession);
             } catch (MaxChangedBlocksException e) {
