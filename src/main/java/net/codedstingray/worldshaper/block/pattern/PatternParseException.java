@@ -1,5 +1,5 @@
 /*
- * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * WorldShaper, a powerful in-game map editing and terraforming tool for Minecraft.
  * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,12 @@
 
 package net.codedstingray.worldshaper.block.pattern;
 
+import java.io.Serial;
+
 public class PatternParseException extends Exception {
 
-    static final long serialVersionUID = 4897000110446767803L;
+    @Serial
+    private static final long serialVersionUID = 4897000110446767803L;
 
     public PatternParseException() {
         super();

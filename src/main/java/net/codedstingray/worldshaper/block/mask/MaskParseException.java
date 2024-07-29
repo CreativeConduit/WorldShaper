@@ -1,5 +1,5 @@
 /*
- * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * WorldShaper, a powerful in-game map editing and terraforming tool for Minecraft.
  * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,12 +18,15 @@
 
 package net.codedstingray.worldshaper.block.mask;
 
+import java.io.Serial;
+
 /**
  * An exception indicating that the parsing of a {@link String} to a {@link Mask} failed.
  */
 public class MaskParseException extends Exception {
 
-    static final long serialVersionUID = -5699890126207895788L;
+    @Serial
+    private static final long serialVersionUID = -5699890126207895788L;
 
     public MaskParseException() {
         super();

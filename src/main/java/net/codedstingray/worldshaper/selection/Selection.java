@@ -1,5 +1,5 @@
 /*
- * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * WorldShaper, a powerful in-game map editing and terraforming tool for Minecraft.
  * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
@@ -128,8 +128,8 @@ public class Selection implements Iterable<Vector3i> {
             return false;
         }
         controlPositions.set(index, null);
-        while (controlPositions.size() > 0 && controlPositions.get(controlPositions.size() - 1) == null) {
-            controlPositions.remove(controlPositions.size() - 1);
+        while (!controlPositions.isEmpty() && controlPositions.getLast() == null) {
+            controlPositions.removeLast();
         }
 
         onSelectionModified();
