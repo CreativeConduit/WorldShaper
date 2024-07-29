@@ -1,5 +1,5 @@
 /*
- * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * WorldShaper, a powerful in-game map editing and terraforming tool for Minecraft.
  * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,9 +32,4 @@ public class WorldShaperManifest {
      * The native Minecraft version of the plugin.
      */
     public static final String NATIVE_MC_VERSION = "1.21";
-
-    /**
-     * The native WorldEdit version of the plugin.
-     */
-    public static final String NATIVE_WE_VERSION = "7.3.4";
 }

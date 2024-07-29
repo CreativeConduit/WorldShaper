@@ -1,5 +1,5 @@
 /*
- * WorldShaper, a powerful in-game map editing addon for WorldEdit
+ * WorldShaper, a powerful in-game map editing and terraforming tool for Minecraft.
  * Copyright (C) 2023-2024 CreativeConduit
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ public class Pattern {
     private final int totalWeight;
 
     private Pattern(List<PatternEntry> entries, int totalWeight) {
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             throw new IllegalArgumentException("Pattern must have at least one entry");
         }
         this.entries = new ArrayList<>(entries);
@@ -87,7 +87,7 @@ public class Pattern {
         }
 
         public Pattern build() {
-            if (entries.size() == 0) {
+            if (entries.isEmpty()) {
                 throw new IllegalStateException("Pattern Builder must have at least one entry");
             }
             int totalWeight = entries.stream().mapToInt(entry -> entry.percentage).sum();
