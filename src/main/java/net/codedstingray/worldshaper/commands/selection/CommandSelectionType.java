@@ -28,11 +28,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import java.util.Set;
 
 import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.*;
-import static net.codedstingray.worldshaper.chat.MessageSender.*;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -51,8 +49,10 @@ public class CommandSelectionType implements CommandExecutor {
                 SelectionType selectionType = playerData.getSelectionType();
                 Set<String> allSelectionTypes = pluginData.getAllRegisteredSelectionTypes();
 
-                sendWorldShaperMessage(player, "Your current selection type is " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
-                sendGroupedMessages(player, "The following selection types are available", allSelectionTypes);
+                player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                        .t("Your current selection type is ").a("\"" + selectionType.getName() + "\"").t(".")
+                        .build());
+                player.sendMessage(groupedMessages("The following selection types are available", allSelectionTypes));
 
                 return true;
             }
@@ -60,12 +60,15 @@ public class CommandSelectionType implements CommandExecutor {
             String selectionTypeName = args[0];
             SelectionType selectionType = pluginData.getSelectionTypeByName(selectionTypeName);
             if (selectionType == null) {
-                sendWorldShaperErrorMessage(player, "Selection Type \"" + selectionTypeName + "\" does not exist.");
+                player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Selection Type \"" + selectionTypeName + "\" does not exist."));
                 return false;
             }
 
             playerData.setSelectionType(selectionType);
-            sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
+            player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                    .t("Selection Type set to ").a("\"" + selectionType.getName() + "\"").a(".")
+                    .build());
+
             return true;
         } catch (CommandInputParseException e) {
             return handleCommandInputParseException(sender, e);

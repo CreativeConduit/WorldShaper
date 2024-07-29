@@ -19,8 +19,8 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
-import net.codedstingray.worldshaper.chat.TextColor;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
+import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.selection.Selection;
@@ -35,7 +35,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.*;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 import static net.codedstingray.worldshaper.util.world.LocationUtils.locationToBlockVector;
 
@@ -57,12 +58,12 @@ public class CommandPos implements CommandExecutor {
                 try {
                     index = Integer.parseInt(args[0]) - 1;
                 } catch (NumberFormatException e) {
-                    sendWorldShaperErrorMessage(player, "Index for /pos must be an integer.");
+                    player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Index for /pos must be an integer."));
                     return false;
                 }
 
                 if (index < 0) {
-                    sendWorldShaperErrorMessage(player, "Index for /pos must be 1 or higher.");
+                    player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Index for /pos must be 1 or higher."));
                     return false;
                 }
             } else {
@@ -71,9 +72,10 @@ public class CommandPos implements CommandExecutor {
 
             int maxSelectionSize = pluginData.getWorldShaperConfiguration().getMaxSelectionSize();
             if (index >= maxSelectionSize) {
-                sendWorldShaperWarningMessage(player, "Max selection size exceeded. Tried to set index " +
-                        ChatMessageFormatter.ACCENT_COLOR + (index + 1) + TextColor.RESET + ", but max is " +
-                        ChatMessageFormatter.ACCENT_COLOR + maxSelectionSize + TextColor.RESET + ".");
+                player.sendMessage(messageBuilder(MessageLevel.WARNING, true)
+                        .t("Max selection size exceeded. Tried to set index ").a(index + 1)
+                        .t(", but max is ").a(maxSelectionSize).t(".")
+                        .build());
                 return true;
             }
 
@@ -82,7 +84,7 @@ public class CommandPos implements CommandExecutor {
             UUID world = Objects.requireNonNull(playerLocation.getWorld()).getUID();
 
             boolean changed = selection.setControlPosition(index, playerPosition, world);
-            sendWorldShaperMessage(player, ChatMessageFormatter.positionSetMessage(index, playerPosition, changed));
+            player.sendMessage(WorldShaperMessages.positionSetMessage(index, playerPosition, changed));
 
             return true;
         } catch (CommandInputParseException e) {
