@@ -35,6 +35,7 @@ public class WorldShaperMessages {
 
     /**
      * Creates a position set message.
+     *
      * @param index The index at which the position has been set
      * @param position The position that has been set
      * @return The created message
@@ -48,6 +49,12 @@ public class WorldShaperMessages {
                 .build();
     }
 
+    /**
+     * Creates a position removed message.
+     *
+     * @param index The index from which the position has been removed
+     * @return The created message
+     */
     public static String positionRemovedMessage(int index, boolean changed) {
         return messageBuilder(MessageLevel.INFO, true)
                 .t("Control position ").a(index + 1)
@@ -55,6 +62,11 @@ public class WorldShaperMessages {
                 .build();
     }
 
+    /**
+     * Creates the message that is displayed on player join.
+     *
+     * @return The created message
+     */
     public static String playerJoinMessage() {
         List<String> messages = new LinkedList<>();
         messages.add("Using " + accent("WorldShaper") + " version " + accent(WorldShaperManifest.PLUGIN_VERSION) + ".");
@@ -65,6 +77,11 @@ public class WorldShaperMessages {
         return ChatMessageFormatter.groupedMessages("WorldShaper", messages);
     }
 
+    /**
+     * Creates the message that is displayed when the {@code /worldshaper} command is called.
+     *
+     * @return The created message
+     */
     public static String worldShaperInfoMessage() {
         List<String> messages = new LinkedList<>();
         messages.add("Using " + accent("WorldShaper") + " version " + accent(WorldShaperManifest.PLUGIN_VERSION) + ".");

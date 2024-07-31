@@ -39,10 +39,25 @@ public class ChatMessageFormatter {
     |* Utilities *|
     \* ========= */
 
+    /**
+     * Turns the given message into a message with the accent color. The text color is turned back to the
+     * normal text color of the {@link MessageLevel#INFO INFO} message level.
+     *
+     * @param message The message
+     * @return The message with accent color
+     */
     public static String accent(String message) {
         return accent(MessageLevel.INFO, message);
     }
 
+    /**
+     * Turns the given message into a message with the accent color. The text color is turned back to the
+     * normal text color depending on the message level.
+     *
+     * @param messageLevel The {@link MessageLevel MessageLevel} the surrounding message is in; used to return back to the normal text color
+     * @param message The message
+     * @return The message with accent color
+     */
     public static String accent(MessageLevel messageLevel, String message) {
         return TextColor.RESET + ACCENT_COLOR + message + TextColor.RESET + messageLevel.color;
     }
@@ -132,11 +147,23 @@ public class ChatMessageFormatter {
             this.messages = new LinkedList<>();
         }
 
+        /**
+         * Sets the message level of the builder.
+         *
+         * @param messageLevel The {@link MessageLevel MessageLevel}
+         * @return This instance, for chaining
+         */
         public WorldShaperMessageBuilder withMessageLevel(MessageLevel messageLevel) {
             this.messageLevel = messageLevel;
             return this;
         }
 
+        /**
+         * Sets whether the message prefix should be attached to the beginning of the built message.
+         *
+         * @param prependMessagePrefix Whether the prefix should be attached to the message when {@link #build()} is called
+         * @return This instance, for chaining
+         */
         public WorldShaperMessageBuilder withMessagePrefix(boolean prependMessagePrefix) {
             this.prependMessagePrefix = prependMessagePrefix;
             return this;
