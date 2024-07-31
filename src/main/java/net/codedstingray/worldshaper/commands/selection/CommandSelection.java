@@ -19,7 +19,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
+import net.codedstingray.worldshaper.chat.WorldShaperObjectFormatter;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.LinkedList;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendGroupedMessages;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.groupedMessages;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -50,12 +50,12 @@ public class CommandSelection implements CommandExecutor {
             for (int i = 0; i < selection.getControlPositions().size(); i++) {
                 Vector3i controlPosition = selection.getControlPosition(i);
                 if (controlPosition != null) {
-                    messages.add("[" + (i + 1) + "] " + ChatMessageFormatter.vectorToString(controlPosition));
+                    messages.add("[" + (i + 1) + "] " + WorldShaperObjectFormatter.vectorToString(controlPosition));
                 } else {
                     messages.add("[" + (i + 1) + "] - not set -");
                 }
             }
-            sendGroupedMessages(player, "Your Current Selection", messages);
+            player.sendMessage(groupedMessages("Your Current Selection", messages));
 
             return true;
         } catch (CommandInputParseException e) {

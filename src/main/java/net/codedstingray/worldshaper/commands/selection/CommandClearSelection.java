@@ -19,6 +19,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +28,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -41,7 +42,7 @@ public class CommandClearSelection implements CommandExecutor {
             PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
             playerData.getSelection().clearControlPositions();
-            sendWorldShaperMessage(player, "Cleared all selection control positions.");
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Cleared all selection control positions."));
             return true;
         } catch (CommandInputParseException e) {
             return handleCommandInputParseException(sender, e);

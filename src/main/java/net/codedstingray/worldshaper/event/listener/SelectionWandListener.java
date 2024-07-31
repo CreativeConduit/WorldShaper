@@ -19,12 +19,12 @@
 package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.chat.TextColor;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
+import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.items.SelectionWand;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
 import org.bukkit.block.Block;
@@ -35,8 +35,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperWarningMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.permission.Permissions.PERMISSION_SELECTION;
 
 public class SelectionWandListener implements Listener {
@@ -55,7 +55,7 @@ public class SelectionWandListener implements Listener {
         event.setCancelled(true);
 
         if (!player.hasPermission(PERMISSION_SELECTION)) {
-            sendWorldShaperWarningMessage(player, "You do not have the permission to use the WorldShaper wand.");
+            player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "You do not have the permission to use the WorldShaper wand."));
             return;
         }
 
@@ -76,13 +76,13 @@ public class SelectionWandListener implements Listener {
 
         int maxSelectionSize = pluginData.getWorldShaperConfiguration().getMaxSelectionSize();
         if (index >= maxSelectionSize) {
-            sendWorldShaperWarningMessage(player, "Max selection size exceeded. Tried to set index " +
-                    ChatMessageFormatter.ACCENT_COLOR + (index + 1) + TextColor.RESET + ", but max is " +
-                    ChatMessageFormatter.ACCENT_COLOR + maxSelectionSize + TextColor.RESET + ".");
+            player.sendMessage(messageBuilder(MessageLevel.WARNING, true)
+                    .t("Max selection size exceeded. Tried to set index ").a(index + 1).t(", but max is ").a(maxSelectionSize).t(".")
+                    .build());
             return;
         }
 
         boolean changed = playerData.getSelection().setControlPosition(index, clickedPosition, player.getWorld().getUID());
-        sendWorldShaperMessage(player, ChatMessageFormatter.positionSetMessage(index, clickedPosition, changed));
+        player.sendMessage(WorldShaperMessages.positionSetMessage(index, clickedPosition, changed));
     }
 }

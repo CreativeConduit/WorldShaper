@@ -18,12 +18,13 @@
 
 package net.codedstingray.worldshaper.util.world;
 
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 
 public class DirectionUtils {
 
@@ -35,9 +36,9 @@ public class DirectionUtils {
             try {
                 direction = calculateDirectionFromParameter(horizontalDirection, directionName.toUpperCase());
             } catch (IllegalArgumentException e) {
-                sendWorldShaperErrorMessage(player, "\"" + directionName + "\" is not a valid direction.");
-                sendWorldShaperErrorMessage(player, "Valid directions are: \"up\", \"down\", \"north\", \"east\"" +
-                        ", \"south\", \"west\", \"forward\", \"right\", \"back\", \"left\", ");
+                player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "\"" + directionName + "\" is not a valid direction."));
+                player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Valid directions are: \"up\", \"down\", \"north\", \"east\"" +
+                        ", \"south\", \"west\", \"forward\", \"right\", \"back\", \"left\", "));
                 return null;
             }
         }

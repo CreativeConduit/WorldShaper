@@ -20,6 +20,8 @@ package net.codedstingray.worldshaper.commands.area;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.data.PluginData;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
@@ -31,10 +33,13 @@ import org.bukkit.entity.Player;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
 
-import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
-import static net.codedstingray.worldshaper.chat.MessageSender.*;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
+/**
+ * Command used to see and set the player's area type.
+ */
 @ParametersAreNonnullByDefault
 public class CommandAreaType implements CommandExecutor {
 
@@ -50,8 +55,10 @@ public class CommandAreaType implements CommandExecutor {
                 Area area = playerData.getArea();
                 Set<String> allAreaTypes = pluginData.getAllRegisteredAreaTypes();
 
-                sendWorldShaperMessage(player, "Your current area is of type " + ACCENT_COLOR + "\"" + area.getName() + "\"");
-                sendGroupedMessages(player, "The following area types are available", allAreaTypes);
+                player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                        .t("Your current area is of type ").a("\"" + area.getName() + "\"").t(".")
+                        .build());
+                player.sendMessage(ChatMessageFormatter.groupedMessages("The following area types are available:", allAreaTypes));
 
                 return true;
             }
@@ -63,11 +70,16 @@ public class CommandAreaType implements CommandExecutor {
                 SelectionType selectionType = playerData.getArea().getDefaultSelectionType();
                 playerData.setSelectionType(selectionType);
 
-                sendWorldShaperMessage(player, "Area set to type " + ACCENT_COLOR + "\"" + areaName + "\"");
-                sendWorldShaperMessage(player, "Selection Type set to " + ACCENT_COLOR + "\"" + selectionType.getName() + "\"");
+                player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                        .t("Area set to type ").a("\"" + areaName + "\"").t(".")
+                        .build());
+                player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                        .t("Selection Type set to ").a("\"" + selectionType.getName() + "\"").t(".")
+                        .build());
+
                 return true;
             } else {
-                sendWorldShaperErrorMessage(player, "Area of type \"" + areaName + "\" does not exist.");
+                player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Area of type \"" + areaName + "\" does not exist."));
                 return false;
             }
         } catch (CommandInputParseException e) {

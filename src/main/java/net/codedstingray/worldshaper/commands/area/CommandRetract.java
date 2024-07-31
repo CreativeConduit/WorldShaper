@@ -20,8 +20,7 @@ package net.codedstingray.worldshaper.commands.area;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
-import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
-import net.codedstingray.worldshaper.chat.TextColor;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.util.world.Direction;
 import net.codedstingray.worldshaper.util.world.DirectionUtils;
 import org.bukkit.command.Command;
@@ -31,7 +30,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -53,8 +52,9 @@ public class CommandRetract implements CommandExecutor {
             Area area = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId()).getArea();
             area.retract(direction, amount);
 
-            sendWorldShaperMessage(player, "Retracted area " + ChatMessageFormatter.ACCENT_COLOR + amount +
-                    TextColor.RESET + " blocks " + ChatMessageFormatter.ACCENT_COLOR + direction.name().toLowerCase());
+            player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                    .t("Retracted area ").a(amount).t(" blocks ").a(direction.name().toLowerCase()).t(".")
+                    .build());
 
             return true;
         } catch (CommandInputParseException e) {

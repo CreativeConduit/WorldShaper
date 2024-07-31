@@ -18,9 +18,6 @@
 
 package net.codedstingray.worldshaper.chat;
 
-import net.codedstingray.worldshaper.WorldShaperManifest;
-import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,42 +26,57 @@ import java.util.StringJoiner;
 public class ChatMessageFormatter {
 
     public static final String ACCENT_COLOR = TextColor.AQUA.toString();
+    public static final String MAIN_COLOR = TextColor.WHITE.toString();
     public static final String WARNING_COLOR = TextColor.YELLOW.toString();
     public static final String ERROR_COLOR = TextColor.RED.toString();
 
-    public static final String GROUPING_PIPE = ACCENT_COLOR + "|" + TextColor.RESET;
-    public static final String GROUPING_END = ACCENT_COLOR + "\\" + TextColor.RESET;
+    public static final String GROUPING_PIPE = "|";
+    public static final String GROUPING_END = "\\";
 
-    public static final String WORLDSHAPER_MESSAGE_PREFIX = ACCENT_COLOR + "> " + TextColor.RESET;
+    public static final String WORLDSHAPER_MESSAGE_PREFIX = "> ";
 
-
-    /* ========================== *\
-    |* message formatting methods *|
-    \* ========================== */
+    /* ========= *\
+    |* Utilities *|
+    \* ========= */
 
     /**
-     * Formats a message to the WorldShaper message format.
+     * Turns the given message into a message with the accent color. The text color is turned back to the
+     * normal text color of the {@link MessageLevel#INFO INFO} message level.
+     *
      * @param message The message
+     * @return The message with accent color
      */
-    public static String worldShaperMessage(String message) {
-        return WORLDSHAPER_MESSAGE_PREFIX + message;
+    public static String accent(String message) {
+        return accent(MessageLevel.INFO, message);
     }
 
     /**
-     * Formats a message to the WorldShaper warning message format.
-     * @param message The warning message
+     * Turns the given message into a message with the accent color. The text color is turned back to the
+     * normal text color depending on the message level.
+     *
+     * @param messageLevel The {@link MessageLevel MessageLevel} the surrounding message is in; used to return back to the normal text color
+     * @param message The message
+     * @return The message with accent color
      */
-    public static String worldShaperWarningMessage(String message) {
-        return WORLDSHAPER_MESSAGE_PREFIX + WARNING_COLOR + message;
+    public static String accent(MessageLevel messageLevel, String message) {
+        return TextColor.RESET + ACCENT_COLOR + message + TextColor.RESET + messageLevel.color;
     }
 
-    /**
-     * Formats a message to the WorldShaper error message format.
-     * @param message The error message
-     */
-    public static String worldShaperErrorMessage(String message) {
-        return WORLDSHAPER_MESSAGE_PREFIX + ERROR_COLOR + message;
+    public enum MessageLevel {
+        INFO(MAIN_COLOR),
+        WARNING(WARNING_COLOR),
+        ERROR(ERROR_COLOR);
+
+        public final String color;
+
+        MessageLevel(String color) {
+            this.color = color;
+        }
     }
+
+    /* =========================== *\
+    |* Grouped WorldShaper Message *|
+    \* =========================== */
 
     /**
      * Formats the given list of messages to the WorldShaper grouped messages format.
@@ -82,78 +94,299 @@ public class ChatMessageFormatter {
      */
     public static String groupedMessages(String header, Iterable<String> messages) {
         StringJoiner joiner = new StringJoiner("\n")
-                .add(GROUPING_PIPE + " === " + ACCENT_COLOR + header + TextColor.RESET + " ===");
+                .add(accent(GROUPING_PIPE) + " === " + accent(header) + " ===");
 
         for (String message: messages) {
-            joiner.add(GROUPING_PIPE + " " + message);
+            joiner.add(accent(GROUPING_PIPE) + " " + message);
         }
 
-        return joiner.add(GROUPING_END).toString();
+        return joiner.add(accent(GROUPING_END)).toString();
     }
 
-
-    /* ======================= *\
-    |* generic utility methods *|
-    \* ======================= */
-    //TODO: extract these methods into their own ObjectChatFormatter
+    /* ============================ *\
+    |* Standard WorldShaper Message *|
+    \* ============================ */
 
     /**
-     * Returns a String representation of the given vector in WorldShaper vector format.
-     * @param vector The vector
-     * @return The formatted String representation
+     * Formats the given raw message into the WorldShaper format.<br>
+     * Use this only when really necessary.
+     * Normally, the use of {@link #messageBuilder(MessageLevel, boolean) worldShaperMessageBuilder} is preferable.
+     *
+     * @param messageLevel The {@link MessageLevel MessageLevel} to which the message should be formatted
+     * @param message The message to be formatted
+     * @return The formatted message
      */
-    public static String vectorToString(Vector3i vector) {
-        return ACCENT_COLOR + "[" + TextColor.RESET + vector.getX() + ", " + vector.getY() + ", " + vector.getZ() + ACCENT_COLOR + "]" + TextColor.RESET;
+    public static String asWorldShaperMessage(MessageLevel messageLevel, String message) {
+        return accent(messageLevel, WORLDSHAPER_MESSAGE_PREFIX) + message;
     }
-
-
-    /* ================================ *\
-    |* specific text formatting methods *|
-    \* ================================ */
-    //TODO extract these methods into their own String suppliers
 
     /**
-     * Creates a position set message.
-     * @param index The index at which the position has been set
-     * @param position The position that has been set
-     * @return The created message
+     * Creates a new WorldShaperMessageBuilder with the given message level.
+     *
+     * @param messageLevel The {@link MessageLevel MessageLevel} to be used by this builder
+     * @return A new {@link WorldShaperMessageBuilder WorldShaperMessageBuilder} instance
      */
-    public static String positionSetMessage(int index, Vector3i position, boolean changed) {
-        return changed ?
-                "Position " + ACCENT_COLOR + (index + 1) + TextColor.RESET +
-                " set to " + ChatMessageFormatter.vectorToString(position) + "." :
-                "Position " + ACCENT_COLOR + (index + 1) + TextColor.RESET +
-                " was already at " + ChatMessageFormatter.vectorToString(position) + ".";
+    public static WorldShaperMessageBuilder messageBuilder(MessageLevel messageLevel, boolean withMessagePrefix) {
+        return new WorldShaperMessageBuilder()
+                .withMessageLevel(messageLevel)
+                .withMessagePrefix(withMessagePrefix);
     }
 
-    public static String playerJoinMessage() {
-        List<String> messages = new LinkedList<>();
-        messages.add("Using " +
-                ACCENT_COLOR + "WorldShaper" +
-                TextColor.RESET + " version " +
-                ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
-                TextColor.RESET + ".");
-        messages.add("");
-        messages.add("Created by " + ACCENT_COLOR + "CreativeConduit");
-        messages.add("Join our Discord at " + ACCENT_COLOR + TextColor.UNDERLINE + "https://discord.gg/BDbVGBmCY7");
+    /**
+     * A builder used to create WorldShaper-formatted messages.<br>
+     * This builder automatically handles message colors, meaning the color automatically returns to the normal text
+     * color (which depends on the message level) after an accent color text has been inserted.
+     */
+    public static class WorldShaperMessageBuilder {
+        private final List<Message> messages;
 
-        return groupedMessages("WorldShaper", messages);
-    }
+        private MessageLevel messageLevel = MessageLevel.INFO;
+        private boolean prependMessagePrefix = true;
 
-    public static String worldShaperInfoMessage() {
-        List<String> messages = new LinkedList<>();
-        messages.add("Using " +
-                ACCENT_COLOR + "WorldShaper" +
-                TextColor.RESET + " version " +
-                ACCENT_COLOR + WorldShaperManifest.PLUGIN_VERSION +
-                TextColor.RESET + ".");
-        messages.add("Native Minecraft version is " +
-                ACCENT_COLOR + WorldShaperManifest.NATIVE_MC_VERSION +
-                TextColor.RESET + ".");
-        messages.add("");
-        messages.add("Created by " + ACCENT_COLOR + "CreativeConduit");
-        messages.add("Join our Discord at " + ACCENT_COLOR + TextColor.UNDERLINE + "https://discord.gg/BDbVGBmCY7");
+        private WorldShaperMessageBuilder() {
+            this.messages = new LinkedList<>();
+        }
 
-        return groupedMessages("WorldShaper", messages);
+        /**
+         * Sets the message level of the builder.
+         *
+         * @param messageLevel The {@link MessageLevel MessageLevel}
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder withMessageLevel(MessageLevel messageLevel) {
+            this.messageLevel = messageLevel;
+            return this;
+        }
+
+        /**
+         * Sets whether the message prefix should be attached to the beginning of the built message.
+         *
+         * @param prependMessagePrefix Whether the prefix should be attached to the message when {@link #build()} is called
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder withMessagePrefix(boolean prependMessagePrefix) {
+            this.prependMessagePrefix = prependMessagePrefix;
+            return this;
+        }
+
+        /**
+         * Appends a text to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(String message) {
+            messages.add(new Message(message, false));
+            return this;
+        }
+
+        /**
+         * Appends a byte to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(byte message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a short to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(short message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends an int to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(int message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a long to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(long message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a float to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(float message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a double to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(double message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a boolean to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(boolean message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a char to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder t(char message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a text with accent color to the builder
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(String message) {
+            messages.add(new Message(message, true));
+            return this;
+        }
+
+        /**
+         * Appends a byte with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(byte message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a short with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(short message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends an int with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(int message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a long with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(long message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a float with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(float message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a double with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(double message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a boolean with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(boolean message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Appends a char with accent color to the builder.
+         *
+         * @param message The message to be appended
+         * @return This instance, for chaining
+         */
+        public WorldShaperMessageBuilder a(char message) {
+            messages.add(new Message(String.valueOf(message), false));
+            return this;
+        }
+
+        /**
+         * Builds the WorldShaper formatted message from the text elements that have been added before.
+         *
+         * @return The full, formatted message
+         */
+        public String build() {
+            StringBuilder sb = new StringBuilder();
+            if (prependMessagePrefix) {
+                sb.append(ChatMessageFormatter.accent(messageLevel, WORLDSHAPER_MESSAGE_PREFIX));
+            }
+            messages.forEach(message -> sb.append(message.formatMessage(messageLevel)));
+            return sb.toString();
+        }
+
+        private record Message(String message, boolean isAccent) {
+            public String formatMessage(MessageLevel messageLevel) {
+                return isAccent ?
+                        ChatMessageFormatter.accent(messageLevel, this.message) :
+                        this.message;
+            }
+        }
     }
 }

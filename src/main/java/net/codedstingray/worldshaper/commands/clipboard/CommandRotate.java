@@ -19,7 +19,7 @@
 package net.codedstingray.worldshaper.commands.clipboard;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.chat.TextColor;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.commands.CommandInputParseUtils;
 import net.codedstingray.worldshaper.data.PlayerData;
@@ -32,8 +32,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -55,8 +54,10 @@ public class CommandRotate implements CommandExecutor {
 
             clipboard.rotate(bv.getX() * rotationValue, bv.getY() * rotationValue, bv.getZ() * rotationValue);
 
-            sendWorldShaperMessage(player, "Clipboard rotated by " + ACCENT_COLOR + rotationValue + "\u00B0" +
-                    TextColor.RESET+ " on the " + ACCENT_COLOR + axis.toString().toLowerCase() + TextColor.RESET + "-axis");
+            player.sendMessage(messageBuilder(MessageLevel.INFO, true)
+                    .t("Clipboard rotated by ").a(rotationValue + "\u00B0").t(" on the ")
+                    .a(axis.toString().toLowerCase()).t("-axis.")
+                    .build());
 
             return true;
         } catch (CommandInputParseException e) {

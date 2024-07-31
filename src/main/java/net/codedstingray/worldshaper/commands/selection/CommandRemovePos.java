@@ -19,7 +19,8 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
-import net.codedstingray.worldshaper.chat.TextColor;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
+import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.selection.Selection;
 import org.bukkit.command.Command;
@@ -29,9 +30,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.ACCENT_COLOR;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -50,23 +49,20 @@ public class CommandRemovePos implements CommandExecutor {
                 try {
                     index = Integer.parseInt(args[0]) - 1;
                 } catch (NumberFormatException e) {
-                    sendWorldShaperErrorMessage(player, "Index for /removepos must be an integer.");
+                    player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Index for /removepos must be an integer."));
                     return false;
                 }
             }
 
-            if (index >= 0) {
-                boolean madeChange = selection.removeControlPosition(index);
-                if (madeChange) {
-                    sendWorldShaperMessage(player, "Control position " + ACCENT_COLOR + (index + 1) + TextColor.RESET + " removed.");
-                } else {
-                    sendWorldShaperMessage(player, "Control position " + ACCENT_COLOR + (index + 1) + TextColor.RESET + " was already not set.");
-                }
-                return true;
-            } else {
-                sendWorldShaperErrorMessage(player, "Index for /removepos must be 1 or higher.");
+            if (index < 0) {
+                player.sendMessage(asWorldShaperMessage(MessageLevel.ERROR, "Index for /removepos must be 1 or higher."));
                 return false;
             }
+
+            boolean madeChange = selection.removeControlPosition(index);
+            player.sendMessage(WorldShaperMessages.positionRemovedMessage(index, madeChange));
+
+            return true;
         } catch (CommandInputParseException e) {
             return handleCommandInputParseException(sender, e);
         }

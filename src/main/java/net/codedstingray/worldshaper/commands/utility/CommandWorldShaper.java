@@ -18,14 +18,13 @@
 
 package net.codedstingray.worldshaper.commands.utility;
 
+import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.worldShaperInfoMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendRawMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 import static net.codedstingray.worldshaper.permission.Permissions.EDIT_PERMISSIONS;
 
@@ -41,7 +40,7 @@ public class CommandWorldShaper implements CommandExecutor {
             checkPermissionsAnyOf(sender, EDIT_PERMISSIONS);
             verifyArgumentSize(args, 0, 0);
 
-            sendRawMessage(sender, worldShaperInfoMessage());
+            sender.sendMessage(WorldShaperMessages.worldShaperInfoMessage());
 
             return true;
         } catch (CommandInputParseException e) {

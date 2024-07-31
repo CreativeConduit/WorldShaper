@@ -26,10 +26,10 @@ import java.util.Map;
  * This enum's {@link #toString()}-method returns the string code required to color text within Minecraft's chat.
  * Any code can thus be added to any string by way of concatenation, e.g.
  * <pre>
- * "This is a " + ACCENT_COLOR + " partially colored " + TextColor.RESET + " text!"
+ * {@code "This is a " + TextColor.AQUA + " partially colored " + TextColor.RESET + " text!"}
  * </pre>
  * Note that when providing these as parameter to a method or when trying to concatenate multiple TextColor objects
- * at the beginning of a String, a call to {@link #toString()} might be necessary.
+ * at the beginning of a String, a manual call to {@link #toString()} might be necessary.
  */
 public enum TextColor {
     BLACK('0'),

@@ -22,6 +22,7 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionController;
 import net.codedstingray.worldshaper.action.ActionStack;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,8 +31,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperErrorMessage;
-import static net.codedstingray.worldshaper.chat.MessageSender.sendWorldShaperWarningMessage;
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 import static net.codedstingray.worldshaper.permission.Permissions.EDIT_PERMISSIONS;
 
@@ -50,13 +50,13 @@ public class CommandUndo implements CommandExecutor {
             ActionStack playerActionStack = playerData.getActionStack();
 
             if (playerActionStack.isMainStackEmpty()) {
-                sendWorldShaperWarningMessage(player, "No action to undo");
+                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "No action to undo"));
                 return true;
             }
 
             Action lastAction = playerActionStack.peekMainStack();
             if (!lastAction.worldUUID.equals(player.getWorld().getUID())) {
-                sendWorldShaperErrorMessage(player, "Cannot perform undo: the last action took place in a different world from the one you are in.");
+                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "Cannot perform undo: the last action took place in a different world from the one you are in."));
                 return true;
             }
 
