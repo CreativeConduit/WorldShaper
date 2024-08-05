@@ -21,6 +21,7 @@ package net.codedstingray.worldshaper.commands.clipboard;
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionStack;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.operation.Operation;
@@ -33,6 +34,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -54,6 +56,8 @@ public class CommandPaste implements CommandExecutor {
 
             ActionStack playerActionStack = playerData.getActionStack();
             WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
+
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Clipboard contents pasted into the world."));
 
             return true;
         } catch (CommandInputParseException e) {

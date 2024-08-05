@@ -50,7 +50,7 @@ public class CommandRedo implements CommandExecutor {
             ActionStack playerActionStack = playerData.getActionStack();
 
             if (playerActionStack.isUndoStackEmpty()) {
-                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "No action to redo"));
+                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "No action to redo."));
                 return true;
             }
 
@@ -61,6 +61,7 @@ public class CommandRedo implements CommandExecutor {
             }
 
             actionController.redoAction(playerActionStack);
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Redo successful."));
 
             return true;
         } catch (CommandInputParseException e) {

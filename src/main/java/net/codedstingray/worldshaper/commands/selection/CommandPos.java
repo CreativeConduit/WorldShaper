@@ -19,6 +19,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
@@ -52,6 +53,7 @@ public class CommandPos implements CommandExecutor {
             PluginData pluginData = WorldShaper.getInstance().getPluginData();
             PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
             Selection selection = playerData.getSelection();
+            Area area = playerData.getArea();
 
             int index;
             if (args.length > 0) {
@@ -84,7 +86,7 @@ public class CommandPos implements CommandExecutor {
             UUID world = Objects.requireNonNull(playerLocation.getWorld()).getUID();
 
             boolean changed = selection.setControlPosition(index, playerPosition, world);
-            player.sendMessage(WorldShaperMessages.positionSetMessage(index, playerPosition, changed));
+            player.sendMessage(WorldShaperMessages.positionSetMessage(index, playerPosition, changed, area.getSize()));
 
             return true;
         } catch (CommandInputParseException e) {

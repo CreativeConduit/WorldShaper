@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.operation.Operation;
@@ -39,6 +40,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -64,6 +66,8 @@ public class CommandCut implements CommandExecutor {
 
             ActionStack playerActionStack = playerData.getActionStack();
             WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
+
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Area contents cut from the world and copied to clipboard."));
 
             return true;
         } catch (CommandInputParseException e) {

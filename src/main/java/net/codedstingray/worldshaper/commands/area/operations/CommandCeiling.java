@@ -24,6 +24,7 @@ import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.operation.Operation;
 import net.codedstingray.worldshaper.operation.OperationPlace;
@@ -38,6 +39,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.messageBuilder;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -64,6 +66,10 @@ public class CommandCeiling implements CommandExecutor {
 
             ActionStack playerActionStack = playerData.getActionStack();
             WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
+
+            player.sendMessage(messageBuilder(ChatMessageFormatter.MessageLevel.INFO, true)
+                    .t("A total of ").a(action.getActionSize()).t(" blocks have been modified").build()
+            );
 
             return true;
         } catch (CommandInputParseException e) {

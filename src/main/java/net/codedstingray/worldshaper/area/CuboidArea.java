@@ -97,13 +97,23 @@ public class CuboidArea implements Area {
     }
 
     @Override
+    public int getSize() {
+        if (!isValid()) {
+            return -1;
+        }
+
+        Vector3ii sizeVec = getBoundingBixSize();
+        return sizeVec.x * sizeVec.y * sizeVec.z;
+    }
+
+    @Override
     public Vector3ii getBoundingBoxMin() {
-        return minPos.toImmutable();
+        return minPos != null ? minPos.toImmutable() : VectorUtils.INFINITE_MAX;
     }
 
     @Override
     public Vector3ii getBoundingBoxMax() {
-        return maxPos.toImmutable();
+        return maxPos != null ? maxPos.toImmutable() : VectorUtils.INFINITE_MIN;
     }
 
     @Override

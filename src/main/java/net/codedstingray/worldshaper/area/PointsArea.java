@@ -22,6 +22,7 @@ import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.selection.Selection;
 import net.codedstingray.worldshaper.selection.type.SelectionType;
 import net.codedstingray.worldshaper.selection.type.SelectionTypeIndefinitePositions;
+import net.codedstingray.worldshaper.util.vector.VectorUtils;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3im;
@@ -42,8 +43,8 @@ public class PointsArea implements Area {
 
     public static final String NAME = "points";
 
-    private final Vector3im minPos = new Vector3im(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
-    private final Vector3im maxPos = new Vector3im(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+    private final Vector3im minPos = VectorUtils.INFINITE_MAX.toMutable();
+    private final Vector3im maxPos = VectorUtils.INFINITE_MIN.toMutable();
 
     private List<Vector3i> points =  Collections.emptyList();
 
@@ -73,6 +74,11 @@ public class PointsArea implements Area {
     @Override
     public boolean isInArea(Vector3i position) {
         return points.contains(position);
+    }
+
+    @Override
+    public int getSize() {
+        return points.size();
     }
 
     @Override
