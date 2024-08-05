@@ -286,7 +286,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(byte message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -297,7 +297,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(short message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -308,7 +308,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(int message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -319,7 +319,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(long message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -330,7 +330,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(float message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -341,7 +341,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(double message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -352,7 +352,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(boolean message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
@@ -363,7 +363,7 @@ public class ChatMessageFormatter {
          * @return This instance, for chaining
          */
         public WorldShaperMessageBuilder a(char message) {
-            messages.add(new Message(String.valueOf(message), false));
+            messages.add(new Message(String.valueOf(message), true));
             return this;
         }
 
