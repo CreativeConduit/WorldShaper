@@ -60,7 +60,7 @@ public class CommandInputParseUtils {
     public static Area getAreaFromPlayerData(PlayerData playerData) throws CommandInputParseException {
         Area area = playerData.getArea();
         if (area == null || !area.isValid()) {
-            throw new CommandInputParseException("Set an area before using this command.", false, MessageLevel.ERROR);
+            throw new CommandInputParseException("You need to set a valid area before using this command.", false, MessageLevel.WARNING);
         }
         return area;
     }
@@ -68,7 +68,7 @@ public class CommandInputParseUtils {
     public static UUID getWorldAndCheckWithSelection(Player player, PlayerData playerData) throws CommandInputParseException {
         UUID worldUUID = playerData.getSelection().getWorldUUID();
         if (!player.getWorld().getUID().equals(worldUUID)) {
-            throw new CommandInputParseException("Area is in a different world. Switch to that world or create a new area in this world to use this command", false, MessageLevel.ERROR);
+            throw new CommandInputParseException("Area is in a different world. Switch to that world or create a new area in this world to use this command", false, MessageLevel.WARNING);
         }
         return worldUUID;
     }
