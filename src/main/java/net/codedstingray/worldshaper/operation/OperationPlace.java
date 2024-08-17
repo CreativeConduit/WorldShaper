@@ -22,6 +22,7 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.mask.Mask;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.block.variable.VariableMap;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3i;
 import net.codedstingray.worldshaper.util.vector.vector3.Vector3ii;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
@@ -69,6 +70,8 @@ public class OperationPlace implements Operation {
                     !mask.matches(LocationUtils.vectorToLocation(position, world))) {
                 continue;
             }
+
+            VariableMap variableMap = VariableMap.create(mask, world, position);
 
             Optional<BlockData> toOpt = pattern.getRandomBlockData();
             if (toOpt.isEmpty()) {
