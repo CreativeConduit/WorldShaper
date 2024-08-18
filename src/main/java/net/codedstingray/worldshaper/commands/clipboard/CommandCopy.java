@@ -20,6 +20,7 @@ package net.codedstingray.worldshaper.commands.clipboard;
 
 import net.codedstingray.worldshaper.WorldShaper;
 import net.codedstingray.worldshaper.area.Area;
+import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.clipboard.Clipboard;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.util.world.LocationUtils;
@@ -33,6 +34,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.codedstingray.worldshaper.chat.ChatMessageFormatter.asWorldShaperMessage;
 import static net.codedstingray.worldshaper.commands.CommandInputParseUtils.*;
 
 @ParametersAreNonnullByDefault
@@ -52,6 +54,8 @@ public class CommandCopy implements CommandExecutor {
             playerData.setClipboard(Clipboard.createFromArea(Objects.requireNonNull(Bukkit.getWorld(worldUUID)), area,
                     LocationUtils.locationToEntityVector(player.getLocation()),
                     LocationUtils.locationToBlockVector(player.getLocation())));
+
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Area contents copied to clipboard."));
 
             return true;
         } catch (CommandInputParseException e) {

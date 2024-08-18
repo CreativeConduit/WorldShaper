@@ -23,6 +23,7 @@ import net.codedstingray.worldshaper.action.Action;
 import net.codedstingray.worldshaper.action.ActionStack;
 import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.block.pattern.Pattern;
+import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
 import net.codedstingray.worldshaper.operation.Operation;
 import net.codedstingray.worldshaper.operation.OperationPlace;
@@ -62,6 +63,8 @@ public class CommandSet implements CommandExecutor {
 
             ActionStack playerActionStack = playerData.getActionStack();
             WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
+
+            player.sendMessage(WorldShaperMessages.actionPerformedMessage(action.getActionSize()));
 
             return true;
         } catch (CommandInputParseException e) {

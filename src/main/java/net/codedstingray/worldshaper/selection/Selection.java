@@ -92,6 +92,7 @@ public class Selection implements Iterable<Vector3i> {
      * @param index The index within the set of control positions at which the control position should be set
      * @param position The position to be set
      * @param world The UUID of the world the position has been set in
+     * @return {@code true} if the selection has been modified, {@code false} otherwise
      */
     public boolean setControlPosition(int index, Vector3i position, UUID world) {
         if (index < 0) {

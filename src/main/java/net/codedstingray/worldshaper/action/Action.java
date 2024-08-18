@@ -49,6 +49,10 @@ public class Action implements Iterable<Action.ActionItem> {
         }
     }
 
+    public int getActionSize() {
+        return actionItems.size();
+    }
+
     @Override
     public Iterator<ActionItem> iterator() {
         return actionItems.iterator();

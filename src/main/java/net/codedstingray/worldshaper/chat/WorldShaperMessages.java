@@ -38,14 +38,16 @@ public class WorldShaperMessages {
      *
      * @param index The index at which the position has been set
      * @param position The position that has been set
+     * @param changed Whether the block was changed or the same as before
+     * @param areaSize The new size of the player's area
      * @return The created message
      */
-    public static String positionSetMessage(int index, Vector3i position, boolean changed) {
+    public static String positionSetMessage(int index, Vector3i position, boolean changed, int areaSize) {
         return messageBuilder(MessageLevel.INFO, true)
                 .t("Position ").a(index + 1)
                 .t(changed ? " set to " : " was already at ")
-                .t(WorldShaperObjectFormatter.vectorToString(position))
-                .t(".")
+                .t(WorldShaperObjectFormatter.vectorToString(position)).t(".")
+                .t(areaSize >= 0 ? " (%d)".formatted(areaSize) : "")
                 .build();
     }
 
@@ -53,13 +55,27 @@ public class WorldShaperMessages {
      * Creates a position removed message.
      *
      * @param index The index from which the position has been removed
+     * @param changed Whether the block was changed or the same as before
+     * @param areaSize The new size of the player's area
      * @return The created message
      */
-    public static String positionRemovedMessage(int index, boolean changed) {
+    public static String positionRemovedMessage(int index, boolean changed, int areaSize) {
         return messageBuilder(MessageLevel.INFO, true)
                 .t("Control position ").a(index + 1)
                 .t(changed ? " removed." : " was already not set.")
+                .t(areaSize >= 0 ? " (%d)".formatted(areaSize) : "")
                 .build();
+    }
+
+    /**
+     * Creates a message for a performed action.
+     *
+     * @param actionSize The action size, which equals the number of blocks changed
+     * @return The created message
+     */
+    public static String actionPerformedMessage(int actionSize) {
+        return messageBuilder(MessageLevel.INFO, true)
+                .t("Done. ").a(actionSize).t(" blocks modified.").build();
     }
 
     /**

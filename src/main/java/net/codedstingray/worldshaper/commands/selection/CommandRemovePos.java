@@ -19,6 +19,7 @@
 package net.codedstingray.worldshaper.commands.selection;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
@@ -44,6 +45,7 @@ public class CommandRemovePos implements CommandExecutor {
             PlayerData playerData = WorldShaper.getInstance().getPluginData().getPlayerDataForPlayer(player.getUniqueId());
 
             Selection selection = playerData.getSelection();
+            Area area = playerData.getArea();
             int index = selection.getControlPositions().size() - 1;
             if (args.length > 0) {
                 try {
@@ -60,7 +62,7 @@ public class CommandRemovePos implements CommandExecutor {
             }
 
             boolean madeChange = selection.removeControlPosition(index);
-            player.sendMessage(WorldShaperMessages.positionRemovedMessage(index, madeChange));
+            player.sendMessage(WorldShaperMessages.positionRemovedMessage(index, madeChange, area.getSize()));
 
             return true;
         } catch (CommandInputParseException e) {

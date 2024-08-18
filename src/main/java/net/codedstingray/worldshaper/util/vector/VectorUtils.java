@@ -23,11 +23,15 @@ import net.codedstingray.worldshaper.util.vector.vector3.*;
 import java.util.Arrays;
 
 public class VectorUtils {
-    public static final Vector3i ZERO = new Vector3ii(0, 0, 0);
-    public static final Vector3i ONE = new Vector3ii(1, 1, 1);
-    public static final Vector3i BASE_X = new Vector3ii(1, 0, 0);
-    public static final Vector3i BASE_Y = new Vector3ii(0, 1, 0);
-    public static final Vector3i BASE_Z = new Vector3ii(0, 0, 1);
+    public static final Vector3ii ZERO = new Vector3ii(0, 0, 0);
+    public static final Vector3ii ONE = new Vector3ii(1, 1, 1);
+
+    public static final Vector3ii BASE_X = new Vector3ii(1, 0, 0);
+    public static final Vector3ii BASE_Y = new Vector3ii(0, 1, 0);
+    public static final Vector3ii BASE_Z = new Vector3ii(0, 0, 1);
+
+    public static final Vector3ii INFINITE_MIN = new Vector3ii(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+    public static final Vector3ii INFINITE_MAX = new Vector3ii(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     public static Vector3i getDirectionVectorByName(String name) {
         return switch (name.toLowerCase()) {

@@ -77,6 +77,12 @@ public interface Area extends Iterable<Vector3i> {
      */
     boolean isInArea(Vector3i position);
 
+    /**
+     * Returns the number of blocks contained in this area. A negative value is returned if the area is invalid.
+     *
+     * @return the number of blocks in this area
+     */
+    int getSize();
 
     /**
      * Returns the min-position of the area's bounding box. The bounding box is important for commands like /stack and

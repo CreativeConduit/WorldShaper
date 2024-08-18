@@ -50,7 +50,7 @@ public class CommandUndo implements CommandExecutor {
             ActionStack playerActionStack = playerData.getActionStack();
 
             if (playerActionStack.isMainStackEmpty()) {
-                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "No action to undo"));
+                player.sendMessage(asWorldShaperMessage(MessageLevel.WARNING, "No action to undo."));
                 return true;
             }
 
@@ -61,6 +61,7 @@ public class CommandUndo implements CommandExecutor {
             }
 
             actionController.undoAction(playerActionStack);
+            player.sendMessage(asWorldShaperMessage(MessageLevel.INFO, "Undo successful."));
 
             return true;
         } catch (CommandInputParseException e) {

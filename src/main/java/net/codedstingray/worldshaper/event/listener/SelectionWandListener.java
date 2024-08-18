@@ -19,6 +19,7 @@
 package net.codedstingray.worldshaper.event.listener;
 
 import net.codedstingray.worldshaper.WorldShaper;
+import net.codedstingray.worldshaper.area.Area;
 import net.codedstingray.worldshaper.chat.ChatMessageFormatter.MessageLevel;
 import net.codedstingray.worldshaper.chat.WorldShaperMessages;
 import net.codedstingray.worldshaper.data.PlayerData;
@@ -62,6 +63,7 @@ public class SelectionWandListener implements Listener {
         PluginData pluginData = WorldShaper.getInstance().getPluginData();
         PlayerData playerData = pluginData.getPlayerDataForPlayer(player.getUniqueId());
         SelectionType selectionType = playerData.getSelectionType();
+        Area area = playerData.getArea();
 
         Vector3i clickedPosition = LocationUtils.locationToBlockVector(clickedBlock.getLocation());
 
@@ -77,12 +79,13 @@ public class SelectionWandListener implements Listener {
         int maxSelectionSize = pluginData.getWorldShaperConfiguration().getMaxSelectionSize();
         if (index >= maxSelectionSize) {
             player.sendMessage(messageBuilder(MessageLevel.WARNING, true)
-                    .t("Max selection size exceeded. Tried to set index ").a(index + 1).t(", but max is ").a(maxSelectionSize).t(".")
+                    .t("Max selection size exceeded. Tried to set index ").a(index + 1)
+                    .t(", but max is ").a(maxSelectionSize).t(".")
                     .build());
             return;
         }
 
         boolean changed = playerData.getSelection().setControlPosition(index, clickedPosition, player.getWorld().getUID());
-        player.sendMessage(WorldShaperMessages.positionSetMessage(index, clickedPosition, changed));
+        player.sendMessage(WorldShaperMessages.positionSetMessage(index, clickedPosition, changed, area.getSize()));
     }
 }
