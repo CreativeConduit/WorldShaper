@@ -38,6 +38,8 @@ public class WorldShaperMessages {
      *
      * @param index The index at which the position has been set
      * @param position The position that has been set
+     * @param changed Whether the block was changed or the same as before
+     * @param areaSize The new size of the player's area
      * @return The created message
      */
     public static String positionSetMessage(int index, Vector3i position, boolean changed, int areaSize) {
@@ -53,6 +55,8 @@ public class WorldShaperMessages {
      * Creates a position removed message.
      *
      * @param index The index from which the position has been removed
+     * @param changed Whether the block was changed or the same as before
+     * @param areaSize The new size of the player's area
      * @return The created message
      */
     public static String positionRemovedMessage(int index, boolean changed, int areaSize) {
@@ -63,6 +67,12 @@ public class WorldShaperMessages {
                 .build();
     }
 
+    /**
+     * Creates a message for a performed action.
+     *
+     * @param actionSize The action size, which equals the number of blocks changed
+     * @return The created message
+     */
     public static String actionPerformedMessage(int actionSize) {
         return messageBuilder(MessageLevel.INFO, true)
                 .t("Done. ").a(actionSize).t(" blocks modified.").build();

@@ -67,7 +67,7 @@ public class CommandMove implements CommandExecutor {
             WorldShaper.getInstance().getActionController().performAction(playerActionStack, action);
 
             player.sendMessage(messageBuilder(MessageLevel.INFO, true)
-                    .t("Area contents stacked ").a(distance).t(" times ").a(direction.name().toLowerCase()).t(".").build()
+                    .t("Area contents moved ").a(distance).t(" blocks ").a(direction.name().toLowerCase()).t(".").build()
             );
 
             return true;
