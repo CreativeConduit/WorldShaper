@@ -31,6 +31,10 @@ import java.util.Map;
 
 import static net.codedstingray.worldshaper.util.world.LocationUtils.vectorToLocation;
 
+/**
+ * The Variable Map is used to transfer variable values between masks and patterns.
+ * It distinguishes between BlockType variables and BlockProperty variables.
+ */
 public class VariableMap {
 
     private final Map<String, Material> blockTypeVariableMap = new HashMap<>();
@@ -40,22 +44,60 @@ public class VariableMap {
         //private constructor to enforce creation via #create(Mask, World, Vector3i)
     }
 
+    /**
+     * Returns the value of the BlockType variable with the given name.
+     *
+     * @param name The name of the BlockType variable
+     * @return The value stored in the variable, or {@code null} if the variable was not set
+     */
     public Material getBlockTypeVariable(String name) {
         return blockTypeVariableMap.get(name);
     }
 
-    public String getBlockTraitVariable(String name) {
+    /**
+     * Returns the value of the BlockProperty variable with the given name.
+     *
+     * @param name The name of the BlockProperty variable
+     * @return The value stored in the variable, or {@code null} if the variable was not set
+     */
+    public String getBlockPropertyVariable(String name) {
         return blockPropertyVariableMap.get(name);
     }
 
+    /**
+     * Sets the BlockType variable with the given name to the given value.
+     *
+     * @param name The name of the BlockType variable
+     * @param material The value to be set
+     */
     public void setBlockTypeVariable(String name, Material material) {
         blockTypeVariableMap.put(name, material);
     }
+
+    /**
+     * Sets the BlockProperty variable with the given name to the given value.
+     *
+     * @param name The name of the BlockProperty variable
+     * @param value The value to be set
+     */
 
     public void setBlockPropertyVariable(String name, String value) {
         blockPropertyVariableMap.put(name, value);
     }
 
+    /**
+     * Creates a new {@link VariableMap} instance from the given parameters.
+     * It reads the mask to determine the variables that shall be created and uses the world to determine the values for
+     * these variables.
+     * <br>
+     * All positions referred to in the mask are relative to the given base position, which is the
+     * position of the block currently being checked by the mask and about to be (potentially) modified.
+     *
+     * @param mask The {@link Mask} to read the variables from
+     * @param world The {@link World} to read values from
+     * @param position The position of the block currently being checked / modified
+     * @return The created {@link VariableMap}
+     */
     public static VariableMap create(Mask mask, World world, Vector3i position) {
         //TODO: mask is currently ignored as extracting variables from it comes with the advanced masks
         VariableMap variables = new VariableMap();
